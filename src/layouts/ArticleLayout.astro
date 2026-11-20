@@ -1,0 +1,138 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import OptimizedImage from '../components/OptimizedImage.astro';
+import TableOfContents from '../components/TableOfContents.astro';
+import ReviewCallout from '../components/ReviewCallout.astro';
+import AffiliateDisclosure from '../components/AffiliateDisclosure.astro';
+import ArticleSources from '../components/ArticleSources.astro';
+import ArticleFaq from '../components/ArticleFaq.astro';
+import RelatedArticles from '../components/RelatedArticles.astro';
+import {
+  articleBreadcrumbs,
+  articlePath,
+  categoryMeta,
+  formatArticleDate,
+  getRelatedArticles,
+  getReviewCallout,
+  getValidFaq,
+  type ArticleEntry,
+} from '../utils/articles';
+import { articleSchema, breadcrumbSchema } from '../utils/schema';
+import { absoluteUrl } from '../utils/seo';
+
+interface Props {
+  article: ArticleEntry;
+  headings?: { depth: number; slug: string; text: string }[];
+}
+
+const { article, headings = [] } = Astro.props;
+const path = articlePath(article);
+const crumbs = articleBreadcrumbs(article);
+const category = categoryMeta[article.data.category];
+const related = await getRelatedArticles(article);
+const faq = getValidFaq(article);
+const review = getReviewCallout(article.data.reviewLevel);
+const noindex = article.data.draft || article.data.noindex;
+const ogImage = article.data.featuredImage
+  ? absoluteUrl(article.data.featuredImage)
+  : undefined;
+---
+
+<BaseLayout
+  title={article.data.title}
+  description={article.data.description}
+  path={path}
+  type="article"
+  noindex={noindex}
+  ogImage={ogImage}
+  schema={[articleSchema(article), breadcrumbSchema(crumbs)]}
+>
+  <article class="container-site section-space">
+    <Breadcrumbs items={crumbs} />
+
+    <header class="mt-6 max-w-[42rem]">
+      <p class="text-sm font-semibold uppercase tracking-wide text-ink-subtle">
+        <a href={category.href} class="text-ink-subtle hover:text-brand">{category.label}</a>
+        {
+          article.data.subcategory && (
+            <>
+              <span aria-hidden="true"> · </span>
+              <span>{article.data.subcategory.replace(/-/g, ' ')}</span>
+            </>
+          )
+        }
+      </p>
+      <h1 class="mt-3 font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
+        {article.data.title}
+      </h1>
+      {
+        article.data.summary && (
+          <p class="mt-4 rounded-xl border border-border bg-brand-soft/60 p-4 text-base text-ink">
+            {article.data.summary}
+          </p>
+        )
+      }
+      <div class="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-sm text-ink-subtle">
+        <span>By {article.data.author}</span>
+        <span>
+          Published{' '}
+          <time datetime={article.data.publishedDate.toISOString()}>
+            {formatArticleDate(article.data.publishedDate)}
+          </time>
+        </span>
+        {
+          article.data.updatedDate && (
+            <span>
+              Updated{' '}
+              <time datetime={article.data.updatedDate.toISOString()}>
+                {formatArticleDate(article.data.updatedDate)}
+              </time>
+            </span>
+          )
+        }
+      </div>
+      {
+        article.data.tags.length > 0 && (
+          <ul class="mt-4 flex flex-wrap gap-2" aria-label="Tags">
+            {article.data.tags.map((tag) => (
+              <li class="rounded-md bg-sand px-2 py-1 text-xs font-medium text-ink-muted">{tag}</li>
+            ))}
+          </ul>
+        )
+      }
+    </header>
+
+    {
+      article.data.featuredImage && article.data.featuredImageAlt && (
+        <figure class="mt-8 max-w-[42rem] overflow-hidden rounded-2xl border border-border">
+          <OptimizedImage
+            src={article.data.featuredImage}
+            alt={article.data.featuredImageAlt}
+            width={1200}
+            height={800}
+            loading="eager"
+            class="aspect-[3/2] w-full object-cover"
+          />
+        </figure>
+      )
+    }
+
+    {review && <div class="max-w-[42rem]"><ReviewCallout title={review.title} body={review.body} /></div>}
+    {article.data.affiliateDisclosure && <div class="max-w-[42rem]"><AffiliateDisclosure /></div>}
+
+    <div class="max-w-[42rem]">
+      <TableOfContents headings={headings} />
+    </div>
+
+    <div class="prose-article mt-8">
+      <slot />
+    </div>
+
+    <div class="max-w-[42rem]">
+      <ArticleSources sources={article.data.sources} />
+      <ArticleFaq items={faq} />
+      <RelatedArticles articles={related} />
+    </div>
+  </article>
+</BaseLayout>

@@ -1,0 +1,13 @@
+---
+import { SITE_NAME } from '../config/site';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+---
+
+<a href="/" class:list={['font-display text-lg font-semibold tracking-tight text-ink no-underline hover:no-underline', className]}>
+  {SITE_NAME}
+</a>

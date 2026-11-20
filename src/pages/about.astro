@@ -1,0 +1,27 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import { CONTACT_EMAIL, SITE_AUTHOR, SITE_NAME, SITE_TAGLINE } from '../config/site';
+---
+
+<PageLayout
+  title="About"
+  description={`About ${SITE_NAME} — editorial purpose and how this demo starter is meant to be customized.`}
+  path="/about"
+>
+  <p slot="lede" class="section-lede">{SITE_TAGLINE}</p>
+
+  <p>
+    <strong>{SITE_NAME}</strong> is the default brand for this reusable SEO site starter. Replace the name,
+    positioning, and author model before launching a real niche site.
+  </p>
+  <p>
+    Editorial byline currently uses <strong>{SITE_AUTHOR}</strong>. Update that string in
+    <code>src/config/site.ts</code> and on individual articles.
+  </p>
+  <p>
+    Contact placeholder: <strong>{CONTACT_EMAIL}</strong> — marked for review; do not invent a real inbox or legal entity here.
+  </p>
+  <p class="rounded-xl border border-warning-border bg-warning-bg p-4 text-sm text-warning">
+    Values marked for review on legal pages are intentionally incomplete until a human completes the niche setup template.
+  </p>
+</PageLayout>

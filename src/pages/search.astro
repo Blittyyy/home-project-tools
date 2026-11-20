@@ -1,0 +1,87 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SearchBar from '../components/SearchBar.astro';
+import { SEARCH_SUGGESTIONS } from '../config/site';
+
+const q = Astro.url.searchParams.get('q')?.trim() ?? '';
+---
+
+<BaseLayout
+  title={q ? `Search results for “${q}”` : 'Search'}
+  description="Search published articles on this site. Search result URLs are not indexed."
+  path="/search"
+  noindex={true}
+  robotsFollow={true}
+>
+  <div class="container-site section-space">
+    <h1 class="section-heading">Search</h1>
+    <p class="section-lede">Find published articles across this site. Queries are not stored.</p>
+
+    <div class="mt-8 max-w-2xl">
+      <SearchBar initialQuery={q} autofocus />
+    </div>
+
+    <div class="mt-6 flex flex-wrap gap-2" aria-label="Suggested searches">
+      {
+        SEARCH_SUGGESTIONS.map((suggestion) => (
+          <a
+            href={`/search?q=${encodeURIComponent(suggestion)}`}
+            class="rounded-md border border-border bg-surface-raised px-3 py-1.5 text-sm text-ink-muted no-underline hover:border-brand hover:text-brand"
+          >
+            {suggestion}
+          </a>
+        ))
+      }
+    </div>
+
+    <div class="mt-10" data-search-results aria-live="polite">
+      {
+        q ? (
+          <p class="text-ink-muted">Searching…</p>
+        ) : (
+          <p class="text-ink-muted">Enter a query to search published articles.</p>
+        )
+      }
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  import { searchArticles, type SearchDocument } from '../utils/search-rank';
+
+  const params = new URLSearchParams(window.location.search);
+  const q = (params.get('q') || '').trim();
+  const mount = document.querySelector('[data-search-results]');
+
+  async function run() {
+    if (!mount || !q) return;
+    const res = await fetch('/search-index.json');
+    const index = (await res.json()) as SearchDocument[];
+    const results = searchArticles(index, q);
+
+    if (results.length === 0) {
+      mount.innerHTML = `<p class="text-ink-muted">No published articles matched “${q.replace(/</g, '&lt;')}”.</p>`;
+      return;
+    }
+
+    mount.innerHTML = `
+      <p class="text-sm text-ink-subtle">${results.length} result${results.length === 1 ? '' : 's'}</p>
+      <ul class="mt-4 space-y-4">
+        ${results
+          .map(
+            (doc) => `
+          <li class="card-surface">
+            <p class="text-xs font-semibold uppercase tracking-wide text-ink-subtle">${doc.categoryLabel}</p>
+            <h2 class="mt-1 font-display text-lg font-semibold">
+              <a href="${doc.href}" class="text-ink no-underline hover:text-brand hover:underline">${doc.title}</a>
+            </h2>
+            <p class="mt-2 text-sm text-ink-muted">${doc.description}</p>
+          </li>`,
+          )
+          .join('')}
+      </ul>
+    `;
+  }
+
+  run();
+</script>

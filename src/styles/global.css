@@ -1,0 +1,140 @@
+@import 'tailwindcss';
+
+/*
+  Neutral starter design tokens.
+  Replace these when branding a real niche — intentionally plain.
+*/
+@theme {
+  --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue',
+    Arial, 'Noto Sans', sans-serif;
+  --font-display: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue',
+    Arial, 'Noto Sans', sans-serif;
+
+  --color-ink: #1c1917;
+  --color-ink-muted: #44403c;
+  --color-ink-subtle: #78716c;
+  --color-surface: #fafaf9;
+  --color-surface-raised: #ffffff;
+  --color-sand: #f5f5f4;
+  --color-brand: #1e3a5f;
+  --color-brand-dark: #142844;
+  --color-brand-soft: #e8eef5;
+  --color-accent: #0f766e;
+  --color-border: #d6d3d1;
+  --color-warning: #92400e;
+  --color-warning-bg: #fffbeb;
+  --color-warning-border: #f59e0b;
+}
+
+@layer base {
+  :root {
+    color-scheme: only light;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-surface text-ink font-sans antialiased;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 2px;
+  }
+
+  a {
+    @apply text-brand underline-offset-2 hover:underline;
+  }
+}
+
+@layer components {
+  .container-site {
+    @apply mx-auto w-full max-w-[1180px] px-4 sm:px-6 lg:px-8;
+  }
+
+  .section-space {
+    @apply py-12 sm:py-16;
+  }
+
+  .section-heading {
+    @apply font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl;
+  }
+
+  .section-lede {
+    @apply mt-3 max-w-2xl text-lg text-ink-muted;
+  }
+
+  .prose-site {
+    @apply max-w-3xl text-base leading-7 text-ink-muted;
+  }
+
+  .prose-article {
+    @apply max-w-[42rem] text-base leading-7 text-ink-muted;
+  }
+
+  .prose-article :where(h2) {
+    @apply mt-10 scroll-mt-24 font-display text-2xl font-semibold text-ink;
+  }
+
+  .prose-article :where(h3) {
+    @apply mt-8 scroll-mt-24 font-display text-xl font-semibold text-ink;
+  }
+
+  .prose-article :where(p) {
+    @apply mt-4;
+  }
+
+  .prose-article :where(ul, ol) {
+    @apply mt-4 list-outside space-y-2 pl-5;
+  }
+
+  .prose-article :where(ul) {
+    @apply list-disc;
+  }
+
+  .prose-article :where(ol) {
+    @apply list-decimal;
+  }
+
+  .prose-article :where(a) {
+    @apply font-medium text-brand;
+  }
+
+  .prose-article :where(strong) {
+    @apply font-semibold text-ink;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center rounded-lg px-4 py-2.5 text-sm font-semibold transition;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-lg px-4 py-2.5 text-sm font-semibold transition bg-brand text-white no-underline hover:bg-brand-dark hover:no-underline;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center rounded-lg px-4 py-2.5 text-sm font-semibold transition border border-border bg-surface-raised text-ink no-underline hover:bg-sand hover:no-underline;
+  }
+
+  .card-surface {
+    @apply rounded-2xl border border-border bg-surface-raised p-5 shadow-sm;
+  }
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -100px;
+  z-index: 100;
+  border-radius: 0.5rem;
+  background: var(--color-brand);
+  color: white;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  top: 1rem;
+}

@@ -1,0 +1,33 @@
+{
+  "name": "seo-site-starter",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "astro": "astro",
+    "test": "npm run test:tools",
+    "test:tools": "node --experimental-strip-types scripts/test-rectangle-area.mjs",
+    "validate:content": "node scripts/validate-content.mjs",
+    "validate:links": "node scripts/validate-links.mjs",
+    "validate:seo": "node scripts/validate-seo.mjs",
+    "validate": "npm run validate:content && npm run validate:links && npm run validate:seo"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "3.7.3",
+    "@tailwindcss/vite": "4.3.3",
+    "@vercel/analytics": "^1.5.0",
+    "astro": "^7.2.0",
+    "tailwindcss": "4.3.3"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "typescript": "^5.9.3"
+  }
+}

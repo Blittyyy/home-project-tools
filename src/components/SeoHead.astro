@@ -1,0 +1,48 @@
+---
+import { buildTitle, absoluteUrl } from '../utils/seo';
+import { DEFAULT_OG_IMAGE } from '../config/site';
+
+interface Props {
+  title: string;
+  description: string;
+  path?: string;
+  type?: 'website' | 'article';
+  noindex?: boolean;
+  /** When noindex is true, default is nofollow unless this is true (search uses follow). */
+  robotsFollow?: boolean;
+  ogImage?: string;
+  includeBrandInTitle?: boolean;
+}
+
+const {
+  title,
+  description,
+  path = '/',
+  type = 'website',
+  noindex = false,
+  robotsFollow = false,
+  ogImage = DEFAULT_OG_IMAGE,
+  includeBrandInTitle = true,
+} = Astro.props;
+
+const pageTitle = buildTitle(title, includeBrandInTitle);
+const canonical = absoluteUrl(path);
+const image = ogImage.startsWith('http') ? ogImage : absoluteUrl(ogImage);
+const robots = noindex ? (robotsFollow ? 'noindex, follow' : 'noindex, nofollow') : undefined;
+---
+
+<title>{pageTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+{robots && <meta name="robots" content={robots} />}
+
+<meta property="og:type" content={type} />
+<meta property="og:title" content={pageTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={image} />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={pageTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={image} />

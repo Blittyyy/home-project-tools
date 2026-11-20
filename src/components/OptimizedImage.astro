@@ -1,0 +1,38 @@
+---
+/**
+ * Disciplined img wrapper with required dimensions.
+ * Does not perform CDN/srcset optimization — ship pre-sized assets.
+ */
+interface Props {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  loading?: 'lazy' | 'eager';
+  decoding?: 'async' | 'auto' | 'sync';
+  class?: string;
+  sizes?: string;
+}
+
+const {
+  src,
+  alt,
+  width,
+  height,
+  loading = 'lazy',
+  decoding = 'async',
+  class: className = '',
+  sizes = '(max-width: 768px) 100vw, 720px',
+} = Astro.props;
+---
+
+<img
+  src={src}
+  alt={alt}
+  width={width}
+  height={height}
+  loading={loading}
+  decoding={decoding}
+  sizes={sizes}
+  class={className}
+/>

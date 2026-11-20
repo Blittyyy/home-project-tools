@@ -1,0 +1,76 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import RectangleAreaCalculator from '../../components/RectangleAreaCalculator.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { webApplicationSchema, breadcrumbSchema } from '../../utils/schema';
+import { getIndexableArticles } from '../../utils/articles';
+import { CALCULATORS_HUB } from '../../data/tools';
+
+const path = '/calculators/rectangle-area';
+const crumbs = [
+  { label: 'Home', href: '/' },
+  { label: CALCULATORS_HUB.title, href: '/calculators' },
+  { label: 'Rectangle Area Calculator' },
+];
+
+const related = (await getIndexableArticles()).slice(0, 2);
+---
+
+<BaseLayout
+  title="Rectangle Area Calculator"
+  description="Estimate rectangle area from width, height, and unit. Harmless demo calculator for the SEO site starter architecture."
+  path={path}
+  schema={[
+    webApplicationSchema({
+      name: 'Rectangle Area Calculator',
+      description: 'Estimate rectangle area from width, height, and unit.',
+      path,
+    }),
+    breadcrumbSchema(crumbs),
+  ]}
+>
+  <div class="container-site section-space">
+    <Breadcrumbs items={crumbs} />
+    <header class="mt-6 max-w-3xl">
+      <h1 class="section-heading">Rectangle Area Calculator</h1>
+      <p class="section-lede">
+        A harmless demo tool that shows the reusable calculator pattern: pure util, validation, reset, aria-live results, tests, and WebApplication schema.
+      </p>
+    </header>
+
+    <div class="mt-8 max-w-2xl">
+      <RectangleAreaCalculator />
+    </div>
+
+    <section class="prose-site mt-12 max-w-3xl">
+      <h2 class="font-display text-2xl font-semibold text-ink">What this estimates</h2>
+      <p>
+        Area of a rectangle using <strong>width × height</strong> in the unit you select (inches, feet, centimeters, or meters).
+      </p>
+      <h2 class="mt-8 font-display text-2xl font-semibold text-ink">What this does not estimate</h2>
+      <p>
+        Irregular shapes, material waste, pricing, or niche-specific geometry. Do not treat this demo as domain advice.
+      </p>
+      <h2 class="mt-8 font-display text-2xl font-semibold text-ink">Accuracy note</h2>
+      <p>
+        Results use basic arithmetic only. Inputs stay in your browser and are not stored or transmitted.
+      </p>
+    </section>
+
+    {
+      related.length > 0 && (
+        <section class="mt-12 max-w-3xl" aria-labelledby="related-guides">
+          <h2 id="related-guides" class="font-display text-xl font-semibold text-ink">
+            Related sample articles
+          </h2>
+          <div class="mt-4 grid gap-4 sm:grid-cols-2">
+            {related.map((article) => (
+              <ArticleCard article={article} />
+            ))}
+          </div>
+        </section>
+      )
+    }
+  </div>
+</BaseLayout>

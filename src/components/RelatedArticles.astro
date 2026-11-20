@@ -1,0 +1,31 @@
+---
+import type { ArticleEntry } from '../utils/articles';
+import { articlePath } from '../utils/articles';
+
+interface Props {
+  articles: ArticleEntry[];
+  heading?: string;
+}
+
+const { articles, heading = 'Related articles' } = Astro.props;
+---
+
+{
+  articles.length > 0 && (
+    <section class="mt-12 border-t border-border pt-8" aria-labelledby="related-heading">
+      <h2 id="related-heading" class="font-display text-xl font-semibold text-ink">
+        {heading}
+      </h2>
+      <ul class="mt-4 space-y-3">
+        {articles.map((article) => (
+          <li>
+            <a href={articlePath(article)} class="font-medium text-brand">
+              {article.data.title}
+            </a>
+            <p class="text-sm text-ink-muted">{article.data.description}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}

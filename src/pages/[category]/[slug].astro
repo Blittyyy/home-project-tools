@@ -1,0 +1,31 @@
+---
+import { render } from 'astro:content';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import { ARTICLE_CATEGORIES, type ArticleCategory } from '../../config/categories';
+import { getIndexableArticles } from '../../utils/articles';
+
+export async function getStaticPaths() {
+  const articles = await getIndexableArticles();
+  return articles
+    .filter((article) => ARTICLE_CATEGORIES.includes(article.data.category))
+    .map((article) => ({
+      params: {
+        category: article.data.category,
+        slug: article.data.slug,
+      },
+      props: { article },
+    }));
+}
+
+const { article } = Astro.props;
+const { Content, headings } = await render(article);
+
+// Guard against mismatched category/slug pairs if routing ever drifts.
+if (article.data.category !== (Astro.params.category as ArticleCategory)) {
+  return Astro.redirect('/404');
+}
+---
+
+<ArticleLayout article={article} headings={headings}>
+  <Content />
+</ArticleLayout>

@@ -1,0 +1,16 @@
+---
+interface Props {
+  title: string;
+  body: string;
+}
+
+const { title, body } = Astro.props;
+---
+
+<aside
+  class="mt-6 rounded-xl border border-warning-border bg-warning-bg p-4 text-sm text-warning"
+  role="note"
+>
+  <p class="font-semibold">{title}</p>
+  <p class="mt-1">{body}</p>
+</aside>

@@ -1,0 +1,47 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { breadcrumbSchema } from '../utils/schema';
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  breadcrumbs?: { label: string; href?: string }[];
+  noindex?: boolean;
+  schema?: Record<string, unknown> | Record<string, unknown>[];
+}
+
+const {
+  title,
+  description,
+  path,
+  breadcrumbs = [{ label: 'Home', href: '/' }, { label: title }],
+  noindex = false,
+  schema = [],
+} = Astro.props;
+
+const schemas = [
+  breadcrumbSchema(breadcrumbs),
+  ...(Array.isArray(schema) ? schema : [schema]),
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  path={path}
+  noindex={noindex}
+  schema={schemas}
+>
+  <div class="container-site section-space">
+    <Breadcrumbs items={breadcrumbs} />
+    <header class="mt-6 max-w-3xl">
+      <h1 class="section-heading">{title}</h1>
+      <slot name="lede" />
+    </header>
+    <div class="prose-site mt-8">
+      <slot />
+    </div>
+  </div>
+</BaseLayout>

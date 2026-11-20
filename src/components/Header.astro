@@ -1,0 +1,94 @@
+---
+import Wordmark from './Wordmark.astro';
+import { primaryNav } from '../config/navigation';
+import SearchBar from './SearchBar.astro';
+---
+
+<header class="border-b border-border bg-surface-raised">
+  <div class="container-site flex items-center justify-between gap-4 py-4">
+    <Wordmark />
+
+    <nav class="hidden items-center gap-6 md:flex" aria-label="Primary">
+      {
+        primaryNav.map((item) => (
+          <a href={item.href} class="text-sm font-medium text-ink-muted no-underline hover:text-brand hover:underline">
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <button
+        type="button"
+        class="btn-secondary hidden sm:inline-flex"
+        data-search-toggle
+        aria-expanded="false"
+        aria-controls="header-search"
+      >
+        Search
+      </button>
+      <button
+        type="button"
+        class="btn-secondary md:hidden"
+        data-nav-toggle
+        aria-expanded="false"
+        aria-controls="mobile-nav"
+      >
+        Menu
+      </button>
+    </div>
+  </div>
+
+  <div id="header-search" class="hidden border-t border-border bg-sand" hidden>
+    <div class="container-site py-4">
+      <SearchBar />
+    </div>
+  </div>
+
+  <div id="mobile-nav" class="hidden border-t border-border md:hidden" hidden>
+    <nav class="container-site flex flex-col gap-3 py-4" aria-label="Mobile">
+      {
+        primaryNav.map((item) => (
+          <a href={item.href} class="text-base font-medium text-ink no-underline hover:text-brand">
+            {item.label}
+          </a>
+        ))
+      }
+      <a href="/search" class="text-base font-medium text-ink no-underline hover:text-brand">Search</a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const searchToggle = document.querySelector('[data-search-toggle]');
+  const navToggle = document.querySelector('[data-nav-toggle]');
+  const searchPanel = document.getElementById('header-search');
+  const navPanel = document.getElementById('mobile-nav');
+
+  function setOpen(button: Element | null, panel: HTMLElement | null, open: boolean) {
+    if (!button || !panel) return;
+    button.setAttribute('aria-expanded', String(open));
+    panel.hidden = !open;
+    panel.classList.toggle('hidden', !open);
+  }
+
+  searchToggle?.addEventListener('click', () => {
+    const open = searchToggle.getAttribute('aria-expanded') !== 'true';
+    setOpen(searchToggle, searchPanel, open);
+    if (open) setOpen(navToggle, navPanel, false);
+  });
+
+  navToggle?.addEventListener('click', () => {
+    const open = navToggle.getAttribute('aria-expanded') !== 'true';
+    setOpen(navToggle, navPanel, open);
+    if (open) setOpen(searchToggle, searchPanel, false);
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      setOpen(searchToggle, searchPanel, false);
+      setOpen(navToggle, navPanel, false);
+    }
+  });
+</script>

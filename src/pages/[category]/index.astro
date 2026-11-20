@@ -1,0 +1,17 @@
+---
+import CategoryArchive from '../../components/CategoryArchive.astro';
+import { ARTICLE_CATEGORIES, type ArticleCategory } from '../../config/categories';
+import { getArticlesByCategory } from '../../utils/articles';
+
+export async function getStaticPaths() {
+  return ARTICLE_CATEGORIES.map((category: ArticleCategory) => ({
+    params: { category },
+  }));
+}
+
+const category = Astro.params.category as ArticleCategory;
+const articles = await getArticlesByCategory(category);
+const queryNoindex = Boolean(Astro.url.searchParams.get('q'));
+---
+
+<CategoryArchive category={category} articles={articles} queryNoindex={queryNoindex} />

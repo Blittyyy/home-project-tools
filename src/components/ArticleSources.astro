@@ -1,0 +1,41 @@
+---
+interface Source {
+  title: string;
+  url?: string;
+  publisher?: string;
+  accessed?: string;
+  note?: string;
+}
+
+interface Props {
+  sources: Source[];
+}
+
+const { sources } = Astro.props;
+---
+
+{
+  sources.length > 0 && (
+    <section class="mt-12 border-t border-border pt-8" aria-labelledby="sources-heading">
+      <h2 id="sources-heading" class="font-display text-xl font-semibold text-ink">
+        Sources
+      </h2>
+      <ol class="mt-4 list-decimal space-y-3 pl-5 text-sm text-ink-muted">
+        {sources.map((source) => (
+          <li>
+            {source.url ? (
+              <a href={source.url} rel="noopener noreferrer">
+                {source.title}
+              </a>
+            ) : (
+              <span class="text-ink">{source.title}</span>
+            )}
+            {source.publisher && <span> — {source.publisher}</span>}
+            {source.accessed && <span> (accessed {source.accessed})</span>}
+            {source.note && <span class="block text-ink-subtle">{source.note}</span>}
+          </li>
+        ))}
+      </ol>
+    </section>
+  )
+}

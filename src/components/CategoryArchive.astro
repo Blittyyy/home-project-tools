@@ -1,0 +1,59 @@
+---
+import type { ArticleEntry } from '../utils/articles';
+import { groupBySubcategory } from '../utils/articles';
+import ArticleCard from './ArticleCard.astro';
+import { categoryHubSchema } from '../utils/schema';
+import type { ArticleCategory } from '../config/categories';
+import { categoryMeta } from '../config/categories';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from './Breadcrumbs.astro';
+
+interface Props {
+  category: ArticleCategory;
+  articles: ArticleEntry[];
+  /** When hub has ?q=, pass true so the page is noindex. */
+  queryNoindex?: boolean;
+}
+
+const { category, articles, queryNoindex = false } = Astro.props;
+const meta = categoryMeta[category];
+const groups = groupBySubcategory(articles);
+const schema = categoryHubSchema(category, meta.href);
+---
+
+<BaseLayout
+  title={meta.label}
+  description={meta.description}
+  path={meta.href}
+  noindex={queryNoindex}
+  schema={[schema]}
+>
+  <div class="container-site section-space">
+    <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: meta.label }]} />
+    <header class="mt-6 max-w-3xl">
+      <h1 class="section-heading">{meta.label}</h1>
+      <p class="section-lede">{meta.description}</p>
+    </header>
+
+    {
+      articles.length === 0 ? (
+        <p class="mt-10 text-ink-muted">No published articles in this category yet.</p>
+      ) : (
+        <div class="mt-10 space-y-12">
+          {groups.map((group) => (
+            <section aria-labelledby={`sub-${group.key}`}>
+              <h2 id={`sub-${group.key}`} class="font-display text-2xl font-semibold text-ink">
+                {group.label}
+              </h2>
+              <div class="mt-5 grid gap-4 sm:grid-cols-2">
+                {group.articles.map((article) => (
+                  <ArticleCard article={article} />
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
+      )
+    }
+  </div>
+</BaseLayout>

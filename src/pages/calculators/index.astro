@@ -1,0 +1,41 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ToolCard from '../../components/ToolCard.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { CALCULATORS_HUB, tools, hasAvailableTools } from '../../data/tools';
+import { SITE_NAME, SITE_URL } from '../../config/site';
+import { absoluteUrl } from '../../utils/seo';
+
+const noindex = !hasAvailableTools();
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: CALCULATORS_HUB.title,
+  description: CALCULATORS_HUB.description,
+  url: absoluteUrl('/calculators'),
+  isPartOf: {
+    '@type': 'WebSite',
+    name: SITE_NAME,
+    url: SITE_URL,
+  },
+};
+---
+
+<BaseLayout
+  title={CALCULATORS_HUB.title}
+  description={CALCULATORS_HUB.description}
+  path="/calculators"
+  noindex={noindex}
+  schema={[schema]}
+>
+  <div class="container-site section-space">
+    <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: CALCULATORS_HUB.title }]} />
+    <header class="mt-6 max-w-3xl">
+      <h1 class="section-heading">{CALCULATORS_HUB.title}</h1>
+      <p class="section-lede">{CALCULATORS_HUB.lede}</p>
+    </header>
+    <div class="mt-10 grid gap-4 sm:grid-cols-2">
+      {tools.map((tool) => <ToolCard tool={tool} />)}
+    </div>
+  </div>
+</BaseLayout>

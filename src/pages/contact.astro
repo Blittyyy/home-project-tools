@@ -1,0 +1,20 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import { CONTACT_EMAIL, SITE_NAME } from '../config/site';
+---
+
+<PageLayout
+  title="Contact"
+  description={`Contact ${SITE_NAME}. Replace the email placeholder before launch.`}
+  path="/contact"
+>
+  <p>
+    For questions about this demo site, use the contact address below after you replace the placeholder with a real monitored inbox.
+  </p>
+  <p>
+    Email: <strong>{CONTACT_EMAIL}</strong>
+  </p>
+  <p class="rounded-xl border border-warning-border bg-warning-bg p-4 text-sm text-warning">
+    Requires review: do not invent a physical address, phone number, or legal entity name on this page.
+  </p>
+</PageLayout>
