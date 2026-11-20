@@ -1,0 +1,684 @@
+---
+/**
+ * Gravel Calculator UI — follows Concrete reference patterns.
+ *
+ * UX:
+ * - Explicit Calculate for first result and after dimension/mode changes.
+ * - After a successful result, Extra %, material, and density live-update when valid
+ *   so volume/weight never go stale relative to visible assumptions.
+ */
+---
+
+<div class="calc-tool" data-gravel-calc>
+  <form class="calc-tool__form" data-gravel-form novalidate>
+    <fieldset class="calc-tool__fieldset">
+      <legend class="calc-tool__legend">Project type</legend>
+      <div class="calc-tool__modes" role="radiogroup" aria-label="Project type">
+        <label class="calc-tool__mode">
+          <input type="radio" name="mode" value="rectangle" checked />
+          <span>Rectangle</span>
+        </label>
+        <label class="calc-tool__mode">
+          <input type="radio" name="mode" value="circle" />
+          <span>Circle</span>
+        </label>
+        <label class="calc-tool__mode">
+          <input type="radio" name="mode" value="area" />
+          <span>Known area</span>
+        </label>
+      </div>
+      <p class="calc-tool__hint" id="mode-hint" data-mode-hint>
+        Use this for rectangular paths, pads, beds, and other areas when you know length and width.
+      </p>
+    </fieldset>
+
+    <div class="calc-tool__panel" data-panel="rectangle">
+      <div class="calc-tool__row">
+        <div class="calc-tool__field">
+          <label for="gc-length">Length</label>
+          <div class="calc-tool__input-unit">
+            <input id="gc-length" name="length" type="number" inputmode="decimal" min="0" step="any" aria-describedby="gc-length-error" />
+            <select id="gc-length-unit" name="lengthUnit" aria-label="Length unit">
+              <option value="ft" selected>ft</option>
+              <option value="in">in</option>
+              <option value="m">m</option>
+              <option value="cm">cm</option>
+            </select>
+          </div>
+          <p class="calc-tool__error" id="gc-length-error" data-error-for="length" hidden></p>
+        </div>
+        <div class="calc-tool__field">
+          <label for="gc-width">Width</label>
+          <div class="calc-tool__input-unit">
+            <input id="gc-width" name="width" type="number" inputmode="decimal" min="0" step="any" aria-describedby="gc-width-error" />
+            <select id="gc-width-unit" name="widthUnit" aria-label="Width unit">
+              <option value="ft" selected>ft</option>
+              <option value="in">in</option>
+              <option value="m">m</option>
+              <option value="cm">cm</option>
+            </select>
+          </div>
+          <p class="calc-tool__error" id="gc-width-error" data-error-for="width" hidden></p>
+        </div>
+      </div>
+      <div class="calc-tool__field">
+        <label for="gc-depth-rect">Depth</label>
+        <div class="calc-tool__input-unit">
+          <input id="gc-depth-rect" name="depthRect" type="number" inputmode="decimal" min="0" step="any" aria-describedby="gc-depth-rect-error" />
+          <select id="gc-depth-rect-unit" name="depthRectUnit" aria-label="Depth unit">
+            <option value="in" selected>in</option>
+            <option value="ft">ft</option>
+            <option value="cm">cm</option>
+            <option value="m">m</option>
+          </select>
+        </div>
+        <p class="calc-tool__error" id="gc-depth-rect-error" data-error-for="depth" hidden></p>
+      </div>
+    </div>
+
+    <div class="calc-tool__panel" data-panel="circle" hidden>
+      <div class="calc-tool__row">
+        <div class="calc-tool__field">
+          <label for="gc-diameter">Diameter</label>
+          <div class="calc-tool__input-unit">
+            <input id="gc-diameter" name="diameter" type="number" inputmode="decimal" min="0" step="any" aria-describedby="gc-diameter-error" />
+            <select id="gc-diameter-unit" name="diameterUnit" aria-label="Diameter unit">
+              <option value="ft" selected>ft</option>
+              <option value="in">in</option>
+              <option value="m">m</option>
+              <option value="cm">cm</option>
+            </select>
+          </div>
+          <p class="calc-tool__error" id="gc-diameter-error" data-error-for="diameter" hidden></p>
+        </div>
+        <div class="calc-tool__field">
+          <label for="gc-depth-circle">Depth</label>
+          <div class="calc-tool__input-unit">
+            <input id="gc-depth-circle" name="depthCircle" type="number" inputmode="decimal" min="0" step="any" aria-describedby="gc-depth-circle-error" />
+            <select id="gc-depth-circle-unit" name="depthCircleUnit" aria-label="Depth unit">
+              <option value="in" selected>in</option>
+              <option value="ft">ft</option>
+              <option value="cm">cm</option>
+              <option value="m">m</option>
+            </select>
+          </div>
+          <p class="calc-tool__error" id="gc-depth-circle-error" data-error-for="depth" hidden></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="calc-tool__panel" data-panel="area" hidden>
+      <div class="calc-tool__row">
+        <div class="calc-tool__field">
+          <label for="gc-area">Area</label>
+          <div class="calc-tool__input-unit calc-tool__input-unit--area">
+            <input id="gc-area" name="area" type="number" inputmode="decimal" min="0" step="any" aria-describedby="gc-area-error" />
+            <select id="gc-area-unit" name="areaUnit" aria-label="Area unit">
+              <option value="sq_ft" selected>sq ft</option>
+              <option value="sq_yd">sq yd</option>
+              <option value="m2">m²</option>
+            </select>
+          </div>
+          <p class="calc-tool__error" id="gc-area-error" data-error-for="area" hidden></p>
+        </div>
+        <div class="calc-tool__field">
+          <label for="gc-depth-area">Depth</label>
+          <div class="calc-tool__input-unit">
+            <input id="gc-depth-area" name="depthArea" type="number" inputmode="decimal" min="0" step="any" aria-describedby="gc-depth-area-error" />
+            <select id="gc-depth-area-unit" name="depthAreaUnit" aria-label="Depth unit">
+              <option value="in" selected>in</option>
+              <option value="ft">ft</option>
+              <option value="cm">cm</option>
+              <option value="m">m</option>
+            </select>
+          </div>
+          <p class="calc-tool__error" id="gc-depth-area-error" data-error-for="depth" hidden></p>
+        </div>
+      </div>
+    </div>
+
+    <fieldset class="calc-tool__fieldset">
+      <legend class="calc-tool__legend">Material</legend>
+      <div class="calc-tool__field">
+        <label for="gc-material">Material type</label>
+        <select id="gc-material" name="materialId" aria-describedby="gc-material-hint gc-density-error">
+          <option value="crushed_stone" selected>Crushed stone (loose, planning)</option>
+          <option value="gravel_dry_quarter_to_2">Dry gravel, ¼–2 in (loose)</option>
+          <option value="custom">Custom density</option>
+        </select>
+        <p class="calc-tool__hint" id="gc-material-hint" data-material-hint>
+          Approx. density: 100 lb/ft³ (≈ 1.4 US tons/yd³). Weight is approximate.
+        </p>
+        <p class="calc-tool__error" id="gc-density-error" data-error-for="densityLbPerFt3" hidden></p>
+      </div>
+      <div class="calc-tool__field" data-custom-density hidden>
+        <label for="gc-density">Density (lb/ft³)</label>
+        <input
+          id="gc-density"
+          name="densityLbPerFt3"
+          type="number"
+          inputmode="decimal"
+          min="40"
+          max="160"
+          step="any"
+          aria-describedby="gc-density-error gc-density-hint"
+        />
+        <p class="calc-tool__hint" id="gc-density-hint">
+          Enter a supplier density between 40 and 160 lb/ft³. Typical planning values are often near 70–130.
+        </p>
+      </div>
+    </fieldset>
+
+    <fieldset class="calc-tool__fieldset">
+      <legend class="calc-tool__legend">Extra material</legend>
+      <div class="calc-tool__extra">
+        <label class="calc-tool__chip">
+          <input type="radio" name="extraPreset" value="0" />
+          <span>0%</span>
+        </label>
+        <label class="calc-tool__chip">
+          <input type="radio" name="extraPreset" value="5" />
+          <span>5%</span>
+        </label>
+        <label class="calc-tool__chip">
+          <input type="radio" name="extraPreset" value="10" checked />
+          <span>10%</span>
+        </label>
+        <label class="calc-tool__chip">
+          <input type="radio" name="extraPreset" value="custom" />
+          <span>Custom</span>
+        </label>
+      </div>
+      <div class="calc-tool__field" data-custom-extra hidden>
+        <label for="gc-extra-custom">Custom extra (%)</label>
+        <input
+          id="gc-extra-custom"
+          name="extraCustom"
+          type="number"
+          inputmode="decimal"
+          min="0"
+          max="25"
+          step="any"
+          aria-describedby="gc-extra-error extra-assumption"
+        />
+        <p class="calc-tool__error" id="gc-extra-error" data-error-for="extraPercent" hidden></p>
+      </div>
+      <p class="calc-tool__hint" id="extra-assumption">
+        10% is an editable planning allowance for waste and measurement variation — not a universal
+        requirement, and not a compaction factor.
+      </p>
+    </fieldset>
+
+    <div class="calc-tool__actions">
+      <button type="submit" class="btn-primary">Calculate</button>
+      <button type="button" class="btn-secondary" data-reset>Reset</button>
+    </div>
+  </form>
+
+  <div class="calc-tool__aside">
+    <div class="calc-tool__visual card-surface" data-visual>
+      <svg
+        class="calc-tool__svg"
+        viewBox="0 0 320 158"
+        role="img"
+        aria-labelledby="gc-svg-title"
+        data-svg
+      >
+        <title id="gc-svg-title">Enter dimensions to preview the project shape.</title>
+        <rect width="320" height="158" fill="#f5f5f4" rx="10"></rect>
+        <text x="160" y="84" text-anchor="middle" fill="#78716c" font-size="13" font-family="system-ui,sans-serif">
+          Dimension preview
+        </text>
+      </svg>
+    </div>
+
+    <div class="calc-tool__results card-surface" data-results aria-live="polite" aria-atomic="true">
+      <p class="calc-tool__empty" data-empty>
+        Enter your project dimensions and press Calculate to see volume and approximate weight.
+      </p>
+      <div class="calc-tool__result-body" data-result-body hidden></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  import {
+    calculateGravel,
+    formatDensity,
+    formatFt3,
+    formatM3,
+    formatTons,
+    formatYd3,
+    tonsPerCubicYard,
+    CRUSHED_STONE_LB_PER_FT3,
+    DRY_GRAVEL_LB_PER_FT3,
+    type GravelInput,
+    type GravelMaterialId,
+    type GravelMode,
+    type GravelResult,
+  } from '../utils/gravel.ts';
+  import { fromFeet, toFeet, type LengthUnit } from '../utils/length-units.ts';
+  import { fromSquareFeet, toSquareFeet, type AreaUnit } from '../utils/area-units.ts';
+
+  const rootEl = document.querySelector<HTMLElement>('[data-gravel-calc]');
+  if (rootEl) {
+    const root = rootEl;
+    const form = root.querySelector<HTMLFormElement>('[data-gravel-form]')!;
+    const empty = root.querySelector<HTMLElement>('[data-empty]')!;
+    const body = root.querySelector<HTMLElement>('[data-result-body]')!;
+    const svg = root.querySelector<SVGElement>('[data-svg]')!;
+    const customExtraWrap = root.querySelector<HTMLElement>('[data-custom-extra]')!;
+    const customDensityWrap = root.querySelector<HTMLElement>('[data-custom-density]')!;
+    let hasResult = false;
+
+    function mode(): GravelMode {
+      const checked = form.querySelector<HTMLInputElement>('input[name="mode"]:checked');
+      return (checked?.value as GravelMode) || 'rectangle';
+    }
+
+    function materialId(): GravelMaterialId {
+      const el = form.elements.namedItem('materialId');
+      if (el instanceof HTMLSelectElement) return el.value as GravelMaterialId;
+      return 'crushed_stone';
+    }
+
+    const MODE_HINTS: Record<GravelMode, string> = {
+      rectangle:
+        'Use this for rectangular paths, pads, beds, and other areas when you know length and width.',
+      circle: 'Use this for circular beds, pits, or pads when you know diameter and depth.',
+      area: 'Use this when you already know the total area and depth, including irregular footprints.',
+    };
+
+    function syncModeHint() {
+      const hint = root.querySelector<HTMLElement>('[data-mode-hint]');
+      if (hint) hint.textContent = MODE_HINTS[mode()];
+    }
+
+    function syncPanels() {
+      const current = mode();
+      root.querySelectorAll<HTMLElement>('[data-panel]').forEach((panel) => {
+        panel.hidden = panel.dataset.panel !== current;
+      });
+      syncModeHint();
+    }
+
+    function syncExtra() {
+      const preset = form.querySelector<HTMLInputElement>('input[name="extraPreset"]:checked')?.value;
+      customExtraWrap.hidden = preset !== 'custom';
+    }
+
+    function syncMaterial() {
+      const id = materialId();
+      const isCustom = id === 'custom';
+      customDensityWrap.hidden = !isCustom;
+      const hint = root.querySelector<HTMLElement>('[data-material-hint]');
+      if (!hint) return;
+      if (id === 'crushed_stone') {
+        hint.textContent = `Approx. density: ${formatDensity(CRUSHED_STONE_LB_PER_FT3)} lb/ft³ (≈ ${formatTons(tonsPerCubicYard(CRUSHED_STONE_LB_PER_FT3))} US tons/yd³). Weight is approximate.`;
+      } else if (id === 'gravel_dry_quarter_to_2') {
+        hint.textContent = `Approx. density: ${formatDensity(DRY_GRAVEL_LB_PER_FT3)} lb/ft³ (≈ ${formatTons(tonsPerCubicYard(DRY_GRAVEL_LB_PER_FT3))} US tons/yd³). Weight is approximate.`;
+      } else {
+        hint.textContent =
+          'Enter a supplier-provided bulk density. Weight is approximate because density varies with source, gradation, moisture, and handling.';
+      }
+    }
+
+    function clearErrors() {
+      root.querySelectorAll<HTMLElement>('[data-error-for]').forEach((el) => {
+        el.hidden = true;
+        el.textContent = '';
+      });
+      root.querySelectorAll<HTMLElement>('[aria-invalid]').forEach((el) => {
+        el.removeAttribute('aria-invalid');
+      });
+    }
+
+    function showErrors(errors: { field: string; message: string }[]) {
+      clearErrors();
+      for (const error of errors) {
+        const nodes = root.querySelectorAll<HTMLElement>(`[data-error-for="${error.field}"]`);
+        nodes.forEach((node) => {
+          const panel = node.closest('[data-panel]');
+          if (panel instanceof HTMLElement && panel.hidden) return;
+          node.hidden = false;
+          node.textContent = error.message;
+        });
+      }
+
+      const fieldMap: Record<string, string> = {
+        length: 'gc-length',
+        width: 'gc-width',
+        diameter: 'gc-diameter',
+        area: 'gc-area',
+        depth:
+          mode() === 'circle' ? 'gc-depth-circle' : mode() === 'area' ? 'gc-depth-area' : 'gc-depth-rect',
+        extraPercent: 'gc-extra-custom',
+        densityLbPerFt3: 'gc-density',
+        materialId: 'gc-material',
+      };
+
+      const first = errors[0];
+      if (!first) return;
+      const id = fieldMap[first.field];
+      const target = id ? root.querySelector<HTMLElement>(`#${id}`) : null;
+      if (target && !target.closest('[hidden]')) {
+        target.setAttribute('aria-invalid', 'true');
+        target.focus();
+      }
+    }
+
+    function readNumber(name: string): number | undefined {
+      const el = form.elements.namedItem(name);
+      if (!(el instanceof HTMLInputElement)) return undefined;
+      if (el.value.trim() === '') return undefined;
+      return Number(el.value);
+    }
+
+    function readLengthUnit(name: string): LengthUnit {
+      const el = form.elements.namedItem(name);
+      if (el instanceof HTMLSelectElement) return el.value as LengthUnit;
+      return 'ft';
+    }
+
+    function readAreaUnit(name: string): AreaUnit {
+      const el = form.elements.namedItem(name);
+      if (el instanceof HTMLSelectElement) return el.value as AreaUnit;
+      return 'sq_ft';
+    }
+
+    function extraPercent(): number {
+      const preset = form.querySelector<HTMLInputElement>('input[name="extraPreset"]:checked')?.value;
+      if (preset === 'custom') {
+        const custom = readNumber('extraCustom');
+        return custom ?? Number.NaN;
+      }
+      return Number(preset ?? 10);
+    }
+
+    function buildInput(): GravelInput {
+      const current = mode();
+      const mat = materialId();
+      const base: GravelInput = {
+        mode: current,
+        extraPercent: extraPercent(),
+        materialId: mat,
+        densityLbPerFt3: mat === 'custom' ? readNumber('densityLbPerFt3') : undefined,
+      };
+
+      if (current === 'rectangle') {
+        return {
+          ...base,
+          length: readNumber('length'),
+          lengthUnit: readLengthUnit('lengthUnit'),
+          width: readNumber('width'),
+          widthUnit: readLengthUnit('widthUnit'),
+          depth: readNumber('depthRect'),
+          depthUnit: readLengthUnit('depthRectUnit'),
+        };
+      }
+      if (current === 'circle') {
+        return {
+          ...base,
+          diameter: readNumber('diameter'),
+          diameterUnit: readLengthUnit('diameterUnit'),
+          depth: readNumber('depthCircle'),
+          depthUnit: readLengthUnit('depthCircleUnit'),
+        };
+      }
+      return {
+        ...base,
+        area: readNumber('area'),
+        areaUnit: readAreaUnit('areaUnit'),
+        depth: readNumber('depthArea'),
+        depthUnit: readLengthUnit('depthAreaUnit'),
+      };
+    }
+
+    function formatDim(ft: number | undefined, preferIn = false): string {
+      if (ft === undefined) return '';
+      if (preferIn || ft < 3) {
+        const inches = ft * 12;
+        const rounded =
+          Math.abs(inches - Math.round(inches)) < 1e-9 ? String(Math.round(inches)) : inches.toFixed(2);
+        return `${rounded} in`;
+      }
+      const rounded = Math.abs(ft - Math.round(ft)) < 1e-9 ? String(Math.round(ft)) : ft.toFixed(2);
+      return `${rounded} ft`;
+    }
+
+    function formatAreaSqFt(sqFt: number): string {
+      if (Math.abs(sqFt - Math.round(sqFt)) < 1e-9) return `${Math.round(sqFt)} sq ft`;
+      return `${sqFt.toFixed(1)} sq ft`;
+    }
+
+    function renderSvg(result: GravelResult | null) {
+      if (!result) {
+        svg.setAttribute('viewBox', '0 0 320 158');
+        svg.innerHTML = `
+          <title id="gc-svg-title">Enter dimensions to preview the project shape.</title>
+          <rect width="320" height="158" fill="#f5f5f4" rx="10"></rect>
+          <text x="160" y="84" text-anchor="middle" fill="#78716c" font-size="13" font-family="system-ui,sans-serif">Dimension preview</text>
+        `;
+        return;
+      }
+
+      const d = result.dimensionsFt;
+      svg.setAttribute('viewBox', '0 0 320 158');
+      if (result.mode === 'rectangle' && d.lengthFt && d.widthFt && d.depthFt !== undefined) {
+        const labelL = formatDim(d.lengthFt);
+        const labelW = formatDim(d.widthFt);
+        const labelD = formatDim(d.depthFt, true);
+        svg.innerHTML = `
+          <title id="gc-svg-title">Rectangular gravel area ${labelL} by ${labelW}, depth ${labelD}.</title>
+          <rect width="320" height="158" fill="#f8fafc" rx="10"></rect>
+          <rect x="78" y="34" width="164" height="88" fill="#e8eef5" stroke="#1e3a5f" stroke-width="2"></rect>
+          <text x="160" y="26" text-anchor="middle" fill="#1c1917" font-size="12" font-family="system-ui,sans-serif">${labelL}</text>
+          <text x="68" y="82" text-anchor="end" fill="#1c1917" font-size="12" font-family="system-ui,sans-serif">${labelW}</text>
+          <text x="160" y="144" text-anchor="middle" fill="#44403c" font-size="12" font-family="system-ui,sans-serif">Depth ${labelD}</text>
+        `;
+        return;
+      }
+
+      if (result.mode === 'circle' && d.diameterFt && d.depthFt !== undefined) {
+        const labelDia = formatDim(d.diameterFt);
+        const labelD = formatDim(d.depthFt, true);
+        svg.innerHTML = `
+          <title id="gc-svg-title">Circular gravel area diameter ${labelDia}, depth ${labelD}.</title>
+          <rect width="320" height="158" fill="#f8fafc" rx="10"></rect>
+          <circle cx="160" cy="74" r="42" fill="#e8eef5" stroke="#1e3a5f" stroke-width="2"></circle>
+          <line x1="118" y1="74" x2="202" y2="74" stroke="#1e3a5f" stroke-width="1.5" stroke-dasharray="4 3"></line>
+          <text x="160" y="24" text-anchor="middle" fill="#1c1917" font-size="12" font-family="system-ui,sans-serif">Diameter ${labelDia}</text>
+          <text x="160" y="144" text-anchor="middle" fill="#44403c" font-size="12" font-family="system-ui,sans-serif">Depth ${labelD}</text>
+        `;
+        return;
+      }
+
+      if (result.mode === 'area' && d.areaSqFt !== undefined && d.depthFt !== undefined) {
+        const labelA = formatAreaSqFt(d.areaSqFt);
+        const labelD = formatDim(d.depthFt, true);
+        svg.innerHTML = `
+          <title id="gc-svg-title">Known-area gravel project ${labelA}, depth ${labelD}.</title>
+          <rect width="320" height="158" fill="#f8fafc" rx="10"></rect>
+          <rect x="60" y="40" width="200" height="72" fill="#e8eef5" stroke="#1e3a5f" stroke-width="2" stroke-dasharray="6 4"></rect>
+          <text x="160" y="82" text-anchor="middle" fill="#1c1917" font-size="14" font-weight="600" font-family="system-ui,sans-serif">${labelA}</text>
+          <text x="160" y="144" text-anchor="middle" fill="#44403c" font-size="12" font-family="system-ui,sans-serif">Depth ${labelD}</text>
+        `;
+      }
+    }
+
+    function renderResult(result: GravelResult) {
+      empty.hidden = true;
+      body.hidden = false;
+
+      const warnings = result.warnings
+        .map((w) => `<p class="calc-tool__warning">${w}</p>`)
+        .join('');
+
+      body.innerHTML = `
+        <div class="calc-tool__purchase">
+          <p class="calc-tool__purchase-label">Estimated amount to purchase</p>
+          <p class="calc-tool__purchase-value">${formatYd3(result.purchaseYd3)} <span class="calc-tool__purchase-unit">yd³</span></p>
+          <p class="calc-tool__purchase-tons">≈ ${formatTons(result.purchaseTons)} US tons</p>
+          <p class="calc-tool__purchase-note">Includes ${result.extraPercent}% extra</p>
+          <p class="calc-tool__purchase-equiv">${formatFt3(result.purchaseFt3)} ft³ · ${formatM3(result.purchaseM3)} m³</p>
+        </div>
+
+        <div class="calc-tool__metrics">
+          <section aria-labelledby="gc-calc-volume-label">
+            <h3 class="calc-tool__metric-label" id="gc-calc-volume-label">Calculated volume</h3>
+            <p class="calc-tool__metric-value">${formatYd3(result.rawYd3)} yd³</p>
+            <p class="calc-tool__metric-meta">${formatFt3(result.rawFt3)} ft³ · ${formatM3(result.rawM3)} m³</p>
+          </section>
+          <section aria-labelledby="gc-extra-label">
+            <h3 class="calc-tool__metric-label" id="gc-extra-label">Extra material</h3>
+            <p class="calc-tool__metric-value">${result.extraPercent}%</p>
+            <p class="calc-tool__metric-meta">+${formatYd3(result.extraYd3)} yd³</p>
+          </section>
+        </div>
+
+        <section class="calc-tool__section" aria-labelledby="gc-material-label">
+          <h3 class="calc-tool__section-label" id="gc-material-label">Material assumption</h3>
+          <p class="calc-tool__section-value">${result.materialLabel}</p>
+          <p class="calc-tool__section-meta">
+            Approx. density: ${formatDensity(result.densityLbPerFt3)} lb/ft³ · ≈ ${formatTons(result.tonsPerYd3)} US tons/yd³
+          </p>
+          <p class="calc-tool__footnote">Weight is approximate. Confirm with your supplier.</p>
+        </section>
+
+        <section class="calc-tool__note" aria-labelledby="gc-compact-label">
+          <h3 class="calc-tool__section-label" id="gc-compact-label">Compaction note</h3>
+          <p>
+            Estimates geometric volume and loose-material weight — not compacted depth converted to loose delivery
+            volume. Confirm dense road-base needs with your supplier.
+          </p>
+        </section>
+        ${warnings}
+      `;
+    }
+
+    function clearResult() {
+      hasResult = false;
+      empty.hidden = false;
+      body.hidden = true;
+      body.innerHTML = '';
+      renderSvg(null);
+    }
+
+    function runCalculate({ focusOnError }: { focusOnError: boolean }) {
+      const input = buildInput();
+      const out = calculateGravel(input);
+      if (!out.ok) {
+        if (focusOnError) showErrors(out.errors);
+        else {
+          clearErrors();
+          // Keep assumptions honest: hide stale results if live-update inputs became invalid.
+          if (hasResult) clearResult();
+        }
+        return false;
+      }
+      clearErrors();
+      hasResult = true;
+      renderResult(out.result);
+      renderSvg(out.result);
+      return true;
+    }
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      runCalculate({ focusOnError: true });
+    });
+
+    form.querySelectorAll<HTMLInputElement>('input[name="mode"]').forEach((input) => {
+      input.addEventListener('change', () => {
+        syncPanels();
+        clearErrors();
+      });
+    });
+
+    form.querySelectorAll<HTMLInputElement>('input[name="extraPreset"]').forEach((input) => {
+      input.addEventListener('change', () => {
+        syncExtra();
+        if (hasResult) runCalculate({ focusOnError: false });
+      });
+    });
+
+    form.querySelector<HTMLInputElement>('#gc-extra-custom')?.addEventListener('input', () => {
+      if (hasResult) runCalculate({ focusOnError: false });
+    });
+
+    form.querySelector<HTMLSelectElement>('#gc-material')?.addEventListener('change', () => {
+      syncMaterial();
+      if (hasResult) runCalculate({ focusOnError: false });
+    });
+
+    form.querySelector<HTMLInputElement>('#gc-density')?.addEventListener('input', () => {
+      if (hasResult) runCalculate({ focusOnError: false });
+    });
+
+    function wireLengthUnitConversion(valueName: string, unitName: string) {
+      const valueEl = form.elements.namedItem(valueName);
+      const unitEl = form.elements.namedItem(unitName);
+      if (!(valueEl instanceof HTMLInputElement) || !(unitEl instanceof HTMLSelectElement)) return;
+      let previousUnit = unitEl.value as LengthUnit;
+      unitEl.addEventListener('change', () => {
+        const next = unitEl.value as LengthUnit;
+        if (valueEl.value.trim() !== '') {
+          const n = Number(valueEl.value);
+          if (Number.isFinite(n) && n > 0) {
+            const ft = toFeet(n, previousUnit);
+            const converted = fromFeet(ft, next);
+            valueEl.value = String(Number(converted.toPrecision(10)));
+          }
+        }
+        previousUnit = next;
+      });
+    }
+
+    function wireAreaUnitConversion(valueName: string, unitName: string) {
+      const valueEl = form.elements.namedItem(valueName);
+      const unitEl = form.elements.namedItem(unitName);
+      if (!(valueEl instanceof HTMLInputElement) || !(unitEl instanceof HTMLSelectElement)) return;
+      let previousUnit = unitEl.value as AreaUnit;
+      unitEl.addEventListener('change', () => {
+        const next = unitEl.value as AreaUnit;
+        if (valueEl.value.trim() !== '') {
+          const n = Number(valueEl.value);
+          if (Number.isFinite(n) && n > 0) {
+            const sqFt = toSquareFeet(n, previousUnit);
+            const converted = fromSquareFeet(sqFt, next);
+            valueEl.value = String(Number(converted.toPrecision(10)));
+          }
+        }
+        previousUnit = next;
+      });
+    }
+
+    wireLengthUnitConversion('length', 'lengthUnit');
+    wireLengthUnitConversion('width', 'widthUnit');
+    wireLengthUnitConversion('depthRect', 'depthRectUnit');
+    wireLengthUnitConversion('diameter', 'diameterUnit');
+    wireLengthUnitConversion('depthCircle', 'depthCircleUnit');
+    wireLengthUnitConversion('depthArea', 'depthAreaUnit');
+    wireAreaUnitConversion('area', 'areaUnit');
+
+    root.querySelector('[data-reset]')?.addEventListener('click', () => {
+      form.reset();
+      const rect = form.querySelector<HTMLInputElement>('input[name="mode"][value="rectangle"]');
+      if (rect) rect.checked = true;
+      const ten = form.querySelector<HTMLInputElement>('input[name="extraPreset"][value="10"]');
+      if (ten) ten.checked = true;
+      const crushed = form.querySelector<HTMLSelectElement>('#gc-material');
+      if (crushed) crushed.value = 'crushed_stone';
+      syncPanels();
+      syncExtra();
+      syncMaterial();
+      clearErrors();
+      clearResult();
+    });
+
+    syncPanels();
+    syncExtra();
+    syncMaterial();
+    clearResult();
+  }
+</script>

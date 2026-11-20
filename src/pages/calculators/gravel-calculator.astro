@@ -1,0 +1,240 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import GravelCalculator from '../../components/GravelCalculator.astro';
+import { webApplicationSchema, breadcrumbSchema } from '../../utils/schema';
+import { CALCULATORS_HUB } from '../../data/tools';
+
+const path = '/calculators/gravel-calculator';
+const title = 'Gravel Calculator: Cubic Yards & Tons';
+const description =
+  'Estimate how much gravel you need in cubic yards and approximate tons. Calculate rectangular, circular, or known-area projects with visible density assumptions.';
+
+const crumbs = [
+  { label: 'Home', href: '/' },
+  { label: CALCULATORS_HUB.title, href: '/calculators' },
+  { label: 'Gravel Calculator' },
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  path={path}
+  schema={[
+    webApplicationSchema({
+      name: 'Gravel Calculator',
+      description,
+      path,
+    }),
+    breadcrumbSchema(crumbs),
+  ]}
+>
+  <div class="container-site container-calc calc-page">
+    <Breadcrumbs items={crumbs} />
+
+    <header class="calc-page__intro">
+      <h1 class="section-heading">Gravel Calculator</h1>
+      <p class="section-lede calc-page__lede">
+        Estimate gravel volume in cubic yards and approximate tons for rectangular, circular, or known-area
+        projects. Enter the depth you plan to use — this tool does not choose depth for you.
+      </p>
+    </header>
+
+    <div class="calc-page__tool">
+      <GravelCalculator />
+    </div>
+
+    <p class="calc-page__disclaimer">
+      This calculator estimates gravel volume from the dimensions and depth you enter. Weight is approximate
+      because bulk density varies by material, source, moisture, gradation, and handling. It does not determine
+      required project depth, compaction, drainage design, structural suitability, or code compliance. Confirm
+      quantities and material requirements with your supplier when needed.
+    </p>
+
+    <article class="prose-article calc-page__copy">
+      <h2>How the gravel calculation works</h2>
+      <p>
+        The calculator converts your dimensions to feet, then computes volume in cubic feet. Rectangular projects
+        use length × width × depth. Circles use π × radius² × depth. Known-area mode multiplies your area by
+        depth. Cubic yards are cubic feet ÷ 27. Extra material is applied as a percentage on top of that calculated
+        volume. Approximate weight multiplies volume by the selected loose bulk density (lb/ft³), then converts to
+        US tons.
+      </p>
+
+      <h2>Cubic yards vs tons</h2>
+      <p>
+        Cubic yards measure geometric volume — how much space the gravel fills at the depth you enter. Tons measure
+        weight, which depends on bulk density. The same cubic yard can weigh differently when the rock type,
+        gradation, moisture, or how loosely the material is handled changes. Volume is exact from your inputs;
+        tonnage is an estimate from the density assumption shown in the results.
+      </p>
+
+      <h2>Gravel density assumptions</h2>
+      <p>
+        V1 planning densities use Caterpillar earthwork loose-weight figures. They are estimating defaults, not
+        supplier guarantees.
+      </p>
+      <div class="gravel-page__table-wrap">
+        <table class="gravel-page__table">
+          <thead>
+            <tr>
+              <th scope="col">Material</th>
+              <th scope="col">Density</th>
+              <th scope="col">Approx. tons/yd³</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Crushed stone (loose, planning)</td>
+              <td>100 lb/ft³</td>
+              <td>≈ 1.35</td>
+            </tr>
+            <tr>
+              <td>Dry gravel, ¼–2 in (loose)</td>
+              <td>≈ 105.6 lb/ft³</td>
+              <td>≈ 1.43</td>
+            </tr>
+            <tr>
+              <td>Custom density</td>
+              <td>You enter</td>
+              <td>Derived</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        Real bulk density varies by quarry, product, moisture, and measurement method. Prefer a density from your
+        supplier’s quote or ticket when you have one. Pea gravel and other decorative products are not separate
+        presets here because supplier weights vary widely — use Custom density when you have a figure.
+      </p>
+
+      <h2>How much extra gravel should you plan for?</h2>
+      <p>
+        The calculator defaults to 10% extra material as an editable planning allowance for waste and measurement
+        variation. It is not a universal requirement, and it does not account for compaction. You can set 0%, 5%,
+        10%, or a custom value up to 25%. Dense road-base materials may need separate supplier guidance for
+        finished compacted depth versus loose delivery volume.
+      </p>
+
+      <h2>Example calculations</h2>
+      <h3>10 × 10 ft area, 2 in deep, crushed stone, 10% extra</h3>
+      <p>
+        Calculated volume ≈ 0.62 yd³ (16.67 ft³). With 10% extra ≈ 0.68 yd³. Approximate purchase weight ≈ 0.9 US
+        tons at 100 lb/ft³.
+      </p>
+      <h3>20 × 30 ft area, 3 in deep, crushed stone, 10% extra</h3>
+      <p>
+        Calculated volume ≈ 5.56 yd³ (150 ft³). With 10% extra ≈ 6.11 yd³. Approximate purchase weight ≈ 8.3 US tons
+        at 100 lb/ft³.
+      </p>
+      <h3>200 sq ft known area, 4 in deep, 10% extra</h3>
+      <p>
+        Calculated volume ≈ 2.47 yd³. With 10% extra ≈ 2.72 yd³. Approximate purchase weight ≈ 3.7 US tons at
+        100 lb/ft³.
+      </p>
+
+      <h2>Frequently asked questions</h2>
+      <h3>How do I calculate how much gravel I need?</h3>
+      <p>
+        Multiply area by depth to get volume, convert to cubic yards (÷ 27 from cubic feet), then optionally
+        multiply by bulk density to estimate tons. This calculator performs those steps from your inputs.
+      </p>
+      <h3>How many tons are in a cubic yard of gravel?</h3>
+      <p>
+        It depends on bulk density. Using the planning presets here, crushed stone at 100 lb/ft³ is about 1.35 US
+        tons per cubic yard, and dry gravel ¼–2 in at about 105.6 lb/ft³ is about 1.43 US tons per cubic yard.
+        Supplier products can differ.
+      </p>
+      <h3>How many square feet does a yard of gravel cover?</h3>
+      <p>
+        Coverage depends on depth. One cubic yard covers 27 ÷ depth_in_feet square feet. At 2 inches deep
+        (1/6 ft), one cubic yard covers about 162 sq ft before extra material.
+      </p>
+      <h3>Does gravel weight vary by type?</h3>
+      <p>
+        Yes. Particle size, rock type, fines, moisture, and how loosely the material is handled all change bulk
+        density and therefore tons per cubic yard.
+      </p>
+      <h3>Should I order extra gravel?</h3>
+      <p>
+        Many estimators add a contingency for uneven grade, spillage, and measurement variance. This tool defaults
+        to 10% as an editable planning allowance — not a requirement. Use 0% if you only want the raw geometric
+        volume.
+      </p>
+      <h3>How deep should gravel be?</h3>
+      <p>
+        Required depth depends on the application (path, decorative bed, driveway base, and so on). This calculator
+        does not prescribe depth; enter the depth you already plan to use or that your project guidance specifies.
+      </p>
+      <h3>Can I use this for pea gravel?</h3>
+      <p>
+        Yes for volume. For weight, pea gravel bulk density varies by supplier and product, so enter a
+        supplier-provided density with Custom when available.
+      </p>
+
+      <h2>Sources</h2>
+      <ul>
+        <li>
+          <a
+            href="https://www.cat.com/en_US/articles/ci-articles/earthwork-volumes-reference-tables.html"
+            rel="noopener noreferrer"
+          >
+            Caterpillar — Material Density Tables to Help Estimate Earthwork Volumes
+          </a>
+          — loose crushed stone 2,700 lb/yd³; dry gravel ¼–2 in 2,850 lb/yd³; notes that weight varies with moisture,
+          grain size, and compaction
+        </li>
+        <li>
+          <a
+            href="https://www.fhwa.dot.gov/publications/research/infrastructure/structures/bridge/15034/003.cfm"
+            rel="noopener noreferrer"
+          >
+            FHWA HRT-15-034 — Strength Characterization of Open-Graded Aggregates
+          </a>
+          — measured No. 57 unit-weight range illustrating density variation
+        </li>
+        <li>
+          <a href="https://wsdot.wa.gov/publications/manuals/fulltext/M22-01/620.pdf" rel="noopener noreferrer">
+            WSDOT Design Manual M 22-01, Chapter 620
+          </a>
+          — estimating context for aggregate unit weights and stockpile waste allowances (not homeowner design
+          requirements)
+        </li>
+      </ul>
+    </article>
+  </div>
+</BaseLayout>
+
+<style>
+  .calc-page__copy :where(h2, h3) {
+    color: var(--color-ink);
+  }
+
+  .gravel-page__table-wrap {
+    margin: 1rem 0 1.25rem;
+    overflow-x: auto;
+  }
+
+  .gravel-page__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+  }
+
+  .gravel-page__table th,
+  .gravel-page__table td {
+    padding: 0.65rem 0.75rem;
+    border-bottom: 1px solid var(--color-border);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .gravel-page__table th {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--color-ink-subtle);
+  }
+</style>

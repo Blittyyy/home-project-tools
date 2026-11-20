@@ -8,6 +8,9 @@ import {
   cubicFeetToCubicYards,
   toFeet,
 } from './length-units.ts';
+import { applyExtraMaterial } from './extra-material.ts';
+
+export { applyExtraMaterial } from './extra-material.ts';
 
 export type ConcreteMode = 'rectangle' | 'circle' | 'posts';
 
@@ -189,15 +192,6 @@ export function postHolesVolumeFt3(
   holeCount: number,
 ): number {
   return holeCount * cylindricalVolumeFt3(diameterFt, depthFt);
-}
-
-export function applyExtraMaterial(rawFt3: number, extraPercent: number): {
-  purchaseFt3: number;
-  extraFt3: number;
-} {
-  const extraFraction = extraPercent / 100;
-  const purchaseFt3 = rawFt3 * (1 + extraFraction);
-  return { purchaseFt3, extraFt3: purchaseFt3 - rawFt3 };
 }
 
 export function bagsForPurchase(purchaseFt3: number): ConcreteBagCount[] {

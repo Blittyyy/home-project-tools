@@ -60,13 +60,13 @@ export const tools: ToolDefinition[] = [
     status: 'available',
   },
   {
-    slug: 'gravel',
+    slug: 'gravel-calculator',
     name: 'Gravel Calculator',
     description:
-      'Estimate gravel volume and weight for paths, bases, and beds from area and depth.',
+      'Estimate gravel volume in cubic yards and approximate tons for paths, bases, and beds.',
     group: 'landscaping',
-    href: '#coming-soon',
-    status: 'coming-soon',
+    href: '/calculators/gravel-calculator',
+    status: 'available',
   },
   {
     slug: 'mulch',

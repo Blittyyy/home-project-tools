@@ -30,30 +30,29 @@ const crumbs = [
     breadcrumbSchema(crumbs),
   ]}
 >
-  <div class="container-site section-space">
+  <div class="container-site container-calc calc-page">
     <Breadcrumbs items={crumbs} />
 
-    <header class="mt-6 max-w-3xl">
+    <header class="calc-page__intro">
       <h1 class="section-heading">Concrete Calculator</h1>
-      <p class="section-lede">
-        Estimate concrete volume in cubic yards and cubic feet, then see how many bags to buy for slabs,
-        circular pads, and post holes. Enter your own dimensions — this tool does not choose thickness or
-        footing size for you.
+      <p class="section-lede calc-page__lede">
+        Estimate concrete volume in cubic yards and bags for slabs, circular pads, and post holes. Enter your
+        own dimensions — this tool does not choose thickness or footing size for you.
       </p>
     </header>
 
-    <div class="mt-10">
+    <div class="calc-page__tool">
       <ConcreteCalculator />
     </div>
 
-    <p class="concrete-page__disclaimer mt-8 max-w-3xl">
+    <p class="calc-page__disclaimer">
       This calculator estimates concrete volume and bag counts from the dimensions you enter. It does not
       determine slab thickness, footing size, concrete strength (PSI), reinforcement, structural suitability,
       or building-code compliance. Confirm bag yields on the product you buy and follow local codes and
       manufacturer instructions.
     </p>
 
-    <article class="prose-article concrete-page__copy mt-14 max-w-3xl">
+    <article class="prose-article calc-page__copy">
       <h2>How the concrete calculation works</h2>
       <p>
         The calculator converts your dimensions to feet, then computes volume in cubic feet. Rectangular
@@ -163,19 +162,7 @@ const crumbs = [
 </BaseLayout>
 
 <style>
-  .concrete-page__disclaimer {
-    font-size: 0.95rem;
-    line-height: 1.55;
-    color: var(--color-ink-muted);
-  }
-
-  .concrete-page__copy {
-    font-size: 1rem;
-    line-height: 1.65;
-    color: var(--color-ink-muted);
-  }
-
-  .concrete-page__copy :where(h2, h3) {
+  .calc-page__copy :where(h2, h3) {
     color: var(--color-ink);
   }
 </style>

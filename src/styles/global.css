@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import './calculator-tool.css';
 
 /*
   Temporary design tokens until final branding is chosen.
