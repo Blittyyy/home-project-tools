@@ -1,0 +1,214 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import MulchCalculator from '../../components/MulchCalculator.astro';
+import { webApplicationSchema, breadcrumbSchema } from '../../utils/schema';
+import { CALCULATORS_HUB } from '../../data/tools';
+
+const path = '/calculators/mulch-calculator';
+const title = 'Mulch Calculator: Cubic Yards & Bags';
+const description =
+  'Estimate mulch in cubic yards and bags for rectangular, circular, or known-area beds. Enter your planned depth and compare common bag sizes.';
+
+const crumbs = [
+  { label: 'Home', href: '/' },
+  { label: CALCULATORS_HUB.title, href: '/calculators' },
+  { label: 'Mulch Calculator' },
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  path={path}
+  schema={[
+    webApplicationSchema({
+      name: 'Mulch Calculator',
+      description,
+      path,
+    }),
+    breadcrumbSchema(crumbs),
+  ]}
+>
+  <div class="container-site container-calc calc-page">
+    <Breadcrumbs items={crumbs} />
+
+    <header class="calc-page__intro">
+      <h1 class="section-heading">Mulch Calculator</h1>
+      <p class="section-lede calc-page__lede">
+        Estimate how much mulch you need in cubic yards and bags for rectangular, circular, or known-area beds.
+        Enter the depth you plan to use — this tool does not choose depth for you.
+      </p>
+    </header>
+
+    <div class="calc-page__tool">
+      <MulchCalculator />
+    </div>
+
+    <p class="calc-page__disclaimer">
+      This calculator estimates mulch volume and bag counts from the area and depth you enter. It does not
+      determine landscape design, drainage, plant suitability, soil health, fire-code compliance, or the required
+      mulch depth for every plant or site. Confirm bag volumes on the product you buy and follow local horticultural
+      guidance when needed. Keep mulch pulled back from tree trunks and stems.
+    </p>
+
+    <article class="prose-article calc-page__copy">
+      <h2>How the mulch calculation works</h2>
+      <p>
+        The calculator converts your dimensions to feet, then computes volume in cubic feet. Rectangular beds use
+        length × width × depth. Circles use π × radius² × depth. Known-area mode multiplies your area by depth.
+        Cubic yards are cubic feet ÷ 27. Bag counts divide purchase volume by each bag’s cubic-foot size and round
+        up. Optional overage is an editable percentage on top of the calculated volume — it defaults to 0%.
+      </p>
+
+      <h2>How many cubic yards of mulch do you need?</h2>
+      <p>
+        Multiply the bed area by the planned depth to get volume, then convert to cubic yards. For example, a
+        10 × 10 ft bed at 2 inches deep is about 0.62 yd³ (16.67 ft³). Use the calculator for unit conversion and
+        bag rounding in one step.
+      </p>
+
+      <h2>Mulch bags vs bulk</h2>
+      <p>
+        Retail mulch is often sold in bags labeled by cubic feet. Common package volumes include about 1.5, 2.0, and
+        3.0 cu ft — these are examples, not universal products. Confirm the cubic-foot volume printed on the bag you
+        buy. Bulk delivery is often more practical for larger projects; suppliers set their own minimums and delivery
+        fees. This calculator does not price materials or recommend a bulk cutoff.
+      </p>
+
+      <h2>How deep should mulch be?</h2>
+      <p>
+        University extension and arboriculture guidance often discusses roughly 2–4 inches for landscape beds and
+        trees, depending on material and site conditions. Finer mulches are often kept toward the lower end of that
+        range; coarser mulches toward the higher end. Exact depth varies by plants, drainage, and purpose — enter the
+        depth you plan to use rather than treating any single number as a requirement. Keep mulch pulled back from
+        tree trunks and plant stems; do not create “mulch volcanoes” piled against bark.
+      </p>
+
+      <h2>How much area does one cubic yard cover?</h2>
+      <p>
+        Coverage depends only on depth: one cubic yard covers 27 ÷ depth_in_feet square feet. At common planning
+        depths:
+      </p>
+      <ul>
+        <li>2 in → about 162 sq ft</li>
+        <li>3 in → about 108 sq ft</li>
+        <li>4 in → about 81 sq ft</li>
+      </ul>
+      <p>
+        The calculator derives coverage from the depth you enter rather than hardcoding a fixed table.
+      </p>
+
+      <h2>Example calculations</h2>
+      <h3>10 × 10 ft bed, 2 in deep, no overage</h3>
+      <p>
+        Volume ≈ 0.62 yd³ (16.67 ft³). About 9 bags of 2 cu ft, 12 bags of 1.5 cu ft, or 6 bags of 3 cu ft. At this
+        depth, one cubic yard covers about 162 sq ft.
+      </p>
+      <h3>20 × 30 ft bed, 3 in deep, no overage</h3>
+      <p>
+        Volume ≈ 5.56 yd³ (150 ft³). About 75 bags of 2 cu ft, 100 bags of 1.5 cu ft, or 50 bags of 3 cu ft. Coverage
+        ≈ 108 sq ft per cubic yard.
+      </p>
+      <h3>Circular bed, 10 ft diameter, 3 in deep</h3>
+      <p>
+        Volume ≈ 0.73 yd³ (about 19.63 ft³). About 10 bags of 2 cu ft. Coverage remains ≈ 108 sq ft per cubic yard at
+        3 inches.
+      </p>
+
+      <h2>Frequently asked questions</h2>
+      <h3>How much mulch do I need?</h3>
+      <p>
+        Multiply area by planned depth to get volume, convert to cubic yards (÷ 27 from cubic feet), then divide by
+        bag volume and round up. This calculator performs those steps from your inputs.
+      </p>
+      <h3>How many 2 cu ft bags are in a cubic yard?</h3>
+      <p>
+        One cubic yard is 27 ft³. Divided by 2 cu ft per bag equals 13.5 volume-equivalents, so you need 14 whole bags
+        to meet or exceed one cubic yard.
+      </p>
+      <h3>How many square feet does one cubic yard cover?</h3>
+      <p>
+        It depends on depth. Use 27 ÷ depth_in_feet. At 2 inches, about 162 sq ft; at 3 inches, about 108 sq ft; at
+        4 inches, about 81 sq ft.
+      </p>
+      <h3>How deep should mulch be?</h3>
+      <p>
+        Many extension sources discuss roughly 2–4 inches for landscape beds and trees, but appropriate depth varies
+        by material, plants, and site. This calculator does not prescribe a single depth.
+      </p>
+      <h3>Can I use this calculator around trees?</h3>
+      <p>
+        Yes for quantity. Keep mulch pulled back from the trunk and root flare. The tool estimates volume only — it
+        does not design tree rings or diagnose plant health.
+      </p>
+      <h3>Does mulch settle?</h3>
+      <p>
+        Organic mulch settles and decomposes over time. There is no universal settling factor built into this
+        calculator. Check remaining depth before adding more so you do not keep stacking beyond a sensible range.
+      </p>
+      <h3>Should I order extra?</h3>
+      <p>
+        Optional overage defaults to 0%. You can add 5%, 10%, or a custom allowance for uneven beds or measurement
+        variation. Bag counts already round up. Extra is not a settling or compaction model.
+      </p>
+      <h3>Is bulk mulch better than bags?</h3>
+      <p>
+        Bulk can be more practical for larger projects, depending on local price, minimums, and delivery fees. Compare
+        your cubic-yard estimate with bag counts; this tool does not set a fixed bulk threshold or price materials.
+      </p>
+
+      <h2>Sources</h2>
+      <ul>
+        <li>
+          <a href="https://www.pubs.ext.vt.edu/content/dam/pubs_ext_vt_edu/426/426-724/426-724_pdf.pdf" rel="noopener noreferrer">
+            Virginia Cooperative Extension — Mulching for a Healthy Landscape (426-724)
+          </a>
+          — typical depth guidance for beds and woody plants; keep mulch off trunks
+        </li>
+        <li>
+          <a href="https://hgic.clemson.edu/factsheet/mulch/" rel="noopener noreferrer">
+            Clemson Cooperative Extension — Mulch
+          </a>
+          — maintain mulch depth guidance; space from stems and trunks
+        </li>
+        <li>
+          <a href="https://www.treesaregood.org/treeowner/treeownerinformation/propermulching" rel="noopener noreferrer">
+            ISA / TreesAreGood — Proper Mulching Techniques
+          </a>
+          — recommended depth ranges; avoid mulch volcanoes
+        </li>
+        <li>
+          <a href="https://extension.illinois.edu/blogs/good-growing/2021-05-14-mulch-volcanoes-are-erupting-everywhere-heres-how-stop-them" rel="noopener noreferrer">
+            University of Illinois Extension — Mulch volcanoes
+          </a>
+          — keep mulch away from trunks; depth context
+        </li>
+        <li>
+          <a href="https://extension.umn.edu/planting-and-growing-guides/mulching-trees-and-shrubs" rel="noopener noreferrer">
+            University of Minnesota Extension — Mulching trees and shrubs
+          </a>
+          — depth ranges and mulch-free ring at the trunk
+        </li>
+        <li>
+          <a href="https://extension.psu.edu/mulching-landscape-trees" rel="noopener noreferrer">
+            Penn State Extension — Mulching Landscape Trees
+          </a>
+          — depth guidance and keeping mulch off the trunk/root flare
+        </li>
+        <li>
+          <a href="https://extension.umd.edu/resource/mulching-trees-and-shrubs" rel="noopener noreferrer">
+            University of Maryland Extension — Mulching Trees and Shrubs
+          </a>
+          — material-dependent depth notes; keep mulch off trunks
+        </li>
+      </ul>
+    </article>
+  </div>
+</BaseLayout>
+
+<style>
+  .calc-page__copy :where(h2, h3) {
+    color: var(--color-ink);
+  }
+</style>

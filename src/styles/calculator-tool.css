@@ -1,6 +1,6 @@
 /**
  * Shared calculator tool layout density.
- * Used by Concrete + Gravel. Result markup is injected via innerHTML,
+ * Used by Concrete, Gravel, and Mulch. Result markup is injected via innerHTML,
  * so result styles live here (global) rather than Astro scoped CSS.
  */
 
@@ -133,6 +133,19 @@
 .calc-tool__mode input,
 .calc-tool__chip input {
   margin: 0;
+}
+
+.calc-tool__chip--action {
+  font: inherit;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.calc-tool__chip--action:hover,
+.calc-tool__chip--action:focus-visible {
+  border-color: var(--color-brand);
+  background: var(--color-brand-soft);
+  outline: none;
 }
 
 .calc-tool__row {
@@ -466,6 +479,23 @@
 
 .calc-tool__table tbody tr:last-child td {
   border-bottom: 0;
+}
+
+.calc-tool__table--two-col th:nth-child(1),
+.calc-tool__table--two-col td:nth-child(1) {
+  width: 55%;
+  text-align: left;
+  padding-left: 0;
+  padding-right: 0.75rem;
+}
+
+.calc-tool__table--two-col th:nth-child(2),
+.calc-tool__table--two-col td:nth-child(2) {
+  width: 45%;
+  text-align: right;
+  padding-left: 0.75rem;
+  padding-right: 0;
+  font-variant-numeric: tabular-nums;
 }
 
 .calc-tool__bags-value {

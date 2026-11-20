@@ -69,13 +69,13 @@ export const tools: ToolDefinition[] = [
     status: 'available',
   },
   {
-    slug: 'mulch',
+    slug: 'mulch-calculator',
     name: 'Mulch Calculator',
     description:
-      'Estimate mulch volume and bags from bed area and depth, with waste allowance.',
+      'Estimate mulch volume in cubic yards and bags for beds, with optional overage and bag-size comparison.',
     group: 'landscaping',
-    href: '#coming-soon',
-    status: 'coming-soon',
+    href: '/calculators/mulch-calculator',
+    status: 'available',
   },
   {
     slug: 'paint',

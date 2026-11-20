@@ -1,0 +1,719 @@
+---
+/**
+ * Mulch Calculator UI — follows Concrete / Gravel reference patterns.
+ *
+ * UX:
+ * - Explicit Calculate for first result and after dimension/mode changes.
+ * - After a successful result, optional overage and custom bag live-update when valid.
+ * - Depth convenience chips fill the active depth field (inches); none selected by default.
+ */
+---
+
+<div class="calc-tool" data-mulch-calc>
+  <form class="calc-tool__form" data-mulch-form novalidate>
+    <fieldset class="calc-tool__fieldset">
+      <legend class="calc-tool__legend">Project type</legend>
+      <div class="calc-tool__modes" role="radiogroup" aria-label="Project type">
+        <label class="calc-tool__mode">
+          <input type="radio" name="mode" value="rectangle" checked />
+          <span>Rectangle</span>
+        </label>
+        <label class="calc-tool__mode">
+          <input type="radio" name="mode" value="circle" />
+          <span>Circle</span>
+        </label>
+        <label class="calc-tool__mode">
+          <input type="radio" name="mode" value="area" />
+          <span>Known area</span>
+        </label>
+      </div>
+      <p class="calc-tool__hint" id="mode-hint" data-mode-hint>
+        Use this for rectangular beds, borders, and other areas when you know length and width.
+      </p>
+    </fieldset>
+
+    <div class="calc-tool__panel" data-panel="rectangle">
+      <div class="calc-tool__row">
+        <div class="calc-tool__field">
+          <label for="mc-length">Length</label>
+          <div class="calc-tool__input-unit">
+            <input id="mc-length" name="length" type="number" inputmode="decimal" min="0" step="any" aria-describedby="mc-length-error" />
+            <select id="mc-length-unit" name="lengthUnit" aria-label="Length unit">
+              <option value="ft" selected>ft</option>
+              <option value="in">in</option>
+              <option value="m">m</option>
+              <option value="cm">cm</option>
+            </select>
+          </div>
+          <p class="calc-tool__error" id="mc-length-error" data-error-for="length" hidden></p>
+        </div>
+        <div class="calc-tool__field">
+          <label for="mc-width">Width</label>
+          <div class="calc-tool__input-unit">
+            <input id="mc-width" name="width" type="number" inputmode="decimal" min="0" step="any" aria-describedby="mc-width-error" />
+            <select id="mc-width-unit" name="widthUnit" aria-label="Width unit">
+              <option value="ft" selected>ft</option>
+              <option value="in">in</option>
+              <option value="m">m</option>
+              <option value="cm">cm</option>
+            </select>
+          </div>
+          <p class="calc-tool__error" id="mc-width-error" data-error-for="width" hidden></p>
+        </div>
+      </div>
+      <div class="calc-tool__field">
+        <label for="mc-depth-rect">Depth</label>
+        <div class="calc-tool__input-unit">
+          <input id="mc-depth-rect" name="depthRect" type="number" inputmode="decimal" min="0" step="any" aria-describedby="mc-depth-rect-error mc-depth-hint" />
+          <select id="mc-depth-rect-unit" name="depthRectUnit" aria-label="Depth unit">
+            <option value="in" selected>in</option>
+            <option value="ft">ft</option>
+            <option value="cm">cm</option>
+            <option value="m">m</option>
+          </select>
+        </div>
+        <p class="calc-tool__error" id="mc-depth-rect-error" data-error-for="depth" hidden></p>
+      </div>
+    </div>
+
+    <div class="calc-tool__panel" data-panel="circle" hidden>
+      <div class="calc-tool__row">
+        <div class="calc-tool__field">
+          <label for="mc-diameter">Diameter</label>
+          <div class="calc-tool__input-unit">
+            <input id="mc-diameter" name="diameter" type="number" inputmode="decimal" min="0" step="any" aria-describedby="mc-diameter-error" />
+            <select id="mc-diameter-unit" name="diameterUnit" aria-label="Diameter unit">
+              <option value="ft" selected>ft</option>
+              <option value="in">in</option>
+              <option value="m">m</option>
+              <option value="cm">cm</option>
+            </select>
+          </div>
+          <p class="calc-tool__error" id="mc-diameter-error" data-error-for="diameter" hidden></p>
+        </div>
+        <div class="calc-tool__field">
+          <label for="mc-depth-circle">Depth</label>
+          <div class="calc-tool__input-unit">
+            <input id="mc-depth-circle" name="depthCircle" type="number" inputmode="decimal" min="0" step="any" aria-describedby="mc-depth-circle-error mc-depth-hint" />
+            <select id="mc-depth-circle-unit" name="depthCircleUnit" aria-label="Depth unit">
+              <option value="in" selected>in</option>
+              <option value="ft">ft</option>
+              <option value="cm">cm</option>
+              <option value="m">m</option>
+            </select>
+          </div>
+          <p class="calc-tool__error" id="mc-depth-circle-error" data-error-for="depth" hidden></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="calc-tool__panel" data-panel="area" hidden>
+      <div class="calc-tool__row">
+        <div class="calc-tool__field">
+          <label for="mc-area">Area</label>
+          <div class="calc-tool__input-unit calc-tool__input-unit--area">
+            <input id="mc-area" name="area" type="number" inputmode="decimal" min="0" step="any" aria-describedby="mc-area-error" />
+            <select id="mc-area-unit" name="areaUnit" aria-label="Area unit">
+              <option value="sq_ft" selected>sq ft</option>
+              <option value="sq_yd">sq yd</option>
+              <option value="m2">m²</option>
+            </select>
+          </div>
+          <p class="calc-tool__error" id="mc-area-error" data-error-for="area" hidden></p>
+        </div>
+        <div class="calc-tool__field">
+          <label for="mc-depth-area">Depth</label>
+          <div class="calc-tool__input-unit">
+            <input id="mc-depth-area" name="depthArea" type="number" inputmode="decimal" min="0" step="any" aria-describedby="mc-depth-area-error mc-depth-hint" />
+            <select id="mc-depth-area-unit" name="depthAreaUnit" aria-label="Depth unit">
+              <option value="in" selected>in</option>
+              <option value="ft">ft</option>
+              <option value="cm">cm</option>
+              <option value="m">m</option>
+            </select>
+          </div>
+          <p class="calc-tool__error" id="mc-depth-area-error" data-error-for="depth" hidden></p>
+        </div>
+      </div>
+    </div>
+
+    <fieldset class="calc-tool__fieldset">
+      <legend class="calc-tool__legend">Common planning depths</legend>
+      <div class="calc-tool__extra" role="group" aria-label="Common planning depths">
+        <button type="button" class="calc-tool__chip calc-tool__chip--action" data-depth-chip="2">2 in</button>
+        <button type="button" class="calc-tool__chip calc-tool__chip--action" data-depth-chip="3">3 in</button>
+        <button type="button" class="calc-tool__chip calc-tool__chip--action" data-depth-chip="4">4 in</button>
+      </div>
+      <p class="calc-tool__hint" id="mc-depth-hint">
+        Planning shortcuts only — not requirements. Mulch depth depends on the material, plants, site, and
+        purpose. Enter the depth you plan to use.
+      </p>
+    </fieldset>
+
+    <fieldset class="calc-tool__fieldset">
+      <legend class="calc-tool__legend">Optional overage</legend>
+      <div class="calc-tool__extra">
+        <label class="calc-tool__chip">
+          <input type="radio" name="extraPreset" value="0" checked />
+          <span>0%</span>
+        </label>
+        <label class="calc-tool__chip">
+          <input type="radio" name="extraPreset" value="5" />
+          <span>5%</span>
+        </label>
+        <label class="calc-tool__chip">
+          <input type="radio" name="extraPreset" value="10" />
+          <span>10%</span>
+        </label>
+        <label class="calc-tool__chip">
+          <input type="radio" name="extraPreset" value="custom" />
+          <span>Custom</span>
+        </label>
+      </div>
+      <div class="calc-tool__field" data-custom-extra hidden>
+        <label for="mc-extra-custom">Custom overage (%)</label>
+        <input
+          id="mc-extra-custom"
+          name="extraCustom"
+          type="number"
+          inputmode="decimal"
+          min="0"
+          max="25"
+          step="any"
+          aria-describedby="mc-extra-error extra-assumption"
+        />
+        <p class="calc-tool__error" id="mc-extra-error" data-error-for="extraPercent" hidden></p>
+      </div>
+      <p class="calc-tool__hint" id="extra-assumption">
+        Add an optional allowance for uneven beds, spillage, or measurement variation. No extra is added by
+        default.
+      </p>
+    </fieldset>
+
+    <fieldset class="calc-tool__fieldset">
+      <legend class="calc-tool__legend">Custom bag volume (optional)</legend>
+      <div class="calc-tool__field">
+        <label for="mc-custom-bag">Bag volume (cu ft)</label>
+        <input
+          id="mc-custom-bag"
+          name="customBagFt3"
+          type="number"
+          inputmode="decimal"
+          min="0.25"
+          max="10"
+          step="any"
+          placeholder="Optional"
+          aria-describedby="mc-custom-bag-hint mc-custom-bag-error"
+        />
+        <p class="calc-tool__hint" id="mc-custom-bag-hint">
+          Leave blank to compare 1.5, 2.0, and 3.0 cu ft bags only. Enter 0.25–10 if your bag differs.
+        </p>
+        <p class="calc-tool__error" id="mc-custom-bag-error" data-error-for="customBagFt3" hidden></p>
+      </div>
+    </fieldset>
+
+    <div class="calc-tool__actions">
+      <button type="submit" class="btn-primary">Calculate</button>
+      <button type="button" class="btn-secondary" data-reset>Reset</button>
+    </div>
+  </form>
+
+  <div class="calc-tool__aside">
+    <div class="calc-tool__visual card-surface" data-visual>
+      <svg
+        class="calc-tool__svg"
+        viewBox="0 0 320 158"
+        role="img"
+        aria-labelledby="mc-svg-title"
+        data-svg
+      >
+        <title id="mc-svg-title">Enter dimensions to preview the project shape.</title>
+        <rect width="320" height="158" fill="#f5f5f4" rx="10"></rect>
+        <text x="160" y="84" text-anchor="middle" fill="#78716c" font-size="13" font-family="system-ui,sans-serif">
+          Dimension preview
+        </text>
+      </svg>
+    </div>
+
+    <div class="calc-tool__results card-surface" data-results aria-live="polite" aria-atomic="true">
+      <p class="calc-tool__empty" data-empty>
+        Enter your bed dimensions and planned depth, then press Calculate to see cubic yards and bag counts.
+      </p>
+      <div class="calc-tool__result-body" data-result-body hidden></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  import {
+    calculateMulch,
+    formatCoverage,
+    formatFt3,
+    formatM3,
+    formatYd3,
+    type MulchInput,
+    type MulchMode,
+    type MulchResult,
+  } from '../utils/mulch.ts';
+  import { fromFeet, toFeet, type LengthUnit } from '../utils/length-units.ts';
+  import { fromSquareFeet, toSquareFeet, type AreaUnit } from '../utils/area-units.ts';
+
+  const rootEl = document.querySelector<HTMLElement>('[data-mulch-calc]');
+  if (rootEl) {
+    const root = rootEl;
+    const form = root.querySelector<HTMLFormElement>('[data-mulch-form]')!;
+    const empty = root.querySelector<HTMLElement>('[data-empty]')!;
+    const body = root.querySelector<HTMLElement>('[data-result-body]')!;
+    const svg = root.querySelector<SVGElement>('[data-svg]')!;
+    const customExtraWrap = root.querySelector<HTMLElement>('[data-custom-extra]')!;
+    let hasResult = false;
+
+    function mode(): MulchMode {
+      const checked = form.querySelector<HTMLInputElement>('input[name="mode"]:checked');
+      return (checked?.value as MulchMode) || 'rectangle';
+    }
+
+    const MODE_HINTS: Record<MulchMode, string> = {
+      rectangle:
+        'Use this for rectangular beds, borders, and other areas when you know length and width.',
+      circle: 'Use this for circular beds or rings when you know diameter and depth.',
+      area: 'Use this when you already know the total area and depth, including irregular footprints.',
+    };
+
+    function syncModeHint() {
+      const hint = root.querySelector<HTMLElement>('[data-mode-hint]');
+      if (hint) hint.textContent = MODE_HINTS[mode()];
+    }
+
+    function syncPanels() {
+      const current = mode();
+      root.querySelectorAll<HTMLElement>('[data-panel]').forEach((panel) => {
+        panel.hidden = panel.dataset.panel !== current;
+      });
+      syncModeHint();
+    }
+
+    function syncExtra() {
+      const preset = form.querySelector<HTMLInputElement>('input[name="extraPreset"]:checked')?.value;
+      customExtraWrap.hidden = preset !== 'custom';
+    }
+
+    function clearErrors() {
+      root.querySelectorAll<HTMLElement>('[data-error-for]').forEach((el) => {
+        el.hidden = true;
+        el.textContent = '';
+      });
+      root.querySelectorAll<HTMLElement>('[aria-invalid]').forEach((el) => {
+        el.removeAttribute('aria-invalid');
+      });
+    }
+
+    function showErrors(errors: { field: string; message: string }[]) {
+      clearErrors();
+      for (const error of errors) {
+        const nodes = root.querySelectorAll<HTMLElement>(`[data-error-for="${error.field}"]`);
+        nodes.forEach((node) => {
+          const panel = node.closest('[data-panel]');
+          if (panel instanceof HTMLElement && panel.hidden) return;
+          node.hidden = false;
+          node.textContent = error.message;
+        });
+      }
+
+      const fieldMap: Record<string, string> = {
+        length: 'mc-length',
+        width: 'mc-width',
+        diameter: 'mc-diameter',
+        area: 'mc-area',
+        depth:
+          mode() === 'circle' ? 'mc-depth-circle' : mode() === 'area' ? 'mc-depth-area' : 'mc-depth-rect',
+        extraPercent: 'mc-extra-custom',
+        customBagFt3: 'mc-custom-bag',
+      };
+
+      const first = errors[0];
+      if (!first) return;
+      const id = fieldMap[first.field];
+      const target = id ? root.querySelector<HTMLElement>(`#${id}`) : null;
+      if (target && !target.closest('[hidden]')) {
+        target.setAttribute('aria-invalid', 'true');
+        target.focus();
+      }
+    }
+
+    function readNumber(name: string): number | undefined {
+      const el = form.elements.namedItem(name);
+      if (!(el instanceof HTMLInputElement)) return undefined;
+      if (el.value.trim() === '') return undefined;
+      return Number(el.value);
+    }
+
+    function readLengthUnit(name: string): LengthUnit {
+      const el = form.elements.namedItem(name);
+      if (el instanceof HTMLSelectElement) return el.value as LengthUnit;
+      return 'ft';
+    }
+
+    function readAreaUnit(name: string): AreaUnit {
+      const el = form.elements.namedItem(name);
+      if (el instanceof HTMLSelectElement) return el.value as AreaUnit;
+      return 'sq_ft';
+    }
+
+    function extraPercent(): number {
+      const preset = form.querySelector<HTMLInputElement>('input[name="extraPreset"]:checked')?.value;
+      if (preset === 'custom') {
+        const custom = readNumber('extraCustom');
+        return custom ?? Number.NaN;
+      }
+      return Number(preset ?? 0);
+    }
+
+    function activeDepthControls(): { valueName: string; unitName: string } {
+      const current = mode();
+      if (current === 'circle') return { valueName: 'depthCircle', unitName: 'depthCircleUnit' };
+      if (current === 'area') return { valueName: 'depthArea', unitName: 'depthAreaUnit' };
+      return { valueName: 'depthRect', unitName: 'depthRectUnit' };
+    }
+
+    function applyDepthChip(inches: number) {
+      const { valueName, unitName } = activeDepthControls();
+      const valueEl = form.elements.namedItem(valueName);
+      const unitEl = form.elements.namedItem(unitName);
+      if (valueEl instanceof HTMLInputElement) valueEl.value = String(inches);
+      if (unitEl instanceof HTMLSelectElement) unitEl.value = 'in';
+    }
+
+    function buildInput(): MulchInput {
+      const current = mode();
+      const base: MulchInput = {
+        mode: current,
+        extraPercent: extraPercent(),
+        customBagFt3: readNumber('customBagFt3'),
+      };
+
+      if (current === 'rectangle') {
+        return {
+          ...base,
+          length: readNumber('length'),
+          lengthUnit: readLengthUnit('lengthUnit'),
+          width: readNumber('width'),
+          widthUnit: readLengthUnit('widthUnit'),
+          depth: readNumber('depthRect'),
+          depthUnit: readLengthUnit('depthRectUnit'),
+        };
+      }
+      if (current === 'circle') {
+        return {
+          ...base,
+          diameter: readNumber('diameter'),
+          diameterUnit: readLengthUnit('diameterUnit'),
+          depth: readNumber('depthCircle'),
+          depthUnit: readLengthUnit('depthCircleUnit'),
+        };
+      }
+      return {
+        ...base,
+        area: readNumber('area'),
+        areaUnit: readAreaUnit('areaUnit'),
+        depth: readNumber('depthArea'),
+        depthUnit: readLengthUnit('depthAreaUnit'),
+      };
+    }
+
+    function formatDim(ft: number | undefined, preferIn = false): string {
+      if (ft === undefined) return '';
+      if (preferIn || ft < 3) {
+        const inches = ft * 12;
+        const rounded =
+          Math.abs(inches - Math.round(inches)) < 1e-9 ? String(Math.round(inches)) : inches.toFixed(2);
+        return `${rounded} in`;
+      }
+      const rounded = Math.abs(ft - Math.round(ft)) < 1e-9 ? String(Math.round(ft)) : ft.toFixed(2);
+      return `${rounded} ft`;
+    }
+
+    function formatAreaSqFt(sqFt: number): string {
+      if (Math.abs(sqFt - Math.round(sqFt)) < 1e-9) return `${Math.round(sqFt)} sq ft`;
+      return `${sqFt.toFixed(1)} sq ft`;
+    }
+
+    function formatDepthIn(depthIn: number): string {
+      if (Math.abs(depthIn - Math.round(depthIn)) < 1e-9) return `${Math.round(depthIn)} in`;
+      return `${depthIn.toFixed(2)} in`;
+    }
+
+    function renderSvg(result: MulchResult | null) {
+      if (!result) {
+        svg.setAttribute('viewBox', '0 0 320 158');
+        svg.innerHTML = `
+          <title id="mc-svg-title">Enter dimensions to preview the project shape.</title>
+          <rect width="320" height="158" fill="#f5f5f4" rx="10"></rect>
+          <text x="160" y="84" text-anchor="middle" fill="#78716c" font-size="13" font-family="system-ui,sans-serif">Dimension preview</text>
+        `;
+        return;
+      }
+
+      const d = result.dimensionsFt;
+      svg.setAttribute('viewBox', '0 0 320 158');
+      if (result.mode === 'rectangle' && d.lengthFt && d.widthFt && d.depthFt !== undefined) {
+        const labelL = formatDim(d.lengthFt);
+        const labelW = formatDim(d.widthFt);
+        const labelD = formatDim(d.depthFt, true);
+        svg.innerHTML = `
+          <title id="mc-svg-title">Rectangular mulch area ${labelL} by ${labelW}, depth ${labelD}.</title>
+          <rect width="320" height="158" fill="#f8fafc" rx="10"></rect>
+          <rect x="78" y="34" width="164" height="88" fill="#e8eef5" stroke="#1e3a5f" stroke-width="2"></rect>
+          <text x="160" y="26" text-anchor="middle" fill="#1c1917" font-size="12" font-family="system-ui,sans-serif">${labelL}</text>
+          <text x="68" y="82" text-anchor="end" fill="#1c1917" font-size="12" font-family="system-ui,sans-serif">${labelW}</text>
+          <text x="160" y="144" text-anchor="middle" fill="#44403c" font-size="12" font-family="system-ui,sans-serif">Depth ${labelD}</text>
+        `;
+        return;
+      }
+
+      if (result.mode === 'circle' && d.diameterFt && d.depthFt !== undefined) {
+        const labelDia = formatDim(d.diameterFt);
+        const labelD = formatDim(d.depthFt, true);
+        svg.innerHTML = `
+          <title id="mc-svg-title">Circular mulch area diameter ${labelDia}, depth ${labelD}.</title>
+          <rect width="320" height="158" fill="#f8fafc" rx="10"></rect>
+          <circle cx="160" cy="74" r="42" fill="#e8eef5" stroke="#1e3a5f" stroke-width="2"></circle>
+          <line x1="118" y1="74" x2="202" y2="74" stroke="#1e3a5f" stroke-width="1.5" stroke-dasharray="4 3"></line>
+          <text x="160" y="24" text-anchor="middle" fill="#1c1917" font-size="12" font-family="system-ui,sans-serif">Diameter ${labelDia}</text>
+          <text x="160" y="144" text-anchor="middle" fill="#44403c" font-size="12" font-family="system-ui,sans-serif">Depth ${labelD}</text>
+        `;
+        return;
+      }
+
+      if (result.mode === 'area' && d.areaSqFt !== undefined && d.depthFt !== undefined) {
+        const labelA = formatAreaSqFt(d.areaSqFt);
+        const labelD = formatDim(d.depthFt, true);
+        svg.innerHTML = `
+          <title id="mc-svg-title">Known-area mulch project ${labelA}, depth ${labelD}.</title>
+          <rect width="320" height="158" fill="#f8fafc" rx="10"></rect>
+          <rect x="60" y="40" width="200" height="72" fill="#e8eef5" stroke="#1e3a5f" stroke-width="2" stroke-dasharray="6 4"></rect>
+          <text x="160" y="82" text-anchor="middle" fill="#1c1917" font-size="14" font-weight="600" font-family="system-ui,sans-serif">${labelA}</text>
+          <text x="160" y="144" text-anchor="middle" fill="#44403c" font-size="12" font-family="system-ui,sans-serif">Depth ${labelD}</text>
+        `;
+      }
+    }
+
+    function renderResult(result: MulchResult) {
+      empty.hidden = true;
+      body.hidden = false;
+
+      const hasExtra = result.extraPercent > 0;
+      const bagsRows = result.bags
+        .map(
+          (bag) => `
+          <tr>
+            <td>${bag.label}</td>
+            <td><span class="calc-tool__bags-value">${bag.bags}</span></td>
+          </tr>`,
+        )
+        .join('');
+
+      const warnings = result.warnings
+        .map((w) => `<p class="calc-tool__warning">${w}</p>`)
+        .join('');
+
+      const hero = hasExtra
+        ? `
+        <div class="calc-tool__purchase">
+          <p class="calc-tool__purchase-label">Estimated amount to purchase</p>
+          <p class="calc-tool__purchase-value">${formatYd3(result.purchaseYd3)} <span class="calc-tool__purchase-unit">yd³</span></p>
+          <p class="calc-tool__purchase-note">Includes ${result.extraPercent}% optional overage</p>
+          <p class="calc-tool__purchase-equiv">${formatFt3(result.purchaseFt3)} ft³ · ${formatM3(result.purchaseM3)} m³</p>
+        </div>
+        <div class="calc-tool__metrics">
+          <section aria-labelledby="mc-calc-volume-label">
+            <h3 class="calc-tool__metric-label" id="mc-calc-volume-label">Calculated volume</h3>
+            <p class="calc-tool__metric-value">${formatYd3(result.rawYd3)} yd³</p>
+            <p class="calc-tool__metric-meta">${formatFt3(result.rawFt3)} ft³ · ${formatM3(result.rawM3)} m³</p>
+          </section>
+          <section aria-labelledby="mc-extra-label">
+            <h3 class="calc-tool__metric-label" id="mc-extra-label">Optional overage</h3>
+            <p class="calc-tool__metric-value">${result.extraPercent}%</p>
+            <p class="calc-tool__metric-meta">+${formatYd3(result.extraYd3)} yd³</p>
+          </section>
+        </div>`
+        : `
+        <div class="calc-tool__purchase">
+          <p class="calc-tool__purchase-label">Estimated amount</p>
+          <p class="calc-tool__purchase-value">${formatYd3(result.rawYd3)} <span class="calc-tool__purchase-unit">yd³</span></p>
+          <p class="calc-tool__purchase-equiv">${formatFt3(result.rawFt3)} ft³ · ${formatM3(result.rawM3)} m³</p>
+        </div>`;
+
+      body.innerHTML = `
+        ${hero}
+
+        <section class="calc-tool__section" aria-labelledby="mc-bags-label">
+          <h3 class="calc-tool__section-label" id="mc-bags-label">Bag comparison</h3>
+          <div class="calc-tool__table-wrap">
+            <table class="calc-tool__table calc-tool__table--two-col">
+              <caption class="sr-only">Bags to buy by bag volume using ${hasExtra ? 'purchase' : 'calculated'} volume</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Bag size</th>
+                  <th scope="col">Bags to buy</th>
+                </tr>
+              </thead>
+              <tbody>${bagsRows}</tbody>
+            </table>
+          </div>
+          <p class="calc-tool__footnote">
+            Mulch bag volumes vary by product. Confirm the cubic-foot volume printed on the bag you plan to buy.
+          </p>
+        </section>
+
+        <div class="calc-tool__metrics">
+          <section aria-labelledby="mc-area-depth-label">
+            <h3 class="calc-tool__metric-label" id="mc-area-depth-label">Area / depth</h3>
+            <p class="calc-tool__metric-value">${formatAreaSqFt(result.areaSqFt)}</p>
+            <p class="calc-tool__metric-meta">Depth ${formatDepthIn(result.depthIn)}</p>
+          </section>
+          <section aria-labelledby="mc-coverage-label">
+            <h3 class="calc-tool__metric-label" id="mc-coverage-label">Coverage at this depth</h3>
+            <p class="calc-tool__metric-value">≈ ${formatCoverage(result.coverageSqFtPerYd3)} sq ft</p>
+            <p class="calc-tool__metric-meta">per cubic yard</p>
+          </section>
+        </div>
+
+        <section class="calc-tool__note" aria-labelledby="mc-bulk-label">
+          <h3 class="calc-tool__section-label" id="mc-bulk-label">Bulk vs bags</h3>
+          <p>
+            Compare the cubic-yard estimate with the bag counts above. Bulk mulch may be more practical for larger
+            projects; local suppliers have different minimums and delivery fees.
+          </p>
+        </section>
+
+        <p class="calc-tool__footnote">Do not pile mulch directly against tree trunks or plant stems.</p>
+        ${warnings}
+      `;
+    }
+
+    function clearResult() {
+      hasResult = false;
+      empty.hidden = false;
+      body.hidden = true;
+      body.innerHTML = '';
+      renderSvg(null);
+    }
+
+    function runCalculate({ focusOnError }: { focusOnError: boolean }) {
+      const input = buildInput();
+      const out = calculateMulch(input);
+      if (!out.ok) {
+        if (focusOnError) showErrors(out.errors);
+        else {
+          clearErrors();
+          if (hasResult) clearResult();
+        }
+        return false;
+      }
+      clearErrors();
+      hasResult = true;
+      renderResult(out.result);
+      renderSvg(out.result);
+      return true;
+    }
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      runCalculate({ focusOnError: true });
+    });
+
+    form.querySelectorAll<HTMLInputElement>('input[name="mode"]').forEach((input) => {
+      input.addEventListener('change', () => {
+        syncPanels();
+        clearErrors();
+      });
+    });
+
+    form.querySelectorAll<HTMLInputElement>('input[name="extraPreset"]').forEach((input) => {
+      input.addEventListener('change', () => {
+        syncExtra();
+        if (hasResult) runCalculate({ focusOnError: false });
+      });
+    });
+
+    form.querySelector<HTMLInputElement>('#mc-extra-custom')?.addEventListener('input', () => {
+      if (hasResult) runCalculate({ focusOnError: false });
+    });
+
+    form.querySelector<HTMLInputElement>('#mc-custom-bag')?.addEventListener('input', () => {
+      if (hasResult) runCalculate({ focusOnError: false });
+    });
+
+    root.querySelectorAll<HTMLButtonElement>('[data-depth-chip]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const inches = Number(btn.dataset.depthChip);
+        if (!Number.isFinite(inches) || inches <= 0) return;
+        applyDepthChip(inches);
+        clearErrors();
+      });
+    });
+
+    function wireLengthUnitConversion(valueName: string, unitName: string) {
+      const valueEl = form.elements.namedItem(valueName);
+      const unitEl = form.elements.namedItem(unitName);
+      if (!(valueEl instanceof HTMLInputElement) || !(unitEl instanceof HTMLSelectElement)) return;
+      let previousUnit = unitEl.value as LengthUnit;
+      unitEl.addEventListener('change', () => {
+        const next = unitEl.value as LengthUnit;
+        if (valueEl.value.trim() !== '') {
+          const n = Number(valueEl.value);
+          if (Number.isFinite(n) && n > 0) {
+            const ft = toFeet(n, previousUnit);
+            const converted = fromFeet(ft, next);
+            valueEl.value = String(Number(converted.toPrecision(10)));
+          }
+        }
+        previousUnit = next;
+      });
+    }
+
+    function wireAreaUnitConversion(valueName: string, unitName: string) {
+      const valueEl = form.elements.namedItem(valueName);
+      const unitEl = form.elements.namedItem(unitName);
+      if (!(valueEl instanceof HTMLInputElement) || !(unitEl instanceof HTMLSelectElement)) return;
+      let previousUnit = unitEl.value as AreaUnit;
+      unitEl.addEventListener('change', () => {
+        const next = unitEl.value as AreaUnit;
+        if (valueEl.value.trim() !== '') {
+          const n = Number(valueEl.value);
+          if (Number.isFinite(n) && n > 0) {
+            const sqFt = toSquareFeet(n, previousUnit);
+            const converted = fromSquareFeet(sqFt, next);
+            valueEl.value = String(Number(converted.toPrecision(10)));
+          }
+        }
+        previousUnit = next;
+      });
+    }
+
+    wireLengthUnitConversion('length', 'lengthUnit');
+    wireLengthUnitConversion('width', 'widthUnit');
+    wireLengthUnitConversion('depthRect', 'depthRectUnit');
+    wireLengthUnitConversion('diameter', 'diameterUnit');
+    wireLengthUnitConversion('depthCircle', 'depthCircleUnit');
+    wireLengthUnitConversion('depthArea', 'depthAreaUnit');
+    wireAreaUnitConversion('area', 'areaUnit');
+
+    root.querySelector('[data-reset]')?.addEventListener('click', () => {
+      form.reset();
+      const rect = form.querySelector<HTMLInputElement>('input[name="mode"][value="rectangle"]');
+      if (rect) rect.checked = true;
+      const zero = form.querySelector<HTMLInputElement>('input[name="extraPreset"][value="0"]');
+      if (zero) zero.checked = true;
+      syncPanels();
+      syncExtra();
+      clearErrors();
+      clearResult();
+    });
+
+    syncPanels();
+    syncExtra();
+    clearResult();
+  }
+</script>
