@@ -24,20 +24,25 @@ function stripMarkdown(markdown: string): string {
 export async function buildSearchIndex(): Promise<SearchDocument[]> {
   const articles = await getIndexableArticles();
 
-  return articles.map((article) => {
+  return articles.flatMap((article) => {
     const category = article.data.category;
-    return {
-      slug: article.data.slug,
-      title: article.data.title,
-      description: article.data.description,
-      summary: article.data.summary ?? '',
-      category,
-      categoryLabel: categoryMeta[category].label,
-      subcategory: article.data.subcategory ?? '',
-      tags: article.data.tags ?? [],
-      href: articlePath(article),
-      body: stripMarkdown(article.body ?? ''),
-    };
+    const meta = categoryMeta[category];
+    // Skip entries whose category is no longer in the closed set (stale content cache).
+    if (!meta) return [];
+    return [
+      {
+        slug: article.data.slug,
+        title: article.data.title,
+        description: article.data.description,
+        summary: article.data.summary ?? '',
+        category,
+        categoryLabel: meta.label,
+        subcategory: article.data.subcategory ?? '',
+        tags: article.data.tags ?? [],
+        href: articlePath(article),
+        body: stripMarkdown(article.body ?? ''),
+      },
+    ];
   });
 }
 

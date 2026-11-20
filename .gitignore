@@ -5,6 +5,9 @@ node_modules/
 dist/
 .astro/
 
+# Astro content data store (lives under node_modules by default)
+node_modules/.astro/
+
 # Environment (do not commit secrets)
 .env
 .env.*

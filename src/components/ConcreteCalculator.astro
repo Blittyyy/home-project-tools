@@ -1,0 +1,1020 @@
+---
+/**
+ * Concrete Calculator UI — reference implementation for Home Project Tools.
+ *
+ * UX choice (documented):
+ * - Explicit Calculate button required for first result and for dimension/mode changes.
+ * - After a successful result, changing Extra Material recalculates immediately if the
+ *   current form values still validate (so purchase figures stay in sync with the assumption).
+ */
+---
+
+<div class="concrete-calc" data-concrete-calc>
+  <form class="concrete-calc__form" data-concrete-form novalidate>
+    <fieldset class="concrete-calc__fieldset">
+      <legend class="concrete-calc__legend">Project type</legend>
+      <div class="concrete-calc__modes" role="radiogroup" aria-label="Project type">
+        <label class="concrete-calc__mode">
+          <input type="radio" name="mode" value="rectangle" checked />
+          <span>Rectangle</span>
+        </label>
+        <label class="concrete-calc__mode">
+          <input type="radio" name="mode" value="circle" />
+          <span>Circle</span>
+        </label>
+        <label class="concrete-calc__mode">
+          <input type="radio" name="mode" value="posts" />
+          <span>Post holes</span>
+        </label>
+      </div>
+      <p class="concrete-calc__hint" id="mode-hint" data-mode-hint>
+        Use this for slabs, pads, and other rectangular concrete volumes when you already know the
+        required dimensions.
+      </p>
+    </fieldset>
+
+    <div class="concrete-calc__panel" data-panel="rectangle">
+      <div class="concrete-calc__row">
+        <div class="concrete-calc__field">
+          <label for="cc-length">Length</label>
+          <div class="concrete-calc__input-unit">
+            <input id="cc-length" name="length" type="number" inputmode="decimal" min="0" step="any" aria-describedby="cc-length-error" />
+            <select id="cc-length-unit" name="lengthUnit" aria-label="Length unit">
+              <option value="ft" selected>ft</option>
+              <option value="in">in</option>
+              <option value="m">m</option>
+              <option value="cm">cm</option>
+            </select>
+          </div>
+          <p class="concrete-calc__error" id="cc-length-error" data-error-for="length" hidden></p>
+        </div>
+        <div class="concrete-calc__field">
+          <label for="cc-width">Width</label>
+          <div class="concrete-calc__input-unit">
+            <input id="cc-width" name="width" type="number" inputmode="decimal" min="0" step="any" aria-describedby="cc-width-error" />
+            <select id="cc-width-unit" name="widthUnit" aria-label="Width unit">
+              <option value="ft" selected>ft</option>
+              <option value="in">in</option>
+              <option value="m">m</option>
+              <option value="cm">cm</option>
+            </select>
+          </div>
+          <p class="concrete-calc__error" id="cc-width-error" data-error-for="width" hidden></p>
+        </div>
+      </div>
+      <div class="concrete-calc__field">
+        <label for="cc-thickness-rect">Thickness</label>
+        <div class="concrete-calc__input-unit">
+          <input id="cc-thickness-rect" name="thicknessRect" type="number" inputmode="decimal" min="0" step="any" aria-describedby="cc-thickness-rect-error" />
+          <select id="cc-thickness-rect-unit" name="thicknessRectUnit" aria-label="Thickness unit">
+            <option value="in" selected>in</option>
+            <option value="ft">ft</option>
+            <option value="cm">cm</option>
+            <option value="m">m</option>
+          </select>
+        </div>
+        <p class="concrete-calc__error" id="cc-thickness-rect-error" data-error-for="thickness" hidden></p>
+      </div>
+    </div>
+
+    <div class="concrete-calc__panel" data-panel="circle" hidden>
+      <div class="concrete-calc__row">
+        <div class="concrete-calc__field">
+          <label for="cc-diameter-circle">Diameter</label>
+          <div class="concrete-calc__input-unit">
+            <input id="cc-diameter-circle" name="diameterCircle" type="number" inputmode="decimal" min="0" step="any" aria-describedby="cc-diameter-circle-error" />
+            <select id="cc-diameter-circle-unit" name="diameterCircleUnit" aria-label="Diameter unit">
+              <option value="ft" selected>ft</option>
+              <option value="in">in</option>
+              <option value="m">m</option>
+              <option value="cm">cm</option>
+            </select>
+          </div>
+          <p class="concrete-calc__error" id="cc-diameter-circle-error" data-error-for="diameter" hidden></p>
+        </div>
+        <div class="concrete-calc__field">
+          <label for="cc-thickness-circle">Thickness</label>
+          <div class="concrete-calc__input-unit">
+            <input id="cc-thickness-circle" name="thicknessCircle" type="number" inputmode="decimal" min="0" step="any" aria-describedby="cc-thickness-circle-error" />
+            <select id="cc-thickness-circle-unit" name="thicknessCircleUnit" aria-label="Thickness unit">
+              <option value="in" selected>in</option>
+              <option value="ft">ft</option>
+              <option value="cm">cm</option>
+              <option value="m">m</option>
+            </select>
+          </div>
+          <p class="concrete-calc__error" id="cc-thickness-circle-error" data-error-for="thickness" hidden></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="concrete-calc__panel" data-panel="posts" hidden>
+      <div class="concrete-calc__row">
+        <div class="concrete-calc__field">
+          <label for="cc-diameter-posts">Hole diameter</label>
+          <div class="concrete-calc__input-unit">
+            <input id="cc-diameter-posts" name="diameterPosts" type="number" inputmode="decimal" min="0" step="any" aria-describedby="cc-diameter-posts-error" />
+            <select id="cc-diameter-posts-unit" name="diameterPostsUnit" aria-label="Hole diameter unit">
+              <option value="in" selected>in</option>
+              <option value="ft">ft</option>
+              <option value="cm">cm</option>
+              <option value="m">m</option>
+            </select>
+          </div>
+          <p class="concrete-calc__error" id="cc-diameter-posts-error" data-error-for="diameter" hidden></p>
+        </div>
+        <div class="concrete-calc__field">
+          <label for="cc-depth">Hole depth</label>
+          <div class="concrete-calc__input-unit">
+            <input id="cc-depth" name="depth" type="number" inputmode="decimal" min="0" step="any" aria-describedby="cc-depth-error" />
+            <select id="cc-depth-unit" name="depthUnit" aria-label="Hole depth unit">
+              <option value="in" selected>in</option>
+              <option value="ft">ft</option>
+              <option value="cm">cm</option>
+              <option value="m">m</option>
+            </select>
+          </div>
+          <p class="concrete-calc__error" id="cc-depth-error" data-error-for="depth" hidden></p>
+        </div>
+      </div>
+      <div class="concrete-calc__field">
+        <label for="cc-holes">Number of holes</label>
+        <input id="cc-holes" name="holeCount" type="number" inputmode="numeric" min="1" step="1" aria-describedby="cc-holes-error posts-note" />
+        <p class="concrete-calc__error" id="cc-holes-error" data-error-for="holeCount" hidden></p>
+      </div>
+      <p class="concrete-calc__hint" id="posts-note">
+        Post-hole results use the full cylindrical hole volume. The calculator does not subtract the
+        volume occupied by the post.
+      </p>
+    </div>
+
+    <fieldset class="concrete-calc__fieldset">
+      <legend class="concrete-calc__legend">Extra material</legend>
+      <div class="concrete-calc__extra">
+        <label class="concrete-calc__chip">
+          <input type="radio" name="extraPreset" value="0" />
+          <span>0%</span>
+        </label>
+        <label class="concrete-calc__chip">
+          <input type="radio" name="extraPreset" value="5" />
+          <span>5%</span>
+        </label>
+        <label class="concrete-calc__chip">
+          <input type="radio" name="extraPreset" value="10" checked />
+          <span>10%</span>
+        </label>
+        <label class="concrete-calc__chip">
+          <input type="radio" name="extraPreset" value="custom" />
+          <span>Custom</span>
+        </label>
+      </div>
+      <div class="concrete-calc__field" data-custom-extra hidden>
+        <label for="cc-extra-custom">Custom extra (%)</label>
+        <input
+          id="cc-extra-custom"
+          name="extraCustom"
+          type="number"
+          inputmode="decimal"
+          min="0"
+          max="25"
+          step="any"
+          aria-describedby="cc-extra-error extra-assumption"
+        />
+        <p class="concrete-calc__error" id="cc-extra-error" data-error-for="extraPercent" hidden></p>
+      </div>
+      <p class="concrete-calc__hint" id="extra-assumption">
+        10% is an estimating assumption, not a universal requirement.
+      </p>
+    </fieldset>
+
+    <div class="concrete-calc__actions">
+      <button type="submit" class="btn-primary">Calculate</button>
+      <button type="button" class="btn-secondary" data-reset>Reset</button>
+    </div>
+  </form>
+
+  <div class="concrete-calc__aside">
+    <div class="concrete-calc__visual card-surface" data-visual>
+      <svg
+        class="concrete-calc__svg"
+        viewBox="0 0 320 200"
+        role="img"
+        aria-labelledby="cc-svg-title"
+        data-svg
+      >
+        <title id="cc-svg-title">Enter dimensions to preview the project shape.</title>
+        <rect width="320" height="200" fill="#f5f5f4" rx="12"></rect>
+        <text x="160" y="104" text-anchor="middle" fill="#78716c" font-size="14" font-family="system-ui,sans-serif">
+          Dimension preview
+        </text>
+      </svg>
+    </div>
+
+    <div class="concrete-calc__results card-surface" data-results aria-live="polite" aria-atomic="true">
+      <p class="concrete-calc__empty" data-empty>
+        Enter your project dimensions and press Calculate to see volume and bag estimates.
+      </p>
+      <div class="concrete-calc__result-body" data-result-body hidden></div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .concrete-calc {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 960px) {
+    .concrete-calc {
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+      align-items: start;
+      gap: 1.75rem;
+    }
+  }
+
+  .concrete-calc__form,
+  .concrete-calc__aside {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .concrete-calc__fieldset {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    min-inline-size: 0;
+  }
+
+  .concrete-calc__legend {
+    padding: 0;
+    margin-bottom: 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--color-ink);
+  }
+
+  .concrete-calc__modes,
+  .concrete-calc__extra {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .concrete-calc__mode,
+  .concrete-calc__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    border: 1px solid var(--color-border);
+    border-radius: 0.75rem;
+    background: var(--color-surface-raised);
+    padding: 0.65rem 0.85rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--color-ink);
+    cursor: pointer;
+    min-height: 2.75rem;
+  }
+
+  .concrete-calc__mode:has(input:checked),
+  .concrete-calc__chip:has(input:checked) {
+    border-color: var(--color-brand);
+    background: var(--color-brand-soft);
+  }
+
+  .concrete-calc__mode input,
+  .concrete-calc__chip input {
+    margin: 0;
+  }
+
+  .concrete-calc__row {
+    display: grid;
+    gap: 1rem;
+  }
+
+  @media (min-width: 560px) {
+    .concrete-calc__row {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .concrete-calc__field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .concrete-calc__field label {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--color-ink);
+  }
+
+  .concrete-calc__input-unit {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 4.5rem;
+    gap: 0.5rem;
+    align-items: stretch;
+  }
+
+  .concrete-calc__field input[type='number'],
+  .concrete-calc__field select {
+    width: 100%;
+    min-height: 2.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: 0.75rem;
+    background: var(--color-surface-raised);
+    padding: 0.7rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.25;
+    color: var(--color-ink);
+  }
+
+  .concrete-calc__field input[aria-invalid='true'],
+  .concrete-calc__field select[aria-invalid='true'] {
+    border-color: #b45309;
+  }
+
+  .concrete-calc__error {
+    margin: 0;
+    font-size: 0.875rem;
+    color: #92400e;
+  }
+
+  .concrete-calc__hint {
+    margin: 0.65rem 0 0;
+    font-size: 0.9rem;
+    line-height: 1.45;
+    color: var(--color-ink-muted);
+  }
+
+  .concrete-calc__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .concrete-calc__visual {
+    padding: 0.85rem;
+  }
+
+  .concrete-calc__svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .concrete-calc__results {
+    padding: 1.35rem 1.2rem;
+  }
+
+  .concrete-calc__empty {
+    margin: 0;
+    color: var(--color-ink-muted);
+    line-height: 1.5;
+  }
+
+  /*
+    Result markup is injected with client-side innerHTML.
+    Astro scoped selectors (attr on compile-time nodes) do NOT match those nodes.
+    Use :global(...) under .concrete-calc so styles actually apply at runtime.
+  */
+  .concrete-calc :global(.concrete-calc__result-body) {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .concrete-calc :global(.concrete-calc__purchase) {
+    border: 2px solid var(--color-brand);
+    border-radius: 1rem;
+    background: var(--color-brand-soft);
+    padding: 1.2rem 1.25rem 1.25rem;
+  }
+
+  .concrete-calc :global(.concrete-calc__purchase-label) {
+    margin: 0;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-brand-dark);
+  }
+
+  .concrete-calc :global(.concrete-calc__purchase-value) {
+    margin: 0.55rem 0 0;
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 6vw, 2.5rem);
+    font-weight: 700;
+    line-height: 1.05;
+    color: var(--color-ink);
+    word-break: break-word;
+  }
+
+  .concrete-calc :global(.concrete-calc__purchase-unit) {
+    font-size: 0.55em;
+    font-weight: 650;
+    letter-spacing: 0.01em;
+  }
+
+  .concrete-calc :global(.concrete-calc__purchase-note) {
+    margin: 0.5rem 0 0;
+    font-size: 0.92rem;
+    color: var(--color-ink-muted);
+  }
+
+  .concrete-calc :global(.concrete-calc__purchase-equiv) {
+    margin: 0.35rem 0 0;
+    font-size: 0.9rem;
+    color: var(--color-ink-subtle);
+  }
+
+  .concrete-calc :global(.concrete-calc__section) {
+    margin-top: 1.2rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .concrete-calc :global(.concrete-calc__section-label) {
+    margin: 0 0 0.5rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-ink-subtle);
+  }
+
+  .concrete-calc :global(.concrete-calc__section-value) {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--color-ink);
+  }
+
+  .concrete-calc :global(.concrete-calc__section-meta) {
+    margin: 0.35rem 0 0;
+    font-size: 0.95rem;
+    line-height: 1.45;
+    color: var(--color-ink-muted);
+  }
+
+  .concrete-calc :global(.concrete-calc__table-wrap) {
+    margin-top: 0.4rem;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .concrete-calc :global(.concrete-calc__table) {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    font-size: 0.95rem;
+    table-layout: fixed;
+  }
+
+  .concrete-calc :global(.concrete-calc__table th),
+  .concrete-calc :global(.concrete-calc__table td) {
+    padding: 0.8rem 0.85rem;
+    border-bottom: 1px solid var(--color-border);
+    vertical-align: middle;
+  }
+
+  .concrete-calc :global(.concrete-calc__table th) {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--color-ink-subtle);
+    white-space: normal;
+    line-height: 1.25;
+  }
+
+  .concrete-calc :global(.concrete-calc__th-lines) {
+    display: inline-block;
+    text-align: right;
+  }
+
+  .concrete-calc :global(.concrete-calc__table th:nth-child(1)),
+  .concrete-calc :global(.concrete-calc__table td:nth-child(1)) {
+    width: 28%;
+    text-align: left;
+    padding-left: 0;
+    padding-right: 1rem;
+  }
+
+  .concrete-calc :global(.concrete-calc__table th:nth-child(2)),
+  .concrete-calc :global(.concrete-calc__table td:nth-child(2)) {
+    width: 40%;
+    text-align: right;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .concrete-calc :global(.concrete-calc__table th:nth-child(3)),
+  .concrete-calc :global(.concrete-calc__table td:nth-child(3)) {
+    width: 32%;
+    text-align: right;
+    padding-left: 1rem;
+    padding-right: 0;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .concrete-calc :global(.concrete-calc__table tbody tr:last-child td) {
+    border-bottom: 0;
+  }
+
+  .concrete-calc :global(.concrete-calc__bags-value) {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+
+  .concrete-calc :global(.concrete-calc__footnote) {
+    margin: 0.9rem 0 0;
+    font-size: 0.85rem;
+    line-height: 1.45;
+    color: var(--color-ink-muted);
+  }
+
+  .concrete-calc :global(.concrete-calc__ready) {
+    margin-top: 1.2rem;
+    padding: 1rem 1.05rem;
+    border-radius: 0.85rem;
+    border: 1px solid var(--color-border);
+    background: var(--color-sand);
+  }
+
+  .concrete-calc :global(.concrete-calc__ready .concrete-calc__section-label) {
+    margin-bottom: 0.4rem;
+  }
+
+  .concrete-calc :global(.concrete-calc__ready p) {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--color-ink-muted);
+  }
+
+  .concrete-calc :global(.concrete-calc__warning) {
+    margin-top: 1rem;
+    border-radius: 0.75rem;
+    border: 1px solid var(--color-warning-border);
+    background: var(--color-warning-bg);
+    padding: 0.75rem 0.9rem;
+    font-size: 0.875rem;
+    line-height: 1.45;
+    color: var(--color-warning);
+  }
+
+  @media (max-width: 400px) {
+    .concrete-calc__input-unit {
+      grid-template-columns: minmax(0, 1fr) 4.1rem;
+      gap: 0.4rem;
+    }
+
+    .concrete-calc__results {
+      padding: 1.15rem 0.95rem;
+    }
+
+    .concrete-calc :global(.concrete-calc__table) {
+      font-size: 0.9rem;
+    }
+
+    .concrete-calc :global(.concrete-calc__table th) {
+      letter-spacing: 0.02em;
+      font-size: 0.68rem;
+    }
+
+    .concrete-calc :global(.concrete-calc__table th),
+    .concrete-calc :global(.concrete-calc__table td) {
+      padding-top: 0.7rem;
+      padding-bottom: 0.7rem;
+    }
+
+    .concrete-calc :global(.concrete-calc__table th:nth-child(1)),
+    .concrete-calc :global(.concrete-calc__table td:nth-child(1)) {
+      padding-right: 0.75rem;
+    }
+
+    .concrete-calc :global(.concrete-calc__table th:nth-child(2)),
+    .concrete-calc :global(.concrete-calc__table td:nth-child(2)) {
+      padding-left: 0.75rem;
+      padding-right: 0.75rem;
+    }
+
+    .concrete-calc :global(.concrete-calc__table th:nth-child(3)),
+    .concrete-calc :global(.concrete-calc__table td:nth-child(3)) {
+      padding-left: 0.75rem;
+    }
+
+    .concrete-calc :global(.concrete-calc__purchase-value) {
+      font-size: 2rem;
+    }
+
+    .concrete-calc :global(.concrete-calc__section) {
+      margin-top: 1.05rem;
+      padding-top: 1.05rem;
+    }
+  }
+</style>
+
+<script>
+  import {
+    calculateConcrete,
+    formatFt3,
+    formatM3,
+    formatYd3,
+    type ConcreteInput,
+    type ConcreteMode,
+    type ConcreteResult,
+  } from '../utils/concrete.ts';
+  import { fromFeet, toFeet, type LengthUnit } from '../utils/length-units.ts';
+
+  const rootEl = document.querySelector<HTMLElement>('[data-concrete-calc]');
+  if (!rootEl) {
+    // Calculator markup missing.
+  } else {
+    const root = rootEl;
+    const form = root.querySelector<HTMLFormElement>('[data-concrete-form]')!;
+    const empty = root.querySelector<HTMLElement>('[data-empty]')!;
+    const body = root.querySelector<HTMLElement>('[data-result-body]')!;
+    const svg = root.querySelector<SVGElement>('[data-svg]')!;
+    const customWrap = root.querySelector<HTMLElement>('[data-custom-extra]')!;
+    let hasResult = false;
+
+    function mode(): ConcreteMode {
+      const checked = form.querySelector<HTMLInputElement>('input[name="mode"]:checked');
+      return (checked?.value as ConcreteMode) || 'rectangle';
+    }
+
+    const MODE_HINTS: Record<ConcreteMode, string> = {
+      rectangle:
+        'Use this for slabs, pads, and other rectangular concrete volumes when you already know the required dimensions.',
+      circle:
+        'Use this for circular slabs or pads when you already know the diameter and thickness.',
+      posts:
+        'Estimate the full cylindrical volume of one or more post holes. The calculator does not subtract the volume occupied by the post.',
+    };
+
+    function syncModeHint() {
+      const hint = root.querySelector<HTMLElement>('[data-mode-hint]');
+      if (hint) hint.textContent = MODE_HINTS[mode()];
+    }
+
+    function syncPanels() {
+      const current = mode();
+      root.querySelectorAll<HTMLElement>('[data-panel]').forEach((panel) => {
+        panel.hidden = panel.dataset.panel !== current;
+      });
+      syncModeHint();
+    }
+
+    function syncExtra() {
+      const preset = form.querySelector<HTMLInputElement>('input[name="extraPreset"]:checked')?.value;
+      const isCustom = preset === 'custom';
+      customWrap.hidden = !isCustom;
+    }
+
+    function clearErrors() {
+      root.querySelectorAll<HTMLElement>('[data-error-for]').forEach((el) => {
+        el.hidden = true;
+        el.textContent = '';
+      });
+      root.querySelectorAll<HTMLElement>('[aria-invalid]').forEach((el) => {
+        el.removeAttribute('aria-invalid');
+      });
+    }
+
+    function showErrors(errors: { field: string; message: string }[]) {
+      clearErrors();
+      for (const error of errors) {
+        const nodes = root.querySelectorAll<HTMLElement>(`[data-error-for="${error.field}"]`);
+        nodes.forEach((node) => {
+          const panel = node.closest('[data-panel]');
+          if (panel instanceof HTMLElement && panel.hidden) return;
+          node.hidden = false;
+          node.textContent = error.message;
+        });
+      }
+
+      const fieldMap: Record<string, string> = {
+        length: 'cc-length',
+        width: 'cc-width',
+        thickness: mode() === 'circle' ? 'cc-thickness-circle' : 'cc-thickness-rect',
+        diameter: mode() === 'posts' ? 'cc-diameter-posts' : 'cc-diameter-circle',
+        depth: 'cc-depth',
+        holeCount: 'cc-holes',
+        extraPercent: 'cc-extra-custom',
+      };
+
+      const first = errors[0];
+      if (!first) return;
+      const id = fieldMap[first.field];
+      const target = id ? root.querySelector<HTMLElement>(`#${id}`) : null;
+      if (target && !target.closest('[hidden]')) {
+        target.setAttribute('aria-invalid', 'true');
+        target.focus();
+      }
+    }
+
+    function readNumber(name: string): number | undefined {
+      const el = form.elements.namedItem(name);
+      if (!(el instanceof HTMLInputElement)) return undefined;
+      if (el.value.trim() === '') return undefined;
+      return Number(el.value);
+    }
+
+    function readUnit(name: string): LengthUnit {
+      const el = form.elements.namedItem(name);
+      if (el instanceof HTMLSelectElement) return el.value as LengthUnit;
+      return 'ft';
+    }
+
+    function extraPercent(): number {
+      const preset = form.querySelector<HTMLInputElement>('input[name="extraPreset"]:checked')?.value;
+      if (preset === 'custom') {
+        const custom = readNumber('extraCustom');
+        return custom ?? Number.NaN;
+      }
+      return Number(preset ?? 10);
+    }
+
+    function buildInput(): ConcreteInput {
+      const current = mode();
+      const base: ConcreteInput = { mode: current, extraPercent: extraPercent() };
+      if (current === 'rectangle') {
+        return {
+          ...base,
+          length: readNumber('length'),
+          lengthUnit: readUnit('lengthUnit'),
+          width: readNumber('width'),
+          widthUnit: readUnit('widthUnit'),
+          thickness: readNumber('thicknessRect'),
+          thicknessUnit: readUnit('thicknessRectUnit'),
+        };
+      }
+      if (current === 'circle') {
+        return {
+          ...base,
+          diameter: readNumber('diameterCircle'),
+          diameterUnit: readUnit('diameterCircleUnit'),
+          thickness: readNumber('thicknessCircle'),
+          thicknessUnit: readUnit('thicknessCircleUnit'),
+        };
+      }
+      return {
+        ...base,
+        diameter: readNumber('diameterPosts'),
+        diameterUnit: readUnit('diameterPostsUnit'),
+        depth: readNumber('depth'),
+        depthUnit: readUnit('depthUnit'),
+        holeCount: readNumber('holeCount'),
+      };
+    }
+
+    function formatDim(ft: number | undefined, preferIn = false): string {
+      if (ft === undefined) return '';
+      if (preferIn || ft < 3) {
+        const inches = ft * 12;
+        const rounded = Math.abs(inches - Math.round(inches)) < 1e-9 ? String(Math.round(inches)) : inches.toFixed(2);
+        return `${rounded} in`;
+      }
+      const rounded = Math.abs(ft - Math.round(ft)) < 1e-9 ? String(Math.round(ft)) : ft.toFixed(2);
+      return `${rounded} ft`;
+    }
+
+    function renderSvg(result: ConcreteResult | null, input: ConcreteInput) {
+      const title = svg.querySelector('title');
+      if (!result) {
+        svg.innerHTML = `
+          <title id="cc-svg-title">Enter dimensions to preview the project shape.</title>
+          <rect width="320" height="200" fill="#f5f5f4" rx="12"></rect>
+          <text x="160" y="104" text-anchor="middle" fill="#78716c" font-size="14" font-family="system-ui,sans-serif">Dimension preview</text>
+        `;
+        return;
+      }
+
+      const d = result.dimensionsFt;
+      if (result.mode === 'rectangle' && d.lengthFt && d.widthFt && d.thicknessFt !== undefined) {
+        const labelL = formatDim(d.lengthFt);
+        const labelW = formatDim(d.widthFt);
+        const labelT = formatDim(d.thicknessFt, true);
+        if (title) title.textContent = `Rectangular concrete volume ${labelL} by ${labelW}, thickness ${labelT}.`;
+        svg.innerHTML = `
+          <title id="cc-svg-title">Rectangular concrete volume ${labelL} by ${labelW}, thickness ${labelT}.</title>
+          <rect width="320" height="200" fill="#f8fafc" rx="12"></rect>
+          <rect x="70" y="45" width="180" height="110" fill="#e8eef5" stroke="#1e3a5f" stroke-width="2"></rect>
+          <text x="160" y="38" text-anchor="middle" fill="#1c1917" font-size="13" font-family="system-ui,sans-serif">${labelL}</text>
+          <text x="55" y="105" text-anchor="end" fill="#1c1917" font-size="13" font-family="system-ui,sans-serif">${labelW}</text>
+          <text x="160" y="180" text-anchor="middle" fill="#44403c" font-size="13" font-family="system-ui,sans-serif">Thickness ${labelT}</text>
+        `;
+        return;
+      }
+
+      if (result.mode === 'circle' && d.diameterFt && d.thicknessFt !== undefined) {
+        const labelD = formatDim(d.diameterFt);
+        const labelT = formatDim(d.thicknessFt, true);
+        if (title) title.textContent = `Circular concrete pad diameter ${labelD}, thickness ${labelT}.`;
+        svg.innerHTML = `
+          <title id="cc-svg-title">Circular concrete pad diameter ${labelD}, thickness ${labelT}.</title>
+          <rect width="320" height="200" fill="#f8fafc" rx="12"></rect>
+          <circle cx="160" cy="95" r="55" fill="#e8eef5" stroke="#1e3a5f" stroke-width="2"></circle>
+          <line x1="105" y1="95" x2="215" y2="95" stroke="#1e3a5f" stroke-width="1.5" stroke-dasharray="4 3"></line>
+          <text x="160" y="30" text-anchor="middle" fill="#1c1917" font-size="13" font-family="system-ui,sans-serif">Diameter ${labelD}</text>
+          <text x="160" y="180" text-anchor="middle" fill="#44403c" font-size="13" font-family="system-ui,sans-serif">Thickness ${labelT}</text>
+        `;
+        return;
+      }
+
+      if (result.mode === 'posts' && d.diameterFt && d.depthFt && d.holeCount) {
+        const labelD = formatDim(d.diameterFt, true);
+        const labelDepth = formatDim(d.depthFt, true);
+        if (title) {
+          title.textContent = `${d.holeCount} cylindrical post holes, diameter ${labelD}, depth ${labelDepth}.`;
+        }
+        svg.innerHTML = `
+          <title id="cc-svg-title">${d.holeCount} cylindrical post holes, diameter ${labelD}, depth ${labelDepth}.</title>
+          <rect width="320" height="200" fill="#f8fafc" rx="12"></rect>
+          <ellipse cx="160" cy="48" rx="36" ry="12" fill="#e8eef5" stroke="#1e3a5f" stroke-width="2"></ellipse>
+          <path d="M124 48 V140" fill="none" stroke="#1e3a5f" stroke-width="2"></path>
+          <path d="M196 48 V140" fill="none" stroke="#1e3a5f" stroke-width="2"></path>
+          <ellipse cx="160" cy="140" rx="36" ry="12" fill="#e8eef5" stroke="#1e3a5f" stroke-width="2"></ellipse>
+          <text x="160" y="28" text-anchor="middle" fill="#1c1917" font-size="13" font-family="system-ui,sans-serif">Ø ${labelD}</text>
+          <text x="210" y="100" fill="#1c1917" font-size="13" font-family="system-ui,sans-serif">${labelDepth}</text>
+          <text x="160" y="180" text-anchor="middle" fill="#44403c" font-size="13" font-family="system-ui,sans-serif">× ${d.holeCount} holes</text>
+        `;
+      }
+
+      void input;
+    }
+
+    function renderResult(result: ConcreteResult) {
+      empty.hidden = true;
+      body.hidden = false;
+      const bagsRows = result.bags
+        .map(
+          (bag) => `
+          <tr>
+            <td>${bag.label}</td>
+            <td>${bag.yieldFt3.toFixed(3)} ft³</td>
+            <td><span class="concrete-calc__bags-value">${bag.bags}</span></td>
+          </tr>`,
+        )
+        .join('');
+
+      const warnings = result.warnings
+        .map((w) => `<p class="concrete-calc__warning">${w}</p>`)
+        .join('');
+
+      body.innerHTML = `
+        <div class="concrete-calc__purchase">
+          <p class="concrete-calc__purchase-label">Estimated amount to purchase</p>
+          <p class="concrete-calc__purchase-value">${formatYd3(result.purchaseYd3)} <span class="concrete-calc__purchase-unit">yd³</span></p>
+          <p class="concrete-calc__purchase-note">Includes ${result.extraPercent}% extra</p>
+          <p class="concrete-calc__purchase-equiv">${formatFt3(result.purchaseFt3)} ft³ · ${formatM3(result.purchaseM3)} m³</p>
+        </div>
+
+        <section class="concrete-calc__section" aria-labelledby="cc-calc-volume-label">
+          <h3 class="concrete-calc__section-label" id="cc-calc-volume-label">Calculated volume</h3>
+          <p class="concrete-calc__section-value">${formatYd3(result.rawYd3)} yd³</p>
+          <p class="concrete-calc__section-meta">${formatFt3(result.rawFt3)} ft³ · ${formatM3(result.rawM3)} m³</p>
+        </section>
+
+        <section class="concrete-calc__section" aria-labelledby="cc-extra-label">
+          <h3 class="concrete-calc__section-label" id="cc-extra-label">Extra material</h3>
+          <p class="concrete-calc__section-value">${result.extraPercent}%</p>
+          <p class="concrete-calc__section-meta">+${formatYd3(result.extraYd3)} yd³</p>
+        </section>
+
+        <section class="concrete-calc__section" aria-labelledby="cc-bags-label">
+          <h3 class="concrete-calc__section-label" id="cc-bags-label">Bag comparison</h3>
+          <div class="concrete-calc__table-wrap">
+            <table class="concrete-calc__table">
+              <caption class="sr-only">Bags to buy by bag size using purchase volume</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Bag size</th>
+                  <th scope="col"><span class="concrete-calc__th-lines">Approx.<br />yield</span></th>
+                  <th scope="col"><span class="concrete-calc__th-lines">Bags to<br />buy</span></th>
+                </tr>
+              </thead>
+              <tbody>${bagsRows}</tbody>
+            </table>
+          </div>
+          <p class="concrete-calc__footnote">
+            These bag counts use the approximate yields published for QUIKRETE Concrete Mix #1101.
+            Concrete products can have different yields, so confirm the label on the product you buy.
+          </p>
+        </section>
+
+        <section class="concrete-calc__ready" aria-labelledby="cc-ready-label">
+          <h3 class="concrete-calc__section-label" id="cc-ready-label">Ready-mix</h3>
+          <p>
+            Compare the cubic-yard estimate with the bag counts above. Larger pours are often ordered as
+            ready-mix; local suppliers may have minimum orders and delivery fees.
+          </p>
+        </section>
+        ${warnings}
+      `;
+    }
+
+    function clearResult() {
+      hasResult = false;
+      empty.hidden = false;
+      body.hidden = true;
+      body.innerHTML = '';
+      renderSvg(null, buildInput());
+    }
+
+    function runCalculate({ focusOnError }: { focusOnError: boolean }) {
+      const input = buildInput();
+      const out = calculateConcrete(input);
+      if (!out.ok) {
+        if (focusOnError) showErrors(out.errors);
+        else clearErrors();
+        return false;
+      }
+      clearErrors();
+      hasResult = true;
+      renderResult(out.result);
+      renderSvg(out.result, input);
+      return true;
+    }
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      runCalculate({ focusOnError: true });
+    });
+
+    form.querySelectorAll<HTMLInputElement>('input[name="mode"]').forEach((input) => {
+      input.addEventListener('change', () => {
+        syncPanels();
+        clearErrors();
+        // Dimensions/mode changes require Calculate again (least confusing while typing).
+      });
+    });
+
+    form.querySelectorAll<HTMLInputElement>('input[name="extraPreset"]').forEach((input) => {
+      input.addEventListener('change', () => {
+        syncExtra();
+        if (hasResult) runCalculate({ focusOnError: false });
+      });
+    });
+
+    form.querySelector<HTMLInputElement>('#cc-extra-custom')?.addEventListener('input', () => {
+      if (hasResult) runCalculate({ focusOnError: false });
+    });
+
+    // Convert displayed value when unit changes (keep physical length stable).
+    function wireUnitConversion(valueName: string, unitName: string) {
+      const valueEl = form.elements.namedItem(valueName);
+      const unitEl = form.elements.namedItem(unitName);
+      if (!(valueEl instanceof HTMLInputElement) || !(unitEl instanceof HTMLSelectElement)) return;
+      let previousUnit = unitEl.value as LengthUnit;
+      unitEl.addEventListener('change', () => {
+        const next = unitEl.value as LengthUnit;
+        if (valueEl.value.trim() !== '') {
+          const n = Number(valueEl.value);
+          if (Number.isFinite(n) && n > 0) {
+            const ft = toFeet(n, previousUnit);
+            const converted = fromFeet(ft, next);
+            valueEl.value = String(Number(converted.toPrecision(10)));
+          }
+        }
+        previousUnit = next;
+      });
+    }
+
+    wireUnitConversion('length', 'lengthUnit');
+    wireUnitConversion('width', 'widthUnit');
+    wireUnitConversion('thicknessRect', 'thicknessRectUnit');
+    wireUnitConversion('diameterCircle', 'diameterCircleUnit');
+    wireUnitConversion('thicknessCircle', 'thicknessCircleUnit');
+    wireUnitConversion('diameterPosts', 'diameterPostsUnit');
+    wireUnitConversion('depth', 'depthUnit');
+
+    root.querySelector('[data-reset]')?.addEventListener('click', () => {
+      form.reset();
+      // Ensure defaults after reset
+      const rect = form.querySelector<HTMLInputElement>('input[name="mode"][value="rectangle"]');
+      if (rect) rect.checked = true;
+      const ten = form.querySelector<HTMLInputElement>('input[name="extraPreset"][value="10"]');
+      if (ten) ten.checked = true;
+      syncPanels();
+      syncExtra();
+      clearErrors();
+      clearResult();
+    });
+
+    syncPanels();
+    syncExtra();
+    clearResult();
+  }
+</script>

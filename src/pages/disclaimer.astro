@@ -9,12 +9,18 @@ import { SITE_NAME } from '../config/site';
   path="/disclaimer"
 >
   <p>
-    Articles and tools on this demo site are <strong>sample starter content</strong> meant to prove the architecture.
-    They are not professional advice for any regulated niche.
+    Calculators and articles on {SITE_NAME} provide <strong>planning estimates only</strong>. They help
+    homeowners and DIYers think through material quantities, waste allowance, and related conversions.
   </p>
   <p>
-    When you launch a real site, rewrite this disclaimer for your domain (medical, financial, legal, DIY safety, etc.)
-    and align it with your review/risk taxonomy in <code>src/config/review.ts</code>.
+    They are not structural engineering, building-code approval, electrical or plumbing design,
+    architectural plans, product testing, real-time pricing, or professional contractor estimates.
+    Local codes, permits, HOA rules, climate, substrate conditions, and manufacturer instructions may
+    change what your project requires.
+  </p>
+  <p>
+    Align page-level review callouts with <code>src/config/review.ts</code> when publishing technical
+    content.
   </p>
   <p class="rounded-xl border border-warning-border bg-warning-bg p-4 text-sm text-warning">
     Requires review: do not invent affiliate status, certifications, or jurisdiction-specific warnings here.

@@ -1,6 +1,6 @@
 /**
- * Generic review / risk taxonomy for article callouts.
- * Redesign values and copy for each niche — do not reuse domain-specific safety models.
+ * Review / risk taxonomy for article and tool callouts.
+ * Levels are reusable; copy is tuned for home-project planning estimates.
  */
 export const REVIEW_LEVELS = ['none', 'general', 'caution', 'professional'] as const;
 
@@ -12,16 +12,16 @@ export const REVIEW_COPY: Record<
 > = {
   none: null,
   general: {
-    title: 'General note',
-    body: 'This page is informational. Confirm details against primary sources for your situation before acting.',
+    title: 'Planning estimate',
+    body: 'This page helps with DIY planning math. Confirm measurements, package labels, and site conditions before you buy or install.',
   },
   caution: {
-    title: 'Use caution',
-    body: 'This topic can have meaningful downsides if handled incorrectly. Prefer conservative steps and verify with authoritative guidance for your niche.',
+    title: 'Check assumptions carefully',
+    body: 'Wrong dimensions, coverage rates, or waste factors can waste material or leave you short. Treat defaults as starting assumptions and verify against manufacturer instructions for your product.',
   },
   professional: {
     title: 'Professional help recommended',
-    body: 'This topic typically requires a qualified professional. Do not treat this page as a substitute for licensed advice or hands-on expertise.',
+    body: 'This topic can involve structural, electrical, plumbing, code, or other safety-critical decisions. Do not treat this page as engineering advice, code approval, or a substitute for a qualified professional.',
   },
 };
 

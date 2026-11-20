@@ -21,21 +21,31 @@ export async function getAllArticles({
   includeDrafts?: boolean;
   includeNoindex?: boolean;
 } = {}): Promise<ArticleEntry[]> {
-  const articles = await getCollection('articles');
-  return articles
-    .filter((article) => {
-      if (!includeDrafts && article.data.draft) return false;
-      if (!includeNoindex && article.data.noindex) return false;
-      return true;
-    })
-    .sort((a, b) => b.data.publishedDate.valueOf() - a.data.publishedDate.valueOf());
+  try {
+    const articles = await getCollection('articles');
+    return articles
+      .filter((article) => {
+        if (!includeDrafts && article.data.draft) return false;
+        if (!includeNoindex && article.data.noindex) return false;
+        return true;
+      })
+      .sort((a, b) => b.data.publishedDate.valueOf() - a.data.publishedDate.valueOf());
+  } catch {
+    // Astro may throw when the articles collection has zero matching files.
+    return [];
+  }
 }
 
 export async function getIndexableArticles(): Promise<ArticleEntry[]> {
-  const articles = await getCollection('articles');
-  return articles
-    .filter(isIndexableArticle)
-    .sort((a, b) => b.data.publishedDate.valueOf() - a.data.publishedDate.valueOf());
+  try {
+    const articles = await getCollection('articles');
+    return articles
+      .filter(isIndexableArticle)
+      .sort((a, b) => b.data.publishedDate.valueOf() - a.data.publishedDate.valueOf());
+  } catch {
+    // Astro may throw when the articles collection has zero matching files.
+    return [];
+  }
 }
 
 export async function getArticlesByCategory(

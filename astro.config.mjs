@@ -3,7 +3,7 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 import { SITE_URL } from './src/config/site.ts';
-import { NOINDEX_PATHS } from './src/config/indexing.ts';
+import { shouldOmitFromSitemap } from './src/utils/sitemap-exclusions.ts';
 
 // https://astro.build/config
 export default defineConfig({
@@ -13,10 +13,7 @@ export default defineConfig({
     sitemap({
       filter: (page) => {
         const pathname = new URL(page).pathname.replace(/\/$/, '') || '/';
-        if (NOINDEX_PATHS.has(pathname)) return false;
-        if (pathname === '/search-index.json') return false;
-        if (pathname === '/robots.txt') return false;
-        return true;
+        return !shouldOmitFromSitemap(pathname);
       },
     }),
   ],

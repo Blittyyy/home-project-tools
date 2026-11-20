@@ -173,6 +173,37 @@ for (const file of htmlFiles) {
     if (!/noindex/i.test(html)) errors.push('/404 should be noindex');
   }
 
+  // Empty article category hubs and empty calculators hub must stay noindex.
+  const categoryHubRoutes = ['/projects', '/materials', '/guides'];
+  if (categoryHubRoutes.includes(route)) {
+    const hasIndexableInCategory = indexableArticleRoutes.some((articleRoute) =>
+      articleRoute.startsWith(`${route}/`),
+    );
+    if (!hasIndexableInCategory) {
+      if (!/noindex/i.test(html)) {
+        errors.push(`${route}: empty category hub should be noindex`);
+      }
+      if (sitemapPaths.has(route)) {
+        errors.push(`${route}: empty category hub should be omitted from sitemap`);
+      }
+    }
+  }
+
+  if (route === '/calculators') {
+    const hasCalculatorPage = htmlFiles.some((f) => {
+      const r = routeFromFile(f);
+      return r.startsWith('/calculators/') && r !== '/calculators';
+    });
+    if (!hasCalculatorPage) {
+      if (!/noindex/i.test(html)) {
+        errors.push('/calculators: hub with no available tools should be noindex');
+      }
+      if (sitemapPaths.has('/calculators')) {
+        errors.push('/calculators: empty tools hub should be omitted from sitemap');
+      }
+    }
+  }
+
   if (/https?:\/\/localhost/i.test(html)) {
     errors.push(`${route}: contains localhost URL`);
   }

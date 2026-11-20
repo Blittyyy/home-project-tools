@@ -1,5 +1,5 @@
 {
-  "name": "seo-site-starter",
+  "name": "home-project-tools",
   "type": "module",
   "version": "0.1.0",
   "private": true,
@@ -13,7 +13,8 @@
     "check": "astro check",
     "astro": "astro",
     "test": "npm run test:tools",
-    "test:tools": "node --experimental-strip-types scripts/test-rectangle-area.mjs",
+    "test:tools": "npm run test:concrete",
+    "test:concrete": "node --experimental-strip-types scripts/test-concrete.mjs",
     "validate:content": "node scripts/validate-content.mjs",
     "validate:links": "node scripts/validate-links.mjs",
     "validate:seo": "node scripts/validate-seo.mjs",

@@ -1,15 +1,16 @@
 /**
- * Central site identity — edit this file first when configuring a new niche.
+ * Central site identity — temporary working labels until a final brand is chosen.
  * Keep SITE_URL in sync with Astro `site` (imported by astro.config.mjs).
+ * Do not invent entity, address, monitored email, or production domain here.
  */
-export const SITE_NAME = 'Site Starter';
-export const SITE_TAGLINE = 'A reusable starter for niche SEO content sites.';
+export const SITE_NAME = 'Home Project Tools';
+export const SITE_TAGLINE = 'Plan your project before you buy materials.';
 export const SITE_URL = 'https://example.com';
 export const SITE_DESCRIPTION =
-  'Neutral demo site for the SEO site starter. Replace this description when you configure a real niche.';
+  'Planning utilities for homeowners and DIYers: estimate material quantities, waste allowance, unit conversions, and package counts for home improvement projects.';
 
 /** Default byline for articles and About page. */
-export const SITE_AUTHOR = 'Site Starter Editorial Team';
+export const SITE_AUTHOR = 'Home Project Tools Editorial';
 
 /**
  * Contact email placeholder — replace before launch.
@@ -29,14 +30,16 @@ export const ORGANIZATION = {
 } as const;
 
 /** Footer blurb shown sitewide. */
-export const FOOTER_BLURB = `${SITE_NAME} is a demo starter awaiting your niche branding, categories, and content. Contact: ${CONTACT_EMAIL}.`;
+export const FOOTER_BLURB = `${SITE_NAME} helps homeowners and DIYers estimate materials for home projects. Planning estimates only — not engineering, code approval, or contractor bids. Contact: ${CONTACT_EMAIL}.`;
 
 /**
  * Suggested search chips on /search.
- * Replace with niche phrases that match published content.
+ * Replace with phrases that match published content as articles ship.
  */
 export const SEARCH_SUGGESTIONS = [
-  'getting started',
-  'how to configure',
-  'content checklist',
+  'concrete',
+  'paint',
+  'mulch',
+  'gravel',
+  'tile',
 ] as const;

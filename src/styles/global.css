@@ -1,8 +1,8 @@
 @import 'tailwindcss';
 
 /*
-  Neutral starter design tokens.
-  Replace these when branding a real niche — intentionally plain.
+  Temporary design tokens until final branding is chosen.
+  Intentionally plain — not a finished brand system.
 */
 @theme {
   --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue',
@@ -121,6 +121,18 @@
   .card-surface {
     @apply rounded-2xl border border-border bg-surface-raised p-5 shadow-sm;
   }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .skip-link {

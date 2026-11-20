@@ -1,13 +1,38 @@
 /**
  * Calculator / tool registry for the calculators hub.
  * Add new tools here after implementing util → component → page → tests.
+ * Coming-soon entries are hub cards only — they must not create tool routes.
  */
+
+export const TOOL_GROUPS = [
+  'concrete-masonry',
+  'paint-walls',
+  'flooring-tile',
+  'landscaping',
+  'decks-fences',
+  'lumber-wood',
+  'general-measurements',
+] as const;
+
+export type ToolGroup = (typeof TOOL_GROUPS)[number];
+
+export const TOOL_GROUP_LABELS: Record<ToolGroup, string> = {
+  'concrete-masonry': 'Concrete & Masonry',
+  'paint-walls': 'Paint & Walls',
+  'flooring-tile': 'Flooring & Tile',
+  landscaping: 'Landscaping',
+  'decks-fences': 'Decks & Fences',
+  'lumber-wood': 'Lumber & Wood',
+  'general-measurements': 'General Measurements',
+};
+
 export type ToolStatus = 'available' | 'coming-soon';
 
 export interface ToolDefinition {
   slug: string;
   name: string;
   description: string;
+  group: ToolGroup;
   /** Only used when status is `available`. Coming-soon cards do not link. */
   href: string;
   status: ToolStatus;
@@ -16,25 +41,57 @@ export interface ToolDefinition {
 export const CALCULATORS_HUB = {
   title: 'Calculators',
   description:
-    'Simple client-side calculators and planning tools. Demo hub for the SEO site starter.',
-  lede: 'Client-side tools that stay in the browser. Replace the demo calculator when your niche has accurate formulas.',
+    'Material and project planning calculators for homeowners and DIYers. Estimate quantities, waste allowance, and package counts before you buy.',
+  lede: 'Client-side planning tools that stay in your browser. Results are estimates for shopping and planning — not engineering, code approval, or contractor bids.',
 } as const;
 
+/**
+ * Coming-soon entries are hub cards only — they must not create tool routes.
+ * Available tools must point at a real calculator page.
+ */
 export const tools: ToolDefinition[] = [
   {
-    slug: 'rectangle-area',
-    name: 'Rectangle Area Calculator',
+    slug: 'concrete-calculator',
+    name: 'Concrete Calculator',
     description:
-      'Estimate the area of a rectangle from width, height, and unit. Harmless demo tool for the starter architecture.',
-    href: '/calculators/rectangle-area',
+      'Estimate concrete volume in cubic yards and bags for slabs, circular pads, and post holes.',
+    group: 'concrete-masonry',
+    href: '/calculators/concrete-calculator',
     status: 'available',
   },
   {
-    slug: 'coming-soon-demo',
-    name: 'Coming Soon Demo Tool',
+    slug: 'gravel',
+    name: 'Gravel Calculator',
     description:
-      'Placeholder card showing how future tools appear on the hub before they ship.',
-    // Not linked by ToolCard while status is coming-soon (safe non-route sentinel).
+      'Estimate gravel volume and weight for paths, bases, and beds from area and depth.',
+    group: 'landscaping',
+    href: '#coming-soon',
+    status: 'coming-soon',
+  },
+  {
+    slug: 'mulch',
+    name: 'Mulch Calculator',
+    description:
+      'Estimate mulch volume and bags from bed area and depth, with waste allowance.',
+    group: 'landscaping',
+    href: '#coming-soon',
+    status: 'coming-soon',
+  },
+  {
+    slug: 'paint',
+    name: 'Paint Calculator',
+    description:
+      'Estimate paint gallons from wall area, openings, coats, and coverage rate.',
+    group: 'paint-walls',
+    href: '#coming-soon',
+    status: 'coming-soon',
+  },
+  {
+    slug: 'tile',
+    name: 'Tile Calculator',
+    description:
+      'Estimate tile quantity and boxes from area, tile size, and waste allowance.',
+    group: 'flooring-tile',
     href: '#coming-soon',
     status: 'coming-soon',
   },
@@ -46,4 +103,12 @@ export function getAvailableTools(): ToolDefinition[] {
 
 export function hasAvailableTools(): boolean {
   return getAvailableTools().length > 0;
+}
+
+export function getToolsByGroup(group: ToolGroup): ToolDefinition[] {
+  return tools.filter((tool) => tool.group === group);
+}
+
+export function getToolGroupLabel(group: ToolGroup): string {
+  return TOOL_GROUP_LABELS[group];
 }

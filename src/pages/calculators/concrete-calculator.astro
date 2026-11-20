@@ -1,0 +1,181 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import ConcreteCalculator from '../../components/ConcreteCalculator.astro';
+import { webApplicationSchema, breadcrumbSchema } from '../../utils/schema';
+import { CALCULATORS_HUB } from '../../data/tools';
+
+const path = '/calculators/concrete-calculator';
+const title = 'Concrete Calculator: Cubic Yards & Bag Calculator';
+const description =
+  'Estimate how much concrete you need in cubic yards, cubic feet, and bags. Calculate slabs, circular pads, and post holes with adjustable extra material.';
+
+const crumbs = [
+  { label: 'Home', href: '/' },
+  { label: CALCULATORS_HUB.title, href: '/calculators' },
+  { label: 'Concrete Calculator' },
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  path={path}
+  schema={[
+    webApplicationSchema({
+      name: 'Concrete Calculator',
+      description,
+      path,
+    }),
+    breadcrumbSchema(crumbs),
+  ]}
+>
+  <div class="container-site section-space">
+    <Breadcrumbs items={crumbs} />
+
+    <header class="mt-6 max-w-3xl">
+      <h1 class="section-heading">Concrete Calculator</h1>
+      <p class="section-lede">
+        Estimate concrete volume in cubic yards and cubic feet, then see how many bags to buy for slabs,
+        circular pads, and post holes. Enter your own dimensions — this tool does not choose thickness or
+        footing size for you.
+      </p>
+    </header>
+
+    <div class="mt-10">
+      <ConcreteCalculator />
+    </div>
+
+    <p class="concrete-page__disclaimer mt-8 max-w-3xl">
+      This calculator estimates concrete volume and bag counts from the dimensions you enter. It does not
+      determine slab thickness, footing size, concrete strength (PSI), reinforcement, structural suitability,
+      or building-code compliance. Confirm bag yields on the product you buy and follow local codes and
+      manufacturer instructions.
+    </p>
+
+    <article class="prose-article concrete-page__copy mt-14 max-w-3xl">
+      <h2>How the concrete calculation works</h2>
+      <p>
+        The calculator converts your dimensions to feet, then computes volume in cubic feet. Rectangular
+        projects use length × width × thickness. Circular pads and post holes use the cylinder formula
+        π × radius² × depth. Cubic yards are cubic feet ÷ 27. Extra material is applied as a percentage on
+        top of that calculated volume. Bag counts divide the purchase volume by each bag’s approximate yield
+        and round <strong>up</strong> to whole bags.
+      </p>
+
+      <h2>Concrete bag yields</h2>
+      <p>
+        Bag counts in the results use approximate yields published for QUIKRETE Concrete Mix #1101:
+      </p>
+      <ul>
+        <li>40 lb ≈ 0.30 ft³</li>
+        <li>50 lb ≈ 0.375 ft³</li>
+        <li>60 lb ≈ 0.45 ft³</li>
+        <li>80 lb ≈ 0.60 ft³</li>
+      </ul>
+      <p>
+        Other concrete products can yield differently. Always confirm the yield printed on the bag you purchase.
+      </p>
+
+      <h2>How much extra concrete should you plan for?</h2>
+      <p>
+        Ready-mix industry guidance from the National Ready Mixed Concrete Association discusses ordering
+        about 4–10% more than a plan-dimension estimate to cover contingencies such as waste and
+        over-excavation. Sakrete’s calculator guidance recommends adding about 10% when estimating bagged
+        jobs. This tool defaults to 10% as an editable estimating assumption — not a requirement. You can
+        set 0%, 5%, 10%, or a custom value up to 25%.
+      </p>
+
+      <h2>Bags vs ready-mix</h2>
+      <p>
+        Compare the cubic-yard estimate with the bag counts. Larger pours are often ordered as ready-mix.
+        Local suppliers may have minimum orders and delivery fees. This calculator does not set a universal
+        cutoff between bags and a truck.
+      </p>
+
+      <h2>Example calculations</h2>
+      <h3>10 × 10 ft slab, 4 in thick, 10% extra</h3>
+      <p>
+        Calculated volume ≈ 1.23 yd³ (33.33 ft³). With 10% extra ≈ 1.36 yd³. About 62 of the 80 lb bags using
+        the #1101 yield table.
+      </p>
+      <h3>12 × 16 ft slab, 4 in thick, 10% extra</h3>
+      <p>
+        Calculated volume ≈ 2.37 yd³ (64 ft³). With 10% extra ≈ 2.61 yd³. About 118 of the 80 lb bags.
+      </p>
+      <h3>Four post holes, 12 in diameter × 36 in deep, 10% extra</h3>
+      <p>
+        Full cylindrical hole volume ≈ 0.35 yd³ before extra. With 10% extra, about 18 of the 80 lb bags.
+        Post volume is not subtracted.
+      </p>
+
+      <h2>Frequently asked questions</h2>
+      <h3>How do I calculate cubic yards of concrete?</h3>
+      <p>
+        Convert all dimensions to feet, multiply to get cubic feet, then divide by 27. This calculator does
+        that conversion for you and also shows cubic meters.
+      </p>
+      <h3>How many 80 lb bags are in one cubic yard?</h3>
+      <p>
+        Using the 0.60 ft³ approximate yield for an 80 lb QUIKRETE Concrete Mix bag, one cubic yard is about
+        45 bags before extra material (27 ÷ 0.60).
+      </p>
+      <h3>Should I add extra concrete?</h3>
+      <p>
+        Many estimators add a contingency for uneven subgrade, spillage, and measurement variance. Industry
+        ready-mix guidance often cites a 4–10% range. Use the control that matches your situation, or 0% if
+        you only want the raw geometric volume.
+      </p>
+      <h3>Can I use this calculator for post holes?</h3>
+      <p>
+        Yes. Choose Post holes, enter hole diameter, depth, and count. Results use the full cylinder volume
+        and do not subtract the post.
+      </p>
+      <h3>Does this calculator tell me how thick a slab should be?</h3>
+      <p>
+        No. You enter the thickness you already plan to use. Thickness, reinforcement, and strength selection
+        are outside the scope of this quantity tool.
+      </p>
+
+      <h2>Sources</h2>
+      <ul>
+        <li>
+          <a href="https://www.quikrete.com/pdfs/data_sheet-concrete%20mix%201101.pdf" rel="noopener noreferrer">
+            QUIKRETE Concrete Mix #1101 data sheet
+          </a>
+          — approximate bag yields
+        </li>
+        <li>
+          <a href="https://www.nrmca.org/wp-content/uploads/2021/01/31pr.pdf" rel="noopener noreferrer">
+            NRMCA CIP 31 — Ordering Ready Mixed Concrete
+          </a>
+          — 4–10% contingency guidance when ordering ready-mix
+        </li>
+        <li>
+          <a href="https://www.sakrete.com/concrete-calculators/" rel="noopener noreferrer">
+            Sakrete Concrete Calculators
+          </a>
+          — manufacturer estimating tip to add about 10%
+        </li>
+      </ul>
+    </article>
+  </div>
+</BaseLayout>
+
+<style>
+  .concrete-page__disclaimer {
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: var(--color-ink-muted);
+  }
+
+  .concrete-page__copy {
+    font-size: 1rem;
+    line-height: 1.65;
+    color: var(--color-ink-muted);
+  }
+
+  .concrete-page__copy :where(h2, h3) {
+    color: var(--color-ink);
+  }
+</style>

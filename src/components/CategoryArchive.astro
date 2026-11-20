@@ -18,6 +18,8 @@ interface Props {
 const { category, articles, queryNoindex = false } = Astro.props;
 const meta = categoryMeta[category];
 const groups = groupBySubcategory(articles);
+const emptyHub = articles.length === 0;
+const noindex = queryNoindex || emptyHub;
 const schema = categoryHubSchema(category, meta.href);
 ---
 
@@ -25,7 +27,7 @@ const schema = categoryHubSchema(category, meta.href);
   title={meta.label}
   description={meta.description}
   path={meta.href}
-  noindex={queryNoindex}
+  noindex={noindex}
   schema={[schema]}
 >
   <div class="container-site section-space">
@@ -36,8 +38,11 @@ const schema = categoryHubSchema(category, meta.href);
     </header>
 
     {
-      articles.length === 0 ? (
-        <p class="mt-10 text-ink-muted">No published articles in this category yet.</p>
+      emptyHub ? (
+        <p class="mt-10 text-ink-muted">
+          No published articles in this category yet. Calculators are the primary tools on this site;
+          project, material, and how-to guides will appear here as they are published.
+        </p>
       ) : (
         <div class="mt-10 space-y-12">
           {groups.map((group) => (

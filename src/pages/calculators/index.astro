@@ -2,7 +2,14 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ToolCard from '../../components/ToolCard.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
-import { CALCULATORS_HUB, tools, hasAvailableTools } from '../../data/tools';
+import {
+  CALCULATORS_HUB,
+  TOOL_GROUPS,
+  TOOL_GROUP_LABELS,
+  tools,
+  hasAvailableTools,
+  type ToolGroup,
+} from '../../data/tools';
 import { SITE_NAME, SITE_URL } from '../../config/site';
 import { absoluteUrl } from '../../utils/seo';
 
@@ -19,6 +26,12 @@ const schema = {
     url: SITE_URL,
   },
 };
+
+const grouped = TOOL_GROUPS.map((group: ToolGroup) => ({
+  group,
+  label: TOOL_GROUP_LABELS[group],
+  tools: tools.filter((tool) => tool.group === group),
+})).filter((section) => section.tools.length > 0);
 ---
 
 <BaseLayout
@@ -33,9 +46,29 @@ const schema = {
     <header class="mt-6 max-w-3xl">
       <h1 class="section-heading">{CALCULATORS_HUB.title}</h1>
       <p class="section-lede">{CALCULATORS_HUB.lede}</p>
+      {
+        noindex && (
+          <p class="mt-4 text-sm text-ink-muted">
+            Calculators listed below are coming soon. No live tools are available yet.
+          </p>
+        )
+      }
     </header>
-    <div class="mt-10 grid gap-4 sm:grid-cols-2">
-      {tools.map((tool) => <ToolCard tool={tool} />)}
+    <div class="mt-10 space-y-12">
+      {
+        grouped.map((section) => (
+          <section aria-labelledby={`group-${section.group}`}>
+            <h2 id={`group-${section.group}`} class="font-display text-2xl font-semibold text-ink">
+              {section.label}
+            </h2>
+            <div class="mt-5 grid gap-4 sm:grid-cols-2">
+              {section.tools.map((tool) => (
+                <ToolCard tool={tool} />
+              ))}
+            </div>
+          </section>
+        ))
+      }
     </div>
   </div>
 </BaseLayout>

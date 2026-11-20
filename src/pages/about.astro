@@ -5,23 +5,30 @@ import { CONTACT_EMAIL, SITE_AUTHOR, SITE_NAME, SITE_TAGLINE } from '../config/s
 
 <PageLayout
   title="About"
-  description={`About ${SITE_NAME} — editorial purpose and how this demo starter is meant to be customized.`}
+  description={`About ${SITE_NAME} — planning utilities for home improvement projects.`}
   path="/about"
 >
   <p slot="lede" class="section-lede">{SITE_TAGLINE}</p>
 
   <p>
-    <strong>{SITE_NAME}</strong> is the default brand for this reusable SEO site starter. Replace the name,
-    positioning, and author model before launching a real niche site.
+    <strong>{SITE_NAME}</strong> is a utility site for homeowners and DIYers who want to plan material
+    purchases before they start a project. The focus is calculators that estimate quantities, waste
+    allowance, unit conversions, and package counts.
+  </p>
+  <p>
+    Results are planning estimates. They are not structural engineering, building-code approval,
+    electrical or plumbing design, architectural plans, or professional contractor bids.
   </p>
   <p>
     Editorial byline currently uses <strong>{SITE_AUTHOR}</strong>. Update that string in
-    <code>src/config/site.ts</code> and on individual articles.
+    <code>src/config/site.ts</code> and on individual articles when a final author model is set.
   </p>
   <p>
-    Contact placeholder: <strong>{CONTACT_EMAIL}</strong> — marked for review; do not invent a real inbox or legal entity here.
+    Contact placeholder: <strong>{CONTACT_EMAIL}</strong> — marked for review; do not invent a real inbox
+    or legal entity here.
   </p>
   <p class="rounded-xl border border-warning-border bg-warning-bg p-4 text-sm text-warning">
-    Values marked for review on legal pages are intentionally incomplete until a human completes the niche setup template.
+    Values marked for review are intentionally incomplete until a human supplies brand, contact, and legal
+    details.
   </p>
 </PageLayout>
