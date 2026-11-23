@@ -18,8 +18,38 @@ const availableTools = getAvailableTools();
 const featuredPool = await getFeaturedArticles(1);
 const allArticles = await getIndexableArticles();
 const featured = featuredPool[0] ?? allArticles[0];
-const sideStories = allArticles.filter((article) => article.id !== featured?.id).slice(0, 4);
-const latestArticles = allArticles.slice(0, 4);
+
+/** Prefer topic mix (concrete + paint, etc.) instead of date-only latest strip. */
+function pickMixedArticles(
+  articles: typeof allArticles,
+  excludeId: string | undefined,
+  limit: number,
+) {
+  const pool = articles.filter((article) => article.id !== excludeId);
+  const picked: typeof allArticles = [];
+  const used = new Set<string>();
+
+  for (const category of ['projects', 'materials', 'guides'] as const) {
+    const hit = pool.find((article) => article.data.category === category && !used.has(article.id));
+    if (hit) {
+      picked.push(hit);
+      used.add(hit.id);
+    }
+  }
+
+  for (const article of pool) {
+    if (picked.length >= limit) break;
+    if (!used.has(article.id)) {
+      picked.push(article);
+      used.add(article.id);
+    }
+  }
+
+  return picked.slice(0, limit);
+}
+
+const sideStories = pickMixedArticles(allArticles, featured?.id, 4);
+const latestArticles = pickMixedArticles(allArticles, featured?.id, 4);
 ---
 
 <BaseLayout
@@ -104,7 +134,7 @@ const latestArticles = allArticles.slice(0, 4);
         <section class="pub-section" aria-labelledby="latest-heading">
           <div class="pub-section__header">
             <h2 id="latest-heading" class="pub-section__title">Latest articles</h2>
-            <p class="pub-section__desc">Concrete planning guides from the FixUpWise editorial cluster.</p>
+            <p class="pub-section__desc">Practical home-project guides across concrete, paint, and related estimating topics.</p>
           </div>
           <div class="pub-article-grid">
             {latestArticles.map((article) => (

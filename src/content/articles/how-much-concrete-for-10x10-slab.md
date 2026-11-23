@@ -4,7 +4,7 @@ description: "Estimate concrete for a 10×10 ft slab at 4, 5, and 6 in example t
 summary: "A 10×10 ft slab at 4 in is about 33.33 ft³ (1.23 yd³) before extra material. At 5 in about 1.54 yd³; at 6 in about 1.85 yd³. Quantity examples only — not thickness recommendations."
 slug: how-much-concrete-for-10x10-slab
 category: projects
-subcategory: outdoor
+subcategory: concrete
 publishedDate: 2026-11-23
 author: FixUpWise Editorial
 tags:

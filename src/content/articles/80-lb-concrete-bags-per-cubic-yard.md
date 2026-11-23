@@ -4,7 +4,7 @@ description: "Using QUIKRETE Concrete Mix #1101’s approximate 0.60 ft³ yield,
 summary: "At about 0.60 ft³ per 80-lb QUIKRETE Concrete Mix #1101 bag, 27 ÷ 0.60 = 45 bags per cubic yard before contingency or purchase rounding."
 slug: 80-lb-concrete-bags-per-cubic-yard
 category: materials
-subcategory: packaging
+subcategory: concrete
 publishedDate: 2026-11-23
 author: FixUpWise Editorial
 tags:

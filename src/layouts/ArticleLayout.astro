@@ -40,6 +40,7 @@ const ogImage = article.data.featuredImage
   : undefined;
 const popularCalculators = getAvailableTools().slice(0, 5);
 const isConcreteArticle = article.data.tags.some((tag) => tag.toLowerCase() === 'concrete');
+const isPaintArticle = article.data.tags.some((tag) => tag.toLowerCase() === 'paint');
 ---
 
 <BaseLayout
@@ -124,7 +125,15 @@ const isConcreteArticle = article.data.tags.some((tag) => tag.toLowerCase() === 
         </div>
 
         {
-          isConcreteArticle ? (
+          isPaintArticle ? (
+            <CalculatorCallout
+              eyebrow="Planning a paint project?"
+              title="Paint Calculator"
+              body="Enter your room dimensions, coats, coverage rate, and optional doors/windows to estimate how many gallons you need."
+              href="/calculators/paint-calculator"
+              linkLabel="Calculate paint →"
+            />
+          ) : isConcreteArticle ? (
             <CalculatorCallout
               eyebrow="Planning a concrete project?"
               title="Concrete Calculator"

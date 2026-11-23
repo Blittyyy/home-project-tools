@@ -4,7 +4,7 @@ description: "Convert thickness to feet, multiply length × width × thickness f
 summary: "Convert dimensions to feet, multiply length × width × thickness for cubic feet, then divide by 27 for cubic yards. One cubic yard equals 27 cubic feet."
 slug: how-to-calculate-cubic-yards-concrete
 category: guides
-subcategory: conversions
+subcategory: measuring
 publishedDate: 2026-11-23
 author: FixUpWise Editorial
 tags:

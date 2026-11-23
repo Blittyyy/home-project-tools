@@ -26,6 +26,8 @@ export const CATEGORIES: Record<ArticleCategory, CategoryDefinition> = {
       outdoor: 'Outdoor',
       indoor: 'Indoor',
       planning: 'Planning',
+      painting: 'Painting',
+      concrete: 'Concrete',
     },
   },
   materials: {
@@ -38,6 +40,8 @@ export const CATEGORIES: Record<ArticleCategory, CategoryDefinition> = {
       coverage: 'Coverage',
       packaging: 'Packaging',
       waste: 'Waste factors',
+      paint: 'Paint',
+      concrete: 'Concrete',
     },
   },
   guides: {
@@ -47,9 +51,10 @@ export const CATEGORIES: Record<ArticleCategory, CategoryDefinition> = {
       'How-to and reference guides for measuring, converting units, and using planning estimates responsibly.',
     href: '/guides',
     subcategories: {
-      measuring: 'Measuring',
+      measuring: 'Measuring & Estimating',
       conversions: 'Conversions',
       reference: 'Reference',
+      painting: 'Painting',
     },
   },
 };

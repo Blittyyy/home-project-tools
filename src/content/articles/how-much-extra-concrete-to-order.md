@@ -4,7 +4,7 @@ description: "Extra concrete is a planning allowance, not a fixed rule. See 4–
 summary: "Extra material is an editable contingency on calculated volume. Ready-mix guidance often discusses about 4–10% more than plan dimensions; bagged tips commonly mention about 10%. Use 0% if you only want raw geometry."
 slug: how-much-extra-concrete-to-order
 category: guides
-subcategory: reference
+subcategory: measuring
 publishedDate: 2026-11-23
 author: FixUpWise Editorial
 tags:
