@@ -11,8 +11,8 @@ tags:
   - concrete
   - conversions
   - measuring
-featuredImage: /images/articles/how-to-calculate-cubic-yards-concrete.svg
-featuredImageAlt: Diagram showing converting slab dimensions into cubic yards of concrete
+featuredImage: /images/articles/calculate-cubic-yards-concrete.png
+featuredImageAlt: Prepared concrete project area with measuring tape and project notes.
 draft: false
 featured: false
 reviewLevel: general

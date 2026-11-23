@@ -11,8 +11,8 @@ tags:
   - concrete
   - bags
   - packaging
-featuredImage: /images/articles/80-lb-concrete-bags-per-cubic-yard.svg
-featuredImageAlt: Diagram representing bagged concrete yield relative to one cubic yard
+featuredImage: /images/articles/80-lb-concrete-bags.png
+featuredImageAlt: Concrete mix bags beside a wheelbarrow and prepared slab area.
 draft: false
 featured: false
 reviewLevel: general

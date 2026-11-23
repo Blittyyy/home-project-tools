@@ -1,8 +1,0 @@
-﻿<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img">
-  <rect width="1200" height="675" fill="#e7e7e3"/>
-  <rect x="220" y="160" width="160" height="200" fill="#d0d0ca"/>
-  <rect x="420" y="160" width="160" height="200" fill="#d0d0ca"/>
-  <rect x="620" y="160" width="160" height="200" fill="#d0d0ca"/>
-  <rect x="820" y="160" width="160" height="200" fill="#d0d0ca"/>
-  <text x="600" y="430" text-anchor="middle" fill="#6f6f68" font-family="system-ui,sans-serif" font-size="28" font-weight="700">80-lb bag yield diagram</text>
-</svg>

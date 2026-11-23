@@ -11,8 +11,8 @@ tags:
   - concrete
   - slab
   - quantity
-featuredImage: /images/articles/how-much-concrete-for-10x10-slab.svg
-featuredImageAlt: Diagram of a rectangular 10 by 10 foot concrete slab for quantity planning
+featuredImage: /images/articles/concrete-10x10-slab.png
+featuredImageAlt: Measuring a prepared backyard concrete slab area with a tape measure.
 draft: false
 featured: true
 reviewLevel: general

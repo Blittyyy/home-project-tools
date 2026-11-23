@@ -11,8 +11,8 @@ tags:
   - concrete
   - waste
   - planning
-featuredImage: /images/articles/how-much-extra-concrete-to-order.svg
-featuredImageAlt: Diagram contrasting calculated concrete volume with a planning contingency
+featuredImage: /images/articles/extra-concrete-to-order.png
+featuredImageAlt: Planning a backyard concrete project with bags, measuring tools, and a prepared slab.
 draft: false
 featured: false
 reviewLevel: general
