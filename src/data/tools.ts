@@ -42,7 +42,7 @@ export const CALCULATORS_HUB = {
   title: 'Calculators',
   description:
     'Material and project planning calculators for homeowners and DIYers. Estimate quantities, waste allowance, and package counts before you buy.',
-  lede: 'Client-side planning tools that stay in your browser. Results are estimates for shopping and planning — not engineering, code approval, or contractor bids.',
+  lede: 'Quick, practical tools from FixUpWise to help plan your next project. Results are shopping estimates — not engineering, code approval, or contractor bids.',
 } as const;
 
 /**

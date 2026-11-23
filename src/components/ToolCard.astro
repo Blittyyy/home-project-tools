@@ -3,31 +3,45 @@ import type { ToolDefinition } from '../data/tools';
 
 interface Props {
   tool: ToolDefinition;
+  /** Compact homepage-style module */
+  compact?: boolean;
 }
 
-const { tool } = Astro.props;
+const { tool, compact = false } = Astro.props;
 const isAvailable = tool.status === 'available';
+const shortName = tool.name.replace(/\s+Calculator$/i, '');
 ---
 
-<article class="card-surface flex h-full flex-col">
-  <div class="flex items-start justify-between gap-3">
-    <h3 class="font-display text-lg font-semibold text-ink">{tool.name}</h3>
-    {
-      !isAvailable && (
-        <span class="shrink-0 rounded-md bg-sand px-2 py-1 text-xs font-semibold uppercase tracking-wide text-ink-subtle">
-          Coming soon
-        </span>
-      )
-    }
-  </div>
-  <p class="mt-2 flex-1 text-sm text-ink-muted">{tool.description}</p>
-  {
+{
+  compact ? (
     isAvailable ? (
-      <a href={tool.href} class="btn-primary mt-4 self-start">
-        Open calculator
+      <a href={tool.href} class="pub-calc-module">
+        <svg class="pub-calc-module__icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.75">
+          <rect x="4" y="4" width="16" height="16" />
+          <path d="M8 8h3v3H8zM13 8h3v3h-3zM8 13h3v3H8zM13 13h3v3h-3z" />
+        </svg>
+        <h3 class="pub-calc-module__name">{tool.name}</h3>
+        <p class="pub-calc-module__desc">{tool.description}</p>
+        <span class="pub-calc-module__link">Calculate →</span>
       </a>
     ) : (
-      <p class="mt-4 text-sm font-medium text-ink-subtle">Not available yet</p>
+      <div class="pub-calc-module" aria-disabled="true">
+        <h3 class="pub-calc-module__name">{tool.name}</h3>
+        <p class="pub-calc-module__desc">{tool.description}</p>
+        <span class="pub-calc-module__link" style="color: var(--color-ink-subtle)">Coming soon</span>
+      </div>
     )
-  }
-</article>
+  ) : (
+    <article class="calc-hub-item">
+      <h3 class="calc-hub-item__name">{tool.name}</h3>
+      <p class="calc-hub-item__desc">{tool.description}</p>
+      {isAvailable ? (
+        <a href={tool.href} class="calc-hub-item__cta">
+          Calculate {shortName.toLowerCase()} →
+        </a>
+      ) : (
+        <p class="calc-hub-item__soon">Coming soon</p>
+      )}
+    </article>
+  )
+}

@@ -1,0 +1,76 @@
+---
+/**
+ * Reusable editorial image shell with fixed aspect ratios.
+ * Swap src to a real local asset when photography is ready.
+ */
+import OptimizedImage from './OptimizedImage.astro';
+
+type Aspect = 'feature' | 'hero' | 'card' | 'thumb';
+
+interface Props {
+  src?: string | null;
+  alt?: string;
+  aspect?: Aspect;
+  loading?: 'lazy' | 'eager';
+  class?: string;
+}
+
+const PLACEHOLDERS: Record<Aspect, { src: string; width: number; height: number; label: string }> = {
+  feature: {
+    src: '/images/placeholders/feature.svg',
+    width: 1200,
+    height: 675,
+    label: 'Editorial feature image',
+  },
+  hero: {
+    src: '/images/placeholders/hero.svg',
+    width: 1200,
+    height: 675,
+    label: 'Article hero image',
+  },
+  card: {
+    src: '/images/placeholders/card.svg',
+    width: 800,
+    height: 600,
+    label: 'Article card image',
+  },
+  thumb: {
+    src: '/images/placeholders/thumb.svg',
+    width: 320,
+    height: 200,
+    label: 'Sidebar thumbnail',
+  },
+};
+
+const {
+  src,
+  alt,
+  aspect = 'card',
+  loading = 'lazy',
+  class: className = '',
+} = Astro.props;
+
+const preset = PLACEHOLDERS[aspect];
+const resolvedSrc = src && src.trim() ? src : preset.src;
+const resolvedAlt = alt && alt.trim() ? alt : preset.label;
+const isPlaceholder = resolvedSrc === preset.src;
+---
+
+<figure class:list={['ed-image', `ed-image--${aspect}`, className]}>
+  <OptimizedImage
+    src={resolvedSrc}
+    alt={resolvedAlt}
+    width={preset.width}
+    height={preset.height}
+    loading={loading}
+    class="ed-image__img"
+    sizes={
+      aspect === 'thumb'
+        ? '96px'
+        : aspect === 'card'
+          ? '(max-width: 640px) 100vw, 280px'
+          : '(max-width: 960px) 100vw, 760px'
+    }
+  />
+  {isPlaceholder && <span class="sr-only">{preset.label} placeholder</span>}
+</figure>

@@ -1,13 +1,16 @@
 ---
-import { SITE_NAME } from '../config/site';
-
 interface Props {
   class?: string;
+  variant?: 'default' | 'footer';
 }
 
-const { class: className = '' } = Astro.props;
+const { class: className = '', variant = 'default' } = Astro.props;
 ---
 
-<a href="/" class:list={['font-display text-lg font-semibold tracking-tight text-ink no-underline hover:no-underline', className]}>
-  {SITE_NAME}
+<a
+  href="/"
+  class:list={['wordmark', variant === 'footer' && 'wordmark--footer', className]}
+  aria-label="FixUpWise home"
+>
+  <span class="wordmark__fixup">FixUp</span><span class="wordmark__wise">Wise</span>
 </a>

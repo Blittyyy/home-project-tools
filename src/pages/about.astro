@@ -5,30 +5,33 @@ import { CONTACT_EMAIL, SITE_AUTHOR, SITE_NAME, SITE_TAGLINE } from '../config/s
 
 <PageLayout
   title="About"
-  description={`About ${SITE_NAME} — planning utilities for home improvement projects.`}
+  description={`About ${SITE_NAME} — practical home project information, DIY planning guidance, and transparent calculators.`}
   path="/about"
 >
   <p slot="lede" class="section-lede">{SITE_TAGLINE}</p>
 
   <p>
-    <strong>{SITE_NAME}</strong> is a utility site for homeowners and DIYers who want to plan material
-    purchases before they start a project. The focus is calculators that estimate quantities, waste
-    allowance, unit conversions, and package counts.
+    <strong>{SITE_NAME}</strong> is a home-improvement publication for homeowners and DIYers. We publish practical
+    project information, material guidance, and transparent planning calculators so you can estimate quantities before
+    you buy.
   </p>
   <p>
-    Results are planning estimates. They are not structural engineering, building-code approval,
-    electrical or plumbing design, architectural plans, or professional contractor bids.
+    The calculators are utility tools inside that editorial mission — not the identity of the whole site. Use them to
+    estimate concrete, gravel, mulch, paint, and tile quantities with clear assumptions you can adjust.
+  </p>
+  <p>
+    Results are planning estimates. They are not structural engineering, building-code approval, electrical or plumbing
+    design, architectural plans, or professional contractor bids.
   </p>
   <p>
     Editorial byline currently uses <strong>{SITE_AUTHOR}</strong>. Update that string in
     <code>src/config/site.ts</code> and on individual articles when a final author model is set.
   </p>
   <p>
-    Contact placeholder: <strong>{CONTACT_EMAIL}</strong> — marked for review; do not invent a real inbox
-    or legal entity here.
+    Contact placeholder: <strong>{CONTACT_EMAIL}</strong> — marked for review; do not invent a real inbox or legal
+    entity here.
   </p>
-  <p class="rounded-xl border border-warning-border bg-warning-bg p-4 text-sm text-warning">
-    Values marked for review are intentionally incomplete until a human supplies brand, contact, and legal
-    details.
+  <p class="mt-6 border border-warning-border bg-warning-bg p-4 text-sm text-warning">
+    Values marked for review are intentionally incomplete until a human supplies brand contact and legal details.
   </p>
 </PageLayout>

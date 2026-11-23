@@ -17,7 +17,7 @@ const noindex = !hasAvailableTools();
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'CollectionPage',
-  name: CALCULATORS_HUB.title,
+  name: 'Project Calculators',
   description: CALCULATORS_HUB.description,
   url: absoluteUrl('/calculators'),
   isPartOf: {
@@ -35,17 +35,21 @@ const grouped = TOOL_GROUPS.map((group: ToolGroup) => ({
 ---
 
 <BaseLayout
-  title={CALCULATORS_HUB.title}
+  title="Project Calculators"
   description={CALCULATORS_HUB.description}
   path="/calculators"
   noindex={noindex}
   schema={[schema]}
 >
   <div class="container-site section-space">
-    <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: CALCULATORS_HUB.title }]} />
-    <header class="mt-6 max-w-3xl">
-      <h1 class="section-heading">{CALCULATORS_HUB.title}</h1>
-      <p class="section-lede">{CALCULATORS_HUB.lede}</p>
+    <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Calculators' }]} />
+    <header class="mt-5 max-w-3xl">
+      <p class="category-eyebrow">Resources</p>
+      <h1 class="section-heading mt-2">Project Calculators</h1>
+      <p class="section-lede">
+        Practical planning tools from FixUpWise. Estimate material quantities, waste allowance, and package counts
+        before you buy — then confirm product packaging and installation requirements for your project.
+      </p>
       {
         noindex && (
           <p class="mt-4 text-sm text-ink-muted">
@@ -54,14 +58,15 @@ const grouped = TOOL_GROUPS.map((group: ToolGroup) => ({
         )
       }
     </header>
-    <div class="mt-10 space-y-12">
+
+    <div class="mt-4">
       {
         grouped.map((section) => (
-          <section aria-labelledby={`group-${section.group}`}>
-            <h2 id={`group-${section.group}`} class="font-display text-2xl font-semibold text-ink">
+          <section class="calc-hub-group" aria-labelledby={`group-${section.group}`}>
+            <h2 id={`group-${section.group}`} class="calc-hub-group__title">
               {section.label}
             </h2>
-            <div class="mt-5 grid gap-4 sm:grid-cols-2">
+            <div class="calc-hub-list">
               {section.tools.map((tool) => (
                 <ToolCard tool={tool} />
               ))}

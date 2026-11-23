@@ -1,27 +1,31 @@
 @import 'tailwindcss';
 @import './calculator-tool.css';
+@import './publication.css';
 
 /*
-  Temporary design tokens until final branding is chosen.
-  Intentionally plain — not a finished brand system.
+  FixUpWise design tokens — editorial publication with restrained green accent.
 */
 @theme {
-  --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue',
-    Arial, 'Noto Sans', sans-serif;
-  --font-display: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue',
-    Arial, 'Noto Sans', sans-serif;
+  /* Editorial online publication: strong sans for headlines; serif reserved for brand. */
+  --font-sans: 'Source Sans 3', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+  --font-display: 'Source Sans 3', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+  --font-brand: 'Source Serif 4', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia,
+    'Times New Roman', serif;
 
-  --color-ink: #1c1917;
-  --color-ink-muted: #44403c;
-  --color-ink-subtle: #78716c;
-  --color-surface: #fafaf9;
+  --color-ink: #1a1a1a;
+  --color-ink-muted: #3f3f3f;
+  --color-ink-subtle: #6b6b6b;
+  --color-surface: #ffffff;
   --color-surface-raised: #ffffff;
-  --color-sand: #f5f5f4;
-  --color-brand: #1e3a5f;
-  --color-brand-dark: #142844;
-  --color-brand-soft: #e8eef5;
-  --color-accent: #0f766e;
-  --color-border: #d6d3d1;
+  --color-sand: #f3f3f1;
+  --color-brand: #1b5e3b;
+  --color-brand-dark: #13452b;
+  --color-brand-soft: #e8f2ec;
+  --color-accent: #1b5e3b;
+  --color-nav: #1a1a1a;
+  --color-border: #d4d4d0;
   --color-warning: #92400e;
   --color-warning-bg: #fffbeb;
   --color-warning-border: #f59e0b;
@@ -52,19 +56,19 @@
 
 @layer components {
   .container-site {
-    @apply mx-auto w-full max-w-[1180px] px-4 sm:px-6 lg:px-8;
+    @apply mx-auto w-full max-w-[1160px] px-4 sm:px-5 lg:px-6;
   }
 
   .section-space {
-    @apply py-12 sm:py-16;
+    @apply py-8 sm:py-10;
   }
 
   .section-heading {
-    @apply font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl;
+    @apply font-sans text-[1.75rem] font-bold leading-tight tracking-tight text-ink sm:text-[2rem];
   }
 
   .section-lede {
-    @apply mt-3 max-w-2xl text-lg text-ink-muted;
+    @apply mt-2 max-w-2xl text-base leading-relaxed text-ink-muted sm:text-lg;
   }
 
   .prose-site {
@@ -72,15 +76,15 @@
   }
 
   .prose-article {
-    @apply max-w-[42rem] text-base leading-7 text-ink-muted;
+    @apply max-w-[46rem] text-[1.05rem] leading-[1.7] text-ink-muted;
   }
 
   .prose-article :where(h2) {
-    @apply mt-10 scroll-mt-24 font-display text-2xl font-semibold text-ink;
+    @apply mt-9 scroll-mt-24 font-sans text-[1.45rem] font-bold text-ink;
   }
 
   .prose-article :where(h3) {
-    @apply mt-8 scroll-mt-24 font-display text-xl font-semibold text-ink;
+    @apply mt-7 scroll-mt-24 font-sans text-lg font-bold text-ink;
   }
 
   .prose-article :where(p) {
@@ -107,20 +111,47 @@
     @apply font-semibold text-ink;
   }
 
+  .prose-article :where(table) {
+    @apply mt-4 w-full border-collapse text-sm;
+  }
+
+  .prose-article :where(th),
+  .prose-article :where(td) {
+    @apply border border-border px-2.5 py-2 text-left align-top;
+  }
+
+  .prose-article :where(th) {
+    @apply bg-sand font-semibold text-ink;
+  }
+
+  .prose-article :where(.calc-callout) {
+    @apply mt-8 mb-6;
+  }
+
   .btn {
-    @apply inline-flex items-center justify-center rounded-lg px-4 py-2.5 text-sm font-semibold transition;
+    @apply inline-flex items-center justify-center rounded-sm px-4 py-2.5 text-sm font-semibold transition;
   }
 
   .btn-primary {
-    @apply inline-flex items-center justify-center rounded-lg px-4 py-2.5 text-sm font-semibold transition bg-brand text-white no-underline hover:bg-brand-dark hover:no-underline;
+    @apply inline-flex items-center justify-center rounded-sm px-4 py-2.5 text-sm font-semibold transition bg-brand text-white no-underline hover:bg-brand-dark hover:no-underline;
   }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center rounded-lg px-4 py-2.5 text-sm font-semibold transition border border-border bg-surface-raised text-ink no-underline hover:bg-sand hover:no-underline;
+    @apply inline-flex items-center justify-center rounded-sm px-4 py-2.5 text-sm font-semibold transition border border-border bg-surface-raised text-ink no-underline hover:bg-sand hover:no-underline;
   }
 
+  /* Flat utility surface — used by calculators; keep radius small */
   .card-surface {
-    @apply rounded-2xl border border-border bg-surface-raised p-5 shadow-sm;
+    @apply rounded-sm border border-border bg-surface-raised p-4;
+  }
+
+  .category-eyebrow {
+    @apply text-[0.7rem] font-bold uppercase tracking-[0.08em] text-brand;
+  }
+
+  .rule {
+    border: 0;
+    border-top: 1px solid var(--color-border);
   }
 }
 
@@ -141,7 +172,7 @@
   left: 1rem;
   top: -100px;
   z-index: 100;
-  border-radius: 0.5rem;
+  border-radius: 0.125rem;
   background: var(--color-brand);
   color: white;
   padding: 0.5rem 1rem;

@@ -1,13 +1,13 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
-import OptimizedImage from '../components/OptimizedImage.astro';
+import EditorialImage from '../components/EditorialImage.astro';
 import TableOfContents from '../components/TableOfContents.astro';
 import ReviewCallout from '../components/ReviewCallout.astro';
 import AffiliateDisclosure from '../components/AffiliateDisclosure.astro';
 import ArticleSources from '../components/ArticleSources.astro';
 import ArticleFaq from '../components/ArticleFaq.astro';
-import RelatedArticles from '../components/RelatedArticles.astro';
+import CalculatorCallout from '../components/CalculatorCallout.astro';
 import {
   articleBreadcrumbs,
   articlePath,
@@ -20,6 +20,7 @@ import {
 } from '../utils/articles';
 import { articleSchema, breadcrumbSchema } from '../utils/schema';
 import { absoluteUrl } from '../utils/seo';
+import { getAvailableTools } from '../data/tools';
 
 interface Props {
   article: ArticleEntry;
@@ -37,6 +38,8 @@ const noindex = article.data.draft || article.data.noindex;
 const ogImage = article.data.featuredImage
   ? absoluteUrl(article.data.featuredImage)
   : undefined;
+const popularCalculators = getAvailableTools().slice(0, 5);
+const isConcreteArticle = article.data.tags.some((tag) => tag.toLowerCase() === 'concrete');
 ---
 
 <BaseLayout
@@ -48,91 +51,140 @@ const ogImage = article.data.featuredImage
   ogImage={ogImage}
   schema={[articleSchema(article), breadcrumbSchema(crumbs)]}
 >
-  <article class="container-site section-space">
+  <article class="container-site article-shell">
     <Breadcrumbs items={crumbs} />
 
-    <header class="mt-6 max-w-[42rem]">
-      <p class="text-sm font-semibold uppercase tracking-wide text-ink-subtle">
-        <a href={category.href} class="text-ink-subtle hover:text-brand">{category.label}</a>
-        {
-          article.data.subcategory && (
-            <>
-              <span aria-hidden="true"> · </span>
-              <span>{article.data.subcategory.replace(/-/g, ' ')}</span>
-            </>
-          )
-        }
-      </p>
-      <h1 class="mt-3 font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
-        {article.data.title}
-      </h1>
-      {
-        article.data.summary && (
-          <p class="mt-4 rounded-xl border border-border bg-brand-soft/60 p-4 text-base text-ink">
-            {article.data.summary}
+    <div class="article-layout">
+      <div class="article-main">
+        <header>
+          <p class="category-eyebrow">
+            <a href={category.href} class="text-brand no-underline hover:underline">{category.label}</a>
+            {
+              article.data.subcategory && (
+                <>
+                  <span aria-hidden="true"> · </span>
+                  <span class="text-ink-subtle">{article.data.subcategory.replace(/-/g, ' ')}</span>
+                </>
+              )
+            }
           </p>
-        )
-      }
-      <div class="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-sm text-ink-subtle">
-        <span>By {article.data.author}</span>
-        <span>
-          Published{' '}
-          <time datetime={article.data.publishedDate.toISOString()}>
-            {formatArticleDate(article.data.publishedDate)}
-          </time>
-        </span>
-        {
-          article.data.updatedDate && (
+          <h1 class="article-title">
+            {article.data.title}
+          </h1>
+          {
+            article.data.summary && (
+              <p class="article-dek">{article.data.summary}</p>
+            )
+          }
+          <div class="article-meta">
+            <span>By {article.data.author}</span>
             <span>
-              Updated{' '}
-              <time datetime={article.data.updatedDate.toISOString()}>
-                {formatArticleDate(article.data.updatedDate)}
+              Published{' '}
+              <time datetime={article.data.publishedDate.toISOString()}>
+                {formatArticleDate(article.data.publishedDate)}
               </time>
             </span>
+            {
+              article.data.updatedDate && (
+                <span>
+                  Updated{' '}
+                  <time datetime={article.data.updatedDate.toISOString()}>
+                    {formatArticleDate(article.data.updatedDate)}
+                  </time>
+                </span>
+              )
+            }
+          </div>
+          {
+            article.data.tags.length > 0 && (
+              <ul class="mt-3 flex flex-wrap gap-2" aria-label="Tags">
+                {article.data.tags.map((tag) => (
+                  <li class="border border-border bg-sand px-2 py-0.5 text-xs font-medium text-ink-muted">{tag}</li>
+                ))}
+              </ul>
+            )
+          }
+        </header>
+
+        <EditorialImage
+          src={article.data.featuredImage}
+          alt={article.data.featuredImageAlt || article.data.title}
+          aspect="hero"
+          loading="eager"
+          class="article-hero"
+        />
+
+        {review && <ReviewCallout title={review.title} body={review.body} />}
+        {article.data.affiliateDisclosure && <AffiliateDisclosure />}
+
+        <TableOfContents headings={headings} />
+
+        <div class="prose-article mt-6">
+          <slot />
+        </div>
+
+        {
+          isConcreteArticle ? (
+            <CalculatorCallout
+              eyebrow="Planning a concrete project?"
+              title="Concrete Calculator"
+              body="Enter your dimensions to estimate cubic yards, bag quantities, and an optional extra-material allowance."
+              href="/calculators/concrete-calculator"
+              linkLabel="Calculate concrete →"
+            />
+          ) : (
+            <CalculatorCallout
+              eyebrow="Need a quantity estimate?"
+              title="Project Calculators"
+              body="Use a FixUpWise calculator for concrete, gravel, mulch, paint, or tile planning estimates before you shop."
+              href="/calculators"
+              linkLabel="Browse calculators →"
+            />
           )
         }
+
+        <ArticleSources sources={article.data.sources} />
+        <ArticleFaq items={faq} />
       </div>
-      {
-        article.data.tags.length > 0 && (
-          <ul class="mt-4 flex flex-wrap gap-2" aria-label="Tags">
-            {article.data.tags.map((tag) => (
-              <li class="rounded-md bg-sand px-2 py-1 text-xs font-medium text-ink-muted">{tag}</li>
-            ))}
+
+      <aside class="article-sidebar" aria-label="Related resources">
+        {
+          related.length > 0 && (
+            <div class="article-sidebar__block">
+              <h2 class="article-sidebar__title">Related guides</h2>
+              <ul class="article-sidebar__list">
+                {related.map((item) => (
+                  <li>
+                    <a href={articlePath(item)}>{item.data.title}</a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )
+        }
+
+        <div class="article-sidebar__block">
+          <h2 class="article-sidebar__title">Popular calculators</h2>
+          <ul class="article-sidebar__list">
+            {
+              popularCalculators.map((tool) => (
+                <li>
+                  <a href={tool.href}>{tool.name}</a>
+                </li>
+              ))
+            }
           </ul>
-        )
-      }
-    </header>
+        </div>
 
-    {
-      article.data.featuredImage && article.data.featuredImageAlt && (
-        <figure class="mt-8 max-w-[42rem] overflow-hidden rounded-2xl border border-border">
-          <OptimizedImage
-            src={article.data.featuredImage}
-            alt={article.data.featuredImageAlt}
-            width={1200}
-            height={800}
-            loading="eager"
-            class="aspect-[3/2] w-full object-cover"
-          />
-        </figure>
-      )
-    }
-
-    {review && <div class="max-w-[42rem]"><ReviewCallout title={review.title} body={review.body} /></div>}
-    {article.data.affiliateDisclosure && <div class="max-w-[42rem]"><AffiliateDisclosure /></div>}
-
-    <div class="max-w-[42rem]">
-      <TableOfContents headings={headings} />
-    </div>
-
-    <div class="prose-article mt-8">
-      <slot />
-    </div>
-
-    <div class="max-w-[42rem]">
-      <ArticleSources sources={article.data.sources} />
-      <ArticleFaq items={faq} />
-      <RelatedArticles articles={related} />
+        <div class="article-sidebar__block">
+          <h2 class="article-sidebar__title">Browse</h2>
+          <ul class="article-sidebar__list">
+            <li><a href="/projects">Projects</a></li>
+            <li><a href="/materials">Materials</a></li>
+            <li><a href="/guides">Guides</a></li>
+          </ul>
+        </div>
+      </aside>
     </div>
   </article>
 </BaseLayout>

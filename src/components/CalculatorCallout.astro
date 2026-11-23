@@ -1,0 +1,24 @@
+---
+interface Props {
+  eyebrow?: string;
+  title: string;
+  body: string;
+  href: string;
+  linkLabel?: string;
+}
+
+const {
+  eyebrow = 'Planning this project?',
+  title,
+  body,
+  href,
+  linkLabel = 'Open calculator →',
+} = Astro.props;
+---
+
+<aside class="calc-callout" aria-label={title}>
+  <p class="calc-callout__eyebrow">{eyebrow}</p>
+  <p class="calc-callout__title">{title}</p>
+  <p class="calc-callout__body">{body}</p>
+  <a class="calc-callout__link" href={href}>{linkLabel}</a>
+</aside>

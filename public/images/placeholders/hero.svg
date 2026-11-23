@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-label="Article hero placeholder">
+  <rect width="1200" height="675" fill="#e6e6e2"/>
+  <rect x="80" y="100" width="480" height="300" fill="#d0d0ca"/>
+  <rect x="600" y="180" width="480" height="260" fill="#d8d8d2"/>
+  <rect x="0" y="540" width="1200" height="135" fill="#dcdcd6"/>
+  <text x="600" y="360" text-anchor="middle" fill="#8a8a84" font-family="system-ui,sans-serif" font-size="22" font-weight="600">Hero image</text>
+</svg>
