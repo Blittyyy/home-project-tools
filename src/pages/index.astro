@@ -19,7 +19,15 @@ const featuredPool = await getFeaturedArticles(1);
 const allArticles = await getIndexableArticles();
 const featured = featuredPool[0] ?? allArticles[0];
 
-/** Prefer topic mix (concrete + paint, etc.) instead of date-only latest strip. */
+function articleTopic(article: (typeof allArticles)[number]): string {
+  const tags = article.data.tags.map((tag) => tag.toLowerCase());
+  if (tags.includes('mulch')) return 'mulch';
+  if (tags.includes('paint')) return 'paint';
+  if (tags.includes('concrete')) return 'concrete';
+  return article.data.subcategory?.trim() || article.data.category;
+}
+
+/** Prefer topic mix (concrete + paint + mulch) instead of date-only latest strip. */
 function pickMixedArticles(
   articles: typeof allArticles,
   excludeId: string | undefined,
@@ -29,8 +37,19 @@ function pickMixedArticles(
   const picked: typeof allArticles = [];
   const used = new Set<string>();
 
+  for (const topic of ['concrete', 'paint', 'mulch'] as const) {
+    const hit = pool.find((article) => articleTopic(article) === topic && !used.has(article.id));
+    if (hit) {
+      picked.push(hit);
+      used.add(hit.id);
+    }
+  }
+
   for (const category of ['projects', 'materials', 'guides'] as const) {
-    const hit = pool.find((article) => article.data.category === category && !used.has(article.id));
+    if (picked.length >= limit) break;
+    const hit = pool.find(
+      (article) => article.data.category === category && !used.has(article.id),
+    );
     if (hit) {
       picked.push(hit);
       used.add(hit.id);
@@ -134,7 +153,7 @@ const latestArticles = pickMixedArticles(allArticles, featured?.id, 4);
         <section class="pub-section" aria-labelledby="latest-heading">
           <div class="pub-section__header">
             <h2 id="latest-heading" class="pub-section__title">Latest articles</h2>
-            <p class="pub-section__desc">Practical home-project guides across concrete, paint, and related estimating topics.</p>
+            <p class="pub-section__desc">Practical guides across concrete, paint, landscaping, and related estimating topics.</p>
           </div>
           <div class="pub-article-grid">
             {latestArticles.map((article) => (

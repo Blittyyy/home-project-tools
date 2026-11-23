@@ -28,6 +28,7 @@ export const CATEGORIES: Record<ArticleCategory, CategoryDefinition> = {
       planning: 'Planning',
       painting: 'Painting',
       concrete: 'Concrete',
+      landscaping: 'Landscaping',
     },
   },
   materials: {
@@ -42,6 +43,7 @@ export const CATEGORIES: Record<ArticleCategory, CategoryDefinition> = {
       waste: 'Waste factors',
       paint: 'Paint',
       concrete: 'Concrete',
+      mulch: 'Mulch',
     },
   },
   guides: {
@@ -55,6 +57,7 @@ export const CATEGORIES: Record<ArticleCategory, CategoryDefinition> = {
       conversions: 'Conversions',
       reference: 'Reference',
       painting: 'Painting',
+      landscaping: 'Landscaping',
     },
   },
 };

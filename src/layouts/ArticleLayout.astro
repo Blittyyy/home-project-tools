@@ -41,6 +41,7 @@ const ogImage = article.data.featuredImage
 const popularCalculators = getAvailableTools().slice(0, 5);
 const isConcreteArticle = article.data.tags.some((tag) => tag.toLowerCase() === 'concrete');
 const isPaintArticle = article.data.tags.some((tag) => tag.toLowerCase() === 'paint');
+const isMulchArticle = article.data.tags.some((tag) => tag.toLowerCase() === 'mulch');
 ---
 
 <BaseLayout
@@ -125,7 +126,15 @@ const isPaintArticle = article.data.tags.some((tag) => tag.toLowerCase() === 'pa
         </div>
 
         {
-          isPaintArticle ? (
+          isMulchArticle ? (
+            <CalculatorCallout
+              eyebrow="Planning a mulch project?"
+              title="Mulch Calculator"
+              body="Enter your area and mulch depth to estimate cubic yards and bag quantities."
+              href="/calculators/mulch-calculator"
+              linkLabel="Calculate mulch →"
+            />
+          ) : isPaintArticle ? (
             <CalculatorCallout
               eyebrow="Planning a paint project?"
               title="Paint Calculator"
