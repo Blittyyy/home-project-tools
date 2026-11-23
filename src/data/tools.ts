@@ -87,13 +87,13 @@ export const tools: ToolDefinition[] = [
     status: 'available',
   },
   {
-    slug: 'tile',
+    slug: 'tile-calculator',
     name: 'Tile Calculator',
     description:
-      'Estimate tile quantity and boxes from area, tile size, and waste allowance.',
+      'Estimate tiles and boxes for a rectangular or known-area project, with layout waste and package information.',
     group: 'flooring-tile',
-    href: '#coming-soon',
-    status: 'coming-soon',
+    href: '/calculators/tile-calculator',
+    status: 'available',
   },
 ];
 

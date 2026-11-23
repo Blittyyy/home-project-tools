@@ -1,0 +1,724 @@
+---
+/**
+ * Tile Calculator UI — follows Concrete / Gravel / Mulch / Paint reference patterns.
+ *
+ * UX:
+ * - Explicit Calculate for first result and after geometry/mode/tile-size changes.
+ * - After a successful result, waste and packing live-update when valid.
+ * - Layout chips suggest waste %; waste remains editable.
+ * - Optional packing disclosure (tiles/box OR coverage/box).
+ */
+---
+
+<div class="calc-tool" data-tile-calc>
+  <form class="calc-tool__form" data-tile-form novalidate>
+    <fieldset class="calc-tool__fieldset">
+      <legend class="calc-tool__legend">Project type</legend>
+      <div class="calc-tool__modes" role="radiogroup" aria-label="Project type">
+        <label class="calc-tool__mode">
+          <input type="radio" name="mode" value="rectangle" checked />
+          <span>Rectangle</span>
+        </label>
+        <label class="calc-tool__mode">
+          <input type="radio" name="mode" value="area" />
+          <span>Known area</span>
+        </label>
+      </div>
+      <p class="calc-tool__hint" id="mode-hint" data-mode-hint>
+        Enter length and width for a rectangular floor, wall, or backsplash area.
+      </p>
+    </fieldset>
+
+    <div class="calc-tool__panel" data-panel="rectangle">
+      <div class="calc-tool__row">
+        <div class="calc-tool__field">
+          <label for="tc-length">Length</label>
+          <div class="calc-tool__input-unit">
+            <input id="tc-length" name="length" type="number" inputmode="decimal" min="0" step="any" aria-describedby="tc-length-error" />
+            <select id="tc-length-unit" name="lengthUnit" aria-label="Length unit">
+              <option value="ft" selected>ft</option>
+              <option value="in">in</option>
+              <option value="m">m</option>
+              <option value="cm">cm</option>
+            </select>
+          </div>
+          <p class="calc-tool__error" id="tc-length-error" data-error-for="length" hidden></p>
+        </div>
+        <div class="calc-tool__field">
+          <label for="tc-width">Width</label>
+          <div class="calc-tool__input-unit">
+            <input id="tc-width" name="width" type="number" inputmode="decimal" min="0" step="any" aria-describedby="tc-width-error" />
+            <select id="tc-width-unit" name="widthUnit" aria-label="Width unit">
+              <option value="ft" selected>ft</option>
+              <option value="in">in</option>
+              <option value="m">m</option>
+              <option value="cm">cm</option>
+            </select>
+          </div>
+          <p class="calc-tool__error" id="tc-width-error" data-error-for="width" hidden></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="calc-tool__panel" data-panel="area" hidden>
+      <div class="calc-tool__field">
+        <label for="tc-area">Area</label>
+        <div class="calc-tool__input-unit calc-tool__input-unit--area">
+          <input id="tc-area" name="area" type="number" inputmode="decimal" min="0" step="any" aria-describedby="tc-area-error" />
+          <select id="tc-area-unit" name="areaUnit" aria-label="Area unit">
+            <option value="sq_ft" selected>sq ft</option>
+            <option value="m2">m²</option>
+          </select>
+        </div>
+        <p class="calc-tool__error" id="tc-area-error" data-error-for="area" hidden></p>
+      </div>
+    </div>
+
+    <fieldset class="calc-tool__fieldset">
+      <legend class="calc-tool__legend">Tile size</legend>
+      <div class="calc-tool__row">
+        <div class="calc-tool__field">
+          <label for="tc-tile-width">Tile width</label>
+          <input id="tc-tile-width" name="tileWidth" type="number" inputmode="decimal" min="0" step="any" aria-describedby="tc-tile-width-error" />
+          <p class="calc-tool__error" id="tc-tile-width-error" data-error-for="tileWidth" hidden></p>
+        </div>
+        <div class="calc-tool__field">
+          <label for="tc-tile-length">Tile length</label>
+          <input id="tc-tile-length" name="tileLength" type="number" inputmode="decimal" min="0" step="any" aria-describedby="tc-tile-length-error" />
+          <p class="calc-tool__error" id="tc-tile-length-error" data-error-for="tileLength" hidden></p>
+        </div>
+      </div>
+      <div class="calc-tool__field">
+        <label for="tc-tile-unit">Tile size unit</label>
+        <select id="tc-tile-unit" name="tileUnit" aria-describedby="tc-tile-hint">
+          <option value="in" selected>inches</option>
+          <option value="cm">centimeters</option>
+        </select>
+        <p class="calc-tool__hint" id="tc-tile-hint">
+          Enter the face size printed on the product. This calculator does not include grout gap in the quantity math.
+        </p>
+      </div>
+    </fieldset>
+
+    <fieldset class="calc-tool__fieldset">
+      <legend class="calc-tool__legend">Layout</legend>
+      <div class="calc-tool__extra" role="radiogroup" aria-label="Layout">
+        <label class="calc-tool__chip">
+          <input type="radio" name="layout" value="straight" checked />
+          <span>Straight</span>
+        </label>
+        <label class="calc-tool__chip">
+          <input type="radio" name="layout" value="diagonal" />
+          <span>Diagonal</span>
+        </label>
+        <label class="calc-tool__chip">
+          <input type="radio" name="layout" value="custom" />
+          <span>Custom</span>
+        </label>
+      </div>
+      <div class="calc-tool__field">
+        <label for="tc-waste">Waste / extra tile (%)</label>
+        <input
+          id="tc-waste"
+          name="wastePercent"
+          type="number"
+          inputmode="decimal"
+          min="0"
+          max="50"
+          step="any"
+          value="10"
+          aria-describedby="tc-waste-hint tc-waste-error"
+        />
+        <p class="calc-tool__error" id="tc-waste-error" data-error-for="wastePercent" hidden></p>
+        <p class="calc-tool__hint" id="tc-waste-hint">
+          10% for straight layouts and 15% for diagonal layouts are planning allowances, not universal
+          requirements. Complex patterns and projects with many cuts may need more.
+        </p>
+      </div>
+    </fieldset>
+
+    <div class="calc-tool__toggle-row">
+      <label class="calc-tool__check">
+        <input type="checkbox" name="calculateBoxes" id="tc-boxes" />
+        <span>Calculate boxes too</span>
+      </label>
+    </div>
+
+    <div class="calc-tool__disclosure calc-tool__disclosure--compact" data-packing-panel hidden>
+      <fieldset class="calc-tool__fieldset">
+        <legend class="calc-tool__legend">Packaging method</legend>
+        <div class="calc-tool__extra" role="radiogroup" aria-label="Packaging method">
+          <label class="calc-tool__chip">
+            <input type="radio" name="packingMethod" value="tiles_per_box" checked />
+            <span>Tiles per box</span>
+          </label>
+          <label class="calc-tool__chip">
+            <input type="radio" name="packingMethod" value="coverage_per_box" />
+            <span>Coverage per box</span>
+          </label>
+        </div>
+      </fieldset>
+
+      <div data-packing-tiles>
+        <div class="calc-tool__field">
+          <label for="tc-tiles-per-box">Tiles per box</label>
+          <input
+            id="tc-tiles-per-box"
+            name="tilesPerBox"
+            type="number"
+            inputmode="numeric"
+            min="1"
+            step="1"
+            aria-describedby="tc-packing-hint tc-tiles-per-box-error"
+          />
+          <p class="calc-tool__error" id="tc-tiles-per-box-error" data-error-for="tilesPerBox" hidden></p>
+        </div>
+      </div>
+
+      <div data-packing-coverage hidden>
+        <div class="calc-tool__field">
+          <label for="tc-coverage-box">Coverage per box</label>
+          <div class="calc-tool__input-unit calc-tool__input-unit--area">
+            <input
+              id="tc-coverage-box"
+              name="coveragePerBox"
+              type="number"
+              inputmode="decimal"
+              min="0"
+              step="any"
+              aria-describedby="tc-packing-hint tc-coverage-box-error"
+            />
+            <select id="tc-coverage-unit" name="coveragePerBoxUnit" aria-label="Coverage per box unit">
+              <option value="sq_ft" selected>sq ft</option>
+              <option value="m2">m²</option>
+            </select>
+          </div>
+          <p class="calc-tool__error" id="tc-coverage-box-error" data-error-for="coveragePerBox" hidden></p>
+        </div>
+      </div>
+
+      <p class="calc-tool__hint" id="tc-packing-hint">
+        Tile packaging varies by product. Enter the tiles-per-box or coverage-per-box shown on the product listing
+        or carton.
+      </p>
+      <p class="calc-tool__error" data-error-for="packingMethod" hidden></p>
+    </div>
+
+    <div class="calc-tool__actions">
+      <button type="submit" class="btn-primary">Calculate</button>
+      <button type="button" class="btn-secondary" data-reset>Reset</button>
+    </div>
+  </form>
+
+  <div class="calc-tool__aside">
+    <div class="calc-tool__visual card-surface" data-visual>
+      <svg class="calc-tool__svg" viewBox="0 0 320 158" role="img" aria-labelledby="tc-svg-title" data-svg>
+        <title id="tc-svg-title">Enter dimensions to preview the project shape.</title>
+        <rect width="320" height="158" fill="#f5f5f4" rx="10"></rect>
+        <text x="160" y="84" text-anchor="middle" fill="#78716c" font-size="13" font-family="system-ui,sans-serif">
+          Dimension preview
+        </text>
+      </svg>
+    </div>
+
+    <div class="calc-tool__results card-surface" data-results aria-live="polite" aria-atomic="true">
+      <p class="calc-tool__empty" data-empty>
+        Enter your project area and tile size, then press Calculate to see tiles and optional boxes to purchase.
+      </p>
+      <div class="calc-tool__result-body" data-result-body hidden></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  import {
+    calculateTile,
+    formatArea,
+    formatTileSize,
+    layoutSuggestedWaste,
+    DEFAULT_WASTE_PERCENT_STRAIGHT,
+    type TileInput,
+    type TileLayout,
+    type TileMode,
+    type TilePackingMethod,
+    type TileResult,
+    type TileSizeUnit,
+  } from '../utils/tile.ts';
+  import { fromFeet, toFeet, type LengthUnit } from '../utils/length-units.ts';
+  import { fromSquareFeet, toSquareFeet, type AreaUnit } from '../utils/area-units.ts';
+
+  const rootEl = document.querySelector<HTMLElement>('[data-tile-calc]');
+  if (rootEl) {
+    const root = rootEl;
+    const form = root.querySelector<HTMLFormElement>('[data-tile-form]')!;
+    const empty = root.querySelector<HTMLElement>('[data-empty]')!;
+    const body = root.querySelector<HTMLElement>('[data-result-body]')!;
+    const svg = root.querySelector<SVGElement>('[data-svg]')!;
+    const packingPanel = root.querySelector<HTMLElement>('[data-packing-panel]')!;
+    const packingTiles = root.querySelector<HTMLElement>('[data-packing-tiles]')!;
+    const packingCoverage = root.querySelector<HTMLElement>('[data-packing-coverage]')!;
+    const wasteInput = form.querySelector<HTMLInputElement>('#tc-waste')!;
+    let hasResult = false;
+    let syncingLayoutWaste = false;
+
+    function mode(): TileMode {
+      const checked = form.querySelector<HTMLInputElement>('input[name="mode"]:checked');
+      return (checked?.value as TileMode) || 'rectangle';
+    }
+
+    function layout(): TileLayout {
+      const checked = form.querySelector<HTMLInputElement>('input[name="layout"]:checked');
+      return (checked?.value as TileLayout) || 'straight';
+    }
+
+    const MODE_HINTS: Record<TileMode, string> = {
+      rectangle: 'Enter length and width for a rectangular floor, wall, or backsplash area.',
+      area: 'Enter a total area you already measured when you do not need length and width.',
+    };
+
+    function syncModeHint() {
+      const hint = root.querySelector<HTMLElement>('[data-mode-hint]');
+      if (hint) hint.textContent = MODE_HINTS[mode()];
+    }
+
+    function syncPanels() {
+      const current = mode();
+      root.querySelectorAll<HTMLElement>('[data-panel]').forEach((panel) => {
+        panel.hidden = panel.dataset.panel !== current;
+      });
+      syncModeHint();
+    }
+
+    function syncPacking() {
+      const enabled = form.querySelector<HTMLInputElement>('#tc-boxes')?.checked === true;
+      packingPanel.hidden = !enabled;
+      if (packingPanel.hidden) return;
+      const method =
+        form.querySelector<HTMLInputElement>('input[name="packingMethod"]:checked')?.value ||
+        'tiles_per_box';
+      packingTiles.hidden = method !== 'tiles_per_box';
+      packingCoverage.hidden = method !== 'coverage_per_box';
+    }
+
+    function applyLayoutSuggestedWaste(next: TileLayout) {
+      if (next === 'custom') return;
+      syncingLayoutWaste = true;
+      wasteInput.value = String(layoutSuggestedWaste(next));
+      syncingLayoutWaste = false;
+    }
+
+    function clearErrors() {
+      root.querySelectorAll<HTMLElement>('[data-error-for]').forEach((el) => {
+        el.hidden = true;
+        el.textContent = '';
+      });
+      root.querySelectorAll<HTMLElement>('[aria-invalid]').forEach((el) => {
+        el.removeAttribute('aria-invalid');
+      });
+    }
+
+    function showErrors(errors: { field: string; message: string }[]) {
+      clearErrors();
+      for (const error of errors) {
+        const nodes = root.querySelectorAll<HTMLElement>(`[data-error-for="${error.field}"]`);
+        nodes.forEach((node) => {
+          const panel = node.closest('[data-panel]');
+          if (panel instanceof HTMLElement && panel.hidden) return;
+          const packing = node.closest('[data-packing-panel]');
+          if (packing instanceof HTMLElement && packing.hidden) return;
+          node.hidden = false;
+          node.textContent = error.message;
+        });
+      }
+
+      const fieldMap: Record<string, string> = {
+        length: 'tc-length',
+        width: 'tc-width',
+        area: 'tc-area',
+        tileWidth: 'tc-tile-width',
+        tileLength: 'tc-tile-length',
+        wastePercent: 'tc-waste',
+        tilesPerBox: 'tc-tiles-per-box',
+        coveragePerBox: 'tc-coverage-box',
+        packingMethod: 'tc-boxes',
+      };
+
+      const first = errors[0];
+      if (!first) return;
+      const id = fieldMap[first.field];
+      const target = id ? root.querySelector<HTMLElement>(`#${id}`) : null;
+      if (target && !target.closest('[hidden]')) {
+        target.setAttribute('aria-invalid', 'true');
+        target.focus();
+      }
+    }
+
+    function readNumber(name: string): number | undefined {
+      const el = form.elements.namedItem(name);
+      if (!(el instanceof HTMLInputElement)) return undefined;
+      if (el.value.trim() === '') return undefined;
+      return Number(el.value);
+    }
+
+    function readLengthUnit(name: string): LengthUnit {
+      const el = form.elements.namedItem(name);
+      if (el instanceof HTMLSelectElement) return el.value as LengthUnit;
+      return 'ft';
+    }
+
+    function readAreaUnit(name: string): AreaUnit {
+      const el = form.elements.namedItem(name);
+      if (el instanceof HTMLSelectElement) return el.value as AreaUnit;
+      return 'sq_ft';
+    }
+
+    function buildInput(): TileInput {
+      const current = mode();
+      const calculateBoxes = form.querySelector<HTMLInputElement>('#tc-boxes')?.checked === true;
+      const packingMethod = (form.querySelector<HTMLInputElement>(
+        'input[name="packingMethod"]:checked',
+      )?.value || 'tiles_per_box') as TilePackingMethod;
+      const tileUnit = (form.querySelector<HTMLSelectElement>('#tc-tile-unit')?.value ||
+        'in') as TileSizeUnit;
+
+      const base: TileInput = {
+        mode: current,
+        layout: layout(),
+        wastePercent: readNumber('wastePercent') ?? Number.NaN,
+        tileWidth: readNumber('tileWidth') ?? Number.NaN,
+        tileLength: readNumber('tileLength') ?? Number.NaN,
+        tileUnit,
+        calculateBoxes,
+      };
+
+      if (calculateBoxes) {
+        base.packingMethod = packingMethod;
+        if (packingMethod === 'tiles_per_box') {
+          base.tilesPerBox = readNumber('tilesPerBox');
+        } else {
+          base.coveragePerBox = readNumber('coveragePerBox');
+          base.coveragePerBoxUnit = readAreaUnit('coveragePerBoxUnit');
+        }
+      }
+
+      if (current === 'rectangle') {
+        return {
+          ...base,
+          length: readNumber('length'),
+          lengthUnit: readLengthUnit('lengthUnit'),
+          width: readNumber('width'),
+          widthUnit: readLengthUnit('widthUnit'),
+        };
+      }
+
+      return {
+        ...base,
+        area: readNumber('area'),
+        areaUnit: readAreaUnit('areaUnit'),
+      };
+    }
+
+    function formatDim(ft: number | undefined): string {
+      if (ft === undefined) return '';
+      if (ft < 3) {
+        const inches = ft * 12;
+        const rounded =
+          Math.abs(inches - Math.round(inches)) < 1e-9 ? String(Math.round(inches)) : inches.toFixed(2);
+        return `${rounded} in`;
+      }
+      const rounded = Math.abs(ft - Math.round(ft)) < 1e-9 ? String(Math.round(ft)) : ft.toFixed(2);
+      return `${rounded} ft`;
+    }
+
+    function layoutLabel(value: TileLayout): string {
+      if (value === 'diagonal') return 'Diagonal layout';
+      if (value === 'custom') return 'Custom waste';
+      return 'Straight layout';
+    }
+
+    function renderSvg(result: TileResult | null) {
+      if (!result) {
+        svg.setAttribute('viewBox', '0 0 320 158');
+        svg.innerHTML = `
+          <title id="tc-svg-title">Enter dimensions to preview the project shape.</title>
+          <rect width="320" height="158" fill="#f5f5f4" rx="10"></rect>
+          <text x="160" y="84" text-anchor="middle" fill="#78716c" font-size="13" font-family="system-ui,sans-serif">Dimension preview</text>
+        `;
+        return;
+      }
+
+      const tileLabel = formatTileSize(
+        result.tileWidthDisplay,
+        result.tileLengthDisplay,
+        result.tileUnit,
+      );
+      svg.setAttribute('viewBox', '0 0 320 158');
+
+      if (result.mode === 'rectangle' && result.dimensionsFt.lengthFt && result.dimensionsFt.widthFt) {
+        const labelL = formatDim(result.dimensionsFt.lengthFt);
+        const labelW = formatDim(result.dimensionsFt.widthFt);
+        svg.innerHTML = `
+          <title id="tc-svg-title">Rectangular project ${labelL} by ${labelW}. Tile ${tileLabel}.</title>
+          <rect width="320" height="158" fill="#f8fafc" rx="10"></rect>
+          <rect x="70" y="28" width="150" height="90" fill="#e8eef5" stroke="#1e3a5f" stroke-width="2"></rect>
+          <text x="145" y="22" text-anchor="middle" fill="#1c1917" font-size="12" font-family="system-ui,sans-serif">${labelL}</text>
+          <text x="62" y="78" text-anchor="end" fill="#1c1917" font-size="12" font-family="system-ui,sans-serif">${labelW}</text>
+          <rect x="236" y="48" width="52" height="36" fill="#f5f5f4" stroke="#78716c" stroke-width="1.5"></rect>
+          <text x="262" y="100" text-anchor="middle" fill="#44403c" font-size="11" font-family="system-ui,sans-serif">Tile</text>
+          <text x="262" y="116" text-anchor="middle" fill="#44403c" font-size="11" font-family="system-ui,sans-serif">${tileLabel}</text>
+        `;
+        return;
+      }
+
+      const areaLabel = `${formatArea(result.projectAreaSqFt)} sq ft`;
+      svg.innerHTML = `
+        <title id="tc-svg-title">Known-area project ${areaLabel}. Tile ${tileLabel}.</title>
+        <rect width="320" height="158" fill="#f8fafc" rx="10"></rect>
+        <rect x="50" y="36" width="160" height="78" fill="#e8eef5" stroke="#1e3a5f" stroke-width="2" stroke-dasharray="6 4"></rect>
+        <text x="130" y="80" text-anchor="middle" fill="#1c1917" font-size="14" font-weight="600" font-family="system-ui,sans-serif">${areaLabel}</text>
+        <rect x="236" y="48" width="52" height="36" fill="#f5f5f4" stroke="#78716c" stroke-width="1.5"></rect>
+        <text x="262" y="100" text-anchor="middle" fill="#44403c" font-size="11" font-family="system-ui,sans-serif">Tile</text>
+        <text x="262" y="116" text-anchor="middle" fill="#44403c" font-size="11" font-family="system-ui,sans-serif">${tileLabel}</text>
+      `;
+    }
+
+    function renderResult(result: TileResult) {
+      empty.hidden = true;
+      body.hidden = false;
+
+      const tileLabel = formatTileSize(
+        result.tileWidthDisplay,
+        result.tileLengthDisplay,
+        result.tileUnit,
+      );
+      const extraNote =
+        result.wastePercent > 0
+          ? `<p class="calc-tool__purchase-note">Includes ${result.wastePercent}% waste (+${result.extraTiles} tiles)</p>`
+          : `<p class="calc-tool__purchase-note">No waste allowance added</p>`;
+
+      let boxesHtml = '';
+      if (result.calculateBoxes && result.boxes !== undefined) {
+        const basedOn =
+          result.packingMethod === 'tiles_per_box'
+            ? `${result.tilesPerBox} tiles per box`
+            : `${formatArea(result.coveragePerBoxSqFt ?? 0)} sq ft per box`;
+        boxesHtml = `
+          <section class="calc-tool__section" aria-labelledby="tc-boxes-label">
+            <p class="calc-tool__section-label" id="tc-boxes-label">Boxes to buy</p>
+            <p class="calc-tool__section-value">${result.boxes} boxes</p>
+            <p class="calc-tool__section-meta">Based on ${basedOn}</p>
+          </section>
+        `;
+      }
+
+      const warnings = result.warnings.map((w) => `<p class="calc-tool__warning">${w}</p>`).join('');
+
+      body.innerHTML = `
+        <div class="calc-tool__purchase">
+          <p class="calc-tool__purchase-label">Estimated tile to purchase</p>
+          <p class="calc-tool__purchase-value">${result.tilesToBuy} <span class="calc-tool__purchase-unit">tiles</span></p>
+          ${extraNote}
+        </div>
+        <div class="calc-tool__metrics">
+          <section aria-labelledby="tc-area-label">
+            <p class="calc-tool__metric-label" id="tc-area-label">Project area</p>
+            <p class="calc-tool__metric-value">${formatArea(result.projectAreaSqFt)} sq ft</p>
+            <p class="calc-tool__metric-meta">${formatArea(result.projectAreaM2)} m²</p>
+          </section>
+          <section aria-labelledby="tc-size-label">
+            <p class="calc-tool__metric-label" id="tc-size-label">Tile size</p>
+            <p class="calc-tool__metric-value">${tileLabel}</p>
+            <p class="calc-tool__metric-meta">${formatArea(result.tileFaceAreaSqFt)} sq ft face</p>
+          </section>
+          <section aria-labelledby="tc-waste-label">
+            <p class="calc-tool__metric-label" id="tc-waste-label">Waste</p>
+            <p class="calc-tool__metric-value">${result.wastePercent}%</p>
+            <p class="calc-tool__metric-meta">${layoutLabel(result.layout)}</p>
+          </section>
+        </div>
+        ${boxesHtml}
+        <section class="calc-tool__section" aria-labelledby="tc-face-label">
+          <p class="calc-tool__section-label" id="tc-face-label">Purchase face area</p>
+          <p class="calc-tool__section-value">${formatArea(result.purchaseFaceAreaSqFt)} sq ft</p>
+          <p class="calc-tool__section-meta">${formatArea(result.purchaseFaceAreaM2)} m² of tile faces</p>
+        </section>
+        <p class="calc-tool__note">
+          Tile counts are area-based estimates. Cuts and offcuts are not modeled individually.
+        </p>
+        ${warnings}
+      `;
+    }
+
+    function clearResult() {
+      hasResult = false;
+      empty.hidden = false;
+      body.hidden = true;
+      body.innerHTML = '';
+      renderSvg(null);
+    }
+
+    function runCalculate(opts?: { live?: boolean }) {
+      const input = buildInput();
+      const out = calculateTile(input);
+      if (!out.ok) {
+        if (!opts?.live) showErrors(out.errors);
+        return;
+      }
+      clearErrors();
+      hasResult = true;
+      renderResult(out.result);
+      renderSvg(out.result);
+    }
+
+    function wireLengthUnitConversion(valueName: string, unitName: string) {
+      const valueEl = form.elements.namedItem(valueName);
+      const unitEl = form.elements.namedItem(unitName);
+      if (!(valueEl instanceof HTMLInputElement) || !(unitEl instanceof HTMLSelectElement)) return;
+      let prev = unitEl.value as LengthUnit;
+      unitEl.addEventListener('change', () => {
+        const next = unitEl.value as LengthUnit;
+        if (valueEl.value.trim() !== '') {
+          const n = Number(valueEl.value);
+          if (Number.isFinite(n)) {
+            const ft = toFeet(n, prev);
+            valueEl.value = String(fromFeet(ft, next));
+          }
+        }
+        prev = next;
+        if (hasResult) runCalculate({ live: true });
+      });
+    }
+
+    function wireAreaUnitConversion(valueName: string, unitName: string) {
+      const valueEl = form.elements.namedItem(valueName);
+      const unitEl = form.elements.namedItem(unitName);
+      if (!(valueEl instanceof HTMLInputElement) || !(unitEl instanceof HTMLSelectElement)) return;
+      let prev = unitEl.value as AreaUnit;
+      unitEl.addEventListener('change', () => {
+        const next = unitEl.value as AreaUnit;
+        if (valueEl.value.trim() !== '') {
+          const n = Number(valueEl.value);
+          if (Number.isFinite(n)) {
+            const sqFt = toSquareFeet(n, prev);
+            valueEl.value = String(fromSquareFeet(sqFt, next));
+          }
+        }
+        prev = next;
+        if (hasResult) runCalculate({ live: true });
+      });
+    }
+
+    function wireTileUnitConversion() {
+      const unitEl = form.querySelector<HTMLSelectElement>('#tc-tile-unit');
+      const wEl = form.querySelector<HTMLInputElement>('#tc-tile-width');
+      const lEl = form.querySelector<HTMLInputElement>('#tc-tile-length');
+      if (!unitEl || !wEl || !lEl) return;
+      let prev = unitEl.value as TileSizeUnit;
+      unitEl.addEventListener('change', () => {
+        const next = unitEl.value as TileSizeUnit;
+        const convert = (n: number) => {
+          if (prev === 'in' && next === 'cm') return n * 2.54;
+          if (prev === 'cm' && next === 'in') return n / 2.54;
+          return n;
+        };
+        if (wEl.value.trim() !== '') {
+          const n = Number(wEl.value);
+          if (Number.isFinite(n)) wEl.value = String(convert(n));
+        }
+        if (lEl.value.trim() !== '') {
+          const n = Number(lEl.value);
+          if (Number.isFinite(n)) lEl.value = String(convert(n));
+        }
+        prev = next;
+        if (hasResult) runCalculate({ live: true });
+      });
+    }
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      runCalculate();
+    });
+
+    form.querySelectorAll<HTMLInputElement>('input[name="mode"]').forEach((el) => {
+      el.addEventListener('change', () => {
+        syncPanels();
+        if (hasResult) clearResult();
+      });
+    });
+
+    form.querySelectorAll<HTMLInputElement>('input[name="layout"]').forEach((el) => {
+      el.addEventListener('change', () => {
+        const next = layout();
+        if (next === 'straight' || next === 'diagonal') {
+          applyLayoutSuggestedWaste(next);
+        }
+        if (hasResult) runCalculate({ live: true });
+      });
+    });
+
+    wasteInput.addEventListener('input', () => {
+      if (syncingLayoutWaste) return;
+      const value = Number(wasteInput.value);
+      const current = layout();
+      if (current === 'straight' && value !== DEFAULT_WASTE_PERCENT_STRAIGHT) {
+        const custom = form.querySelector<HTMLInputElement>('input[name="layout"][value="custom"]');
+        if (custom) custom.checked = true;
+      } else if (current === 'diagonal' && value !== layoutSuggestedWaste('diagonal')) {
+        const custom = form.querySelector<HTMLInputElement>('input[name="layout"][value="custom"]');
+        if (custom) custom.checked = true;
+      }
+      if (hasResult) runCalculate({ live: true });
+    });
+
+    form.querySelector('#tc-boxes')?.addEventListener('change', () => {
+      syncPacking();
+      if (hasResult) runCalculate({ live: true });
+    });
+
+    form.querySelectorAll<HTMLInputElement>('input[name="packingMethod"]').forEach((el) => {
+      el.addEventListener('change', () => {
+        syncPacking();
+        if (hasResult) runCalculate({ live: true });
+      });
+    });
+
+    // Geometry / tile size changes invalidate live result until Calculate
+    ['length', 'width', 'area', 'tileWidth', 'tileLength'].forEach((name) => {
+      const el = form.elements.namedItem(name);
+      if (el instanceof HTMLInputElement) {
+        el.addEventListener('input', () => {
+          if (hasResult) clearResult();
+        });
+      }
+    });
+
+    // Packing values live-update after a result
+    ['tilesPerBox', 'coveragePerBox'].forEach((name) => {
+      const el = form.elements.namedItem(name);
+      if (el instanceof HTMLInputElement) {
+        el.addEventListener('input', () => {
+          if (hasResult) runCalculate({ live: true });
+        });
+      }
+    });
+
+    wireLengthUnitConversion('length', 'lengthUnit');
+    wireLengthUnitConversion('width', 'widthUnit');
+    wireAreaUnitConversion('area', 'areaUnit');
+    wireAreaUnitConversion('coveragePerBox', 'coveragePerBoxUnit');
+    wireTileUnitConversion();
+
+    form.querySelector<HTMLButtonElement>('[data-reset]')?.addEventListener('click', () => {
+      form.reset();
+      wasteInput.value = String(DEFAULT_WASTE_PERCENT_STRAIGHT);
+      syncPanels();
+      syncPacking();
+      clearErrors();
+      clearResult();
+    });
+
+    syncPanels();
+    syncPacking();
+    renderSvg(null);
+  }
+</script>

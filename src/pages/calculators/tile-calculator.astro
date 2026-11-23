@@ -1,0 +1,203 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import TileCalculator from '../../components/TileCalculator.astro';
+import { webApplicationSchema, breadcrumbSchema } from '../../utils/schema';
+import { CALCULATORS_HUB } from '../../data/tools';
+
+const path = '/calculators/tile-calculator';
+const title = 'Tile Calculator: Square Feet, Tiles & Boxes';
+const description =
+  'Estimate how many tiles and boxes you need for a rectangular or known-area project. Adjust tile size, layout waste, and package information.';
+
+const crumbs = [
+  { label: 'Home', href: '/' },
+  { label: CALCULATORS_HUB.title, href: '/calculators' },
+  { label: 'Tile Calculator' },
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  path={path}
+  schema={[
+    webApplicationSchema({
+      name: 'Tile Calculator',
+      description,
+      path,
+    }),
+    breadcrumbSchema(crumbs),
+  ]}
+>
+  <div class="container-site container-calc calc-page">
+    <Breadcrumbs items={crumbs} />
+
+    <header class="calc-page__intro">
+      <h1 class="section-heading">Tile Calculator</h1>
+      <p class="section-lede calc-page__lede">
+        Estimate how many tiles — and optional boxes — you need for a rectangular or known-area project. Adjust tile
+        size and layout waste to match your plan.
+      </p>
+    </header>
+
+    <div class="calc-page__tool">
+      <TileCalculator />
+    </div>
+
+    <p class="calc-page__disclaimer">
+      This calculator estimates tile quantity from project area, tile size, and the waste allowance you choose. It does
+      not model the exact layout, edge cuts, offcut reuse, substrate conditions, waterproofing, mortar, grout, movement
+      joints, structural suitability, or code requirements. Check the tile carton or product listing for package
+      coverage and confirm installation requirements with the manufacturer.
+    </p>
+
+    <article class="prose-article calc-page__copy">
+      <h2>How the tile calculation works</h2>
+      <p>
+        The calculator converts your project to square feet, then divides by the face area of one tile. A waste
+        percentage increases that quantity for cuts, breakage, and leftover pieces, then the result is rounded up to
+        whole tiles. Optional packaging converts the purchase count into boxes using either tiles per box or coverage
+        per box from the product you plan to buy. Grout gap is not included in the quantity math.
+      </p>
+
+      <h2>How much extra tile should you buy?</h2>
+      <p>
+        Several manufacturers and suppliers commonly suggest about 10% extra for straightforward layouts and a larger
+        allowance — often around 15% — for diagonal or more intricate patterns. Projects with many corners, jogs, or
+        complex patterns may need still more. These are planning allowances, not universal requirements. The
+        percentage in this tool is editable so you can follow your product guidance or installer recommendation. Keeping
+        leftover tile from the same dye lot also helps with future repairs.
+      </p>
+
+      <h2>Straight vs diagonal tile layouts</h2>
+      <p>
+        A straight (grid) layout typically produces fewer angled cuts at the walls. A diagonal layout turns the grid,
+        which often creates more triangular offcuts that are harder to reuse. That is why this calculator suggests a
+        higher waste percentage for diagonal layouts. It does not provide installation instructions or a full layout
+        plan — dry-laying and professional layout advice still matter for the finished look.
+      </p>
+
+      <h2>How many tiles are in a box?</h2>
+      <p>
+        There is no generic tiles-per-box count. Packaging varies by product, size, and brand. Enter the tiles-per-box
+        or square-feet-per-box value printed on the carton or product listing. When you enable box calculation, choose
+        one method; the calculator does not invent a default package size.
+      </p>
+
+      <h2>Tile size and square footage</h2>
+      <p>
+        Face area is width × length. Useful examples before waste:
+      </p>
+      <ul>
+        <li>12 × 12 in ≈ 1 sq ft per tile</li>
+        <li>12 × 24 in ≈ 2 sq ft per tile</li>
+        <li>24 × 48 in ≈ 8 sq ft per tile</li>
+      </ul>
+      <p>
+        Dividing project area by face area gives a theoretical count. Real installations still need waste for cuts and
+        breakage, especially with large-format tile.
+      </p>
+
+      <h2>Example calculations</h2>
+      <h3>10 × 10 ft area, 12 × 12 in tile, 10% waste</h3>
+      <p>
+        Project area = 100 sq ft. Face area = 1 sq ft. Raw count = 100 tiles. With 10% waste → purchase 110 tiles. At 10
+        tiles per box → 11 boxes.
+      </p>
+      <h3>10 × 10 ft area, 12 × 24 in tile, 10% waste</h3>
+      <p>
+        Face area = 2 sq ft. Raw count = 50 tiles. With 10% waste → purchase 55 tiles. At 16 tiles per box → 4 boxes.
+      </p>
+      <h3>Known 120 sq ft, 12 × 24 in tile, 10% waste</h3>
+      <p>
+        Raw count = 60 tiles. With 10% waste → purchase 66 tiles.
+      </p>
+
+      <h2>Frequently asked questions</h2>
+      <h3>How much tile do I need?</h3>
+      <p>
+        Divide the project area by one tile’s face area, add your waste allowance, and round up to whole tiles. Use the
+        calculator for unit conversion and packaging in one step.
+      </p>
+      <h3>How much extra tile should I buy?</h3>
+      <p>
+        About 10% is a common starting point for straight layouts; about 15% is often suggested for diagonal work.
+        Confirm with your product guidance or installer — no percentage fits every job.
+      </p>
+      <h3>How many 12×24 tiles cover 100 sq ft?</h3>
+      <p>
+        Each 12 × 24 in tile has about 2 sq ft of face area, so 100 ÷ 2 = 50 tiles before waste. With 10% waste, plan on
+        55 tiles.
+      </p>
+      <h3>How many 12×12 tiles are in a square foot?</h3>
+      <p>
+        One 12 × 12 in tile is about 1 sq ft of face area, so one tile covers about one square foot before joints and
+        waste.
+      </p>
+      <h3>How do I calculate boxes of tile?</h3>
+      <p>
+        Divide the purchase tile count by tiles per box, or divide the waste-adjusted area by coverage per box, then
+        round up. Use the value from your product listing.
+      </p>
+      <h3>Does diagonal tile use more material?</h3>
+      <p>
+        Often yes, because angled perimeter cuts create more unused offcuts. That is why diagonal layouts usually use a
+        higher waste allowance.
+      </p>
+      <h3>Should I keep extra tile?</h3>
+      <p>
+        Yes when practical. Matching dye lots later can be difficult if a product is discontinued or batch colors shift.
+        Store leftovers labeled with the lot information from the carton.
+      </p>
+      <h3>Do grout lines change how much tile I need?</h3>
+      <p>
+        Grout joints can affect the exact physical layout and may slightly change how many tiles fit a space. This
+        calculator estimates quantity from tile face area and uses the waste allowance to account for real-world cuts,
+        breakage, and layout inefficiency. It does not calculate grout quantity.
+      </p>
+      <h3>Can I use this for backsplash or wall tile?</h3>
+      <p>
+        Yes for quantity. Enter the flat area you plan to cover. The tool does not choose adhesives, waterproofing, or
+        installation methods.
+      </p>
+      <h3>Can I use this for shower tile?</h3>
+      <p>
+        You can estimate flat surface area for shopping, but this calculator does not determine waterproofing,
+        substrate, slope, installation system, or code requirements for wet areas.
+      </p>
+
+      <h2>Sources</h2>
+      <ul>
+        <li>
+          <a href="https://www.cletile.com/blogs/cle-education/how-much-extra-tile-to-buy">Clé Tile — how much extra tile to buy</a>
+          — planning discussion of roughly 10% for standard layouts and about 15% for intricate or diagonal work
+        </li>
+        <li>
+          <a href="https://www.bedrosians.com/en/blog/articles/how-to-plan-a-tile-layout-before-you-set-a-single-tile/">Bedrosians — how to plan a tile layout</a>
+          — layout planning notes and approximate overage by pattern (about 10% straight/offset; about 15% diagonal)
+        </li>
+        <li>
+          <a href="https://merolatile.com/frequently-asked-questions/">Merola Tile FAQ</a>
+          — measuring square footage and waste guidance for standard installs versus rooms with many cuts
+        </li>
+        <li>
+          <a href="https://www.daltile.com/how-to/faqs">Daltile FAQ</a>
+          — attic stock / ordering extra tile for dye-lot matching and future repairs
+        </li>
+        <li>
+          American Olean / retail product listings — commonly recommend about 10% overage for patterns, angles, and cuts
+          (verify on the specific product page)
+        </li>
+        <li>
+          BuildDirect tile &amp; stone installation guidance — order roughly 10–15% more; diagonal and patterned layouts
+          may need more; keep leftovers for repairs
+        </li>
+        <li>
+          L’Antic Colonial ceramic tile installation guide — recommends ordering about 10–15% more than calculated
+          material for cuts and future repairs
+        </li>
+      </ul>
+    </article>
+  </div>
+</BaseLayout>
