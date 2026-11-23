@@ -5,29 +5,35 @@ import EditorialImage from './EditorialImage.astro';
 
 interface Props {
   article: ArticleEntry;
+  /** Homepage grid vs category-hub compact list */
+  layout?: 'grid' | 'list';
 }
 
-const { article } = Astro.props;
+const { article, layout = 'grid' } = Astro.props;
 const href = articlePath(article);
 const category = categoryMeta[article.data.category];
+const isList = layout === 'list';
 ---
 
-<article class="pub-article-card">
-  <a href={href} class="pub-article-card__media-link">
+<article class:list={['pub-article-card', isList && 'pub-article-card--list']}>
+  <a href={href} class="pub-article-card__media-link" tabindex="-1" aria-hidden="true">
     <EditorialImage
       src={article.data.featuredImage}
-      alt={article.data.featuredImageAlt || article.data.title}
-      aspect="card"
+      alt=""
+      aspect={isList ? 'card' : 'card'}
+      class={isList ? 'pub-article-card__thumb' : undefined}
     />
   </a>
-  <p class="category-eyebrow">{category.label}</p>
-  <h3 class="pub-article-card__title">
-    <a href={href}>{article.data.title}</a>
-  </h3>
-  <p class="pub-article-card__dek">{article.data.description}</p>
-  <p class="text-xs text-ink-subtle">
-    <time datetime={article.data.publishedDate.toISOString()}>
-      {formatArticleDate(article.data.publishedDate)}
-    </time>
-  </p>
+  <div class="pub-article-card__body">
+    <p class="category-eyebrow">{category.label}</p>
+    <h3 class="pub-article-card__title">
+      <a href={href}>{article.data.title}</a>
+    </h3>
+    <p class="pub-article-card__dek">{article.data.description}</p>
+    <p class="pub-article-card__date">
+      <time datetime={article.data.publishedDate.toISOString()}>
+        {formatArticleDate(article.data.publishedDate)}
+      </time>
+    </p>
+  </div>
 </article>

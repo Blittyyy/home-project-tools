@@ -52,7 +52,8 @@ const {
 
 const preset = PLACEHOLDERS[aspect];
 const resolvedSrc = src && src.trim() ? src : preset.src;
-const resolvedAlt = alt && alt.trim() ? alt : preset.label;
+/** Allow intentional empty alt for decorative thumbs next to a linked headline. */
+const resolvedAlt = alt === undefined || alt === null ? preset.label : alt;
 const isPlaceholder = resolvedSrc === preset.src;
 ---
 

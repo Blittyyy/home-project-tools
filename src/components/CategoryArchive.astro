@@ -21,6 +21,7 @@ const groups = groupBySubcategory(articles);
 const emptyHub = articles.length === 0;
 const noindex = queryNoindex || emptyHub;
 const schema = categoryHubSchema(category, meta.href);
+const showGroupLabels = groups.length > 1 || (groups[0]?.articles.length ?? 0) > 1;
 ---
 
 <BaseLayout
@@ -44,15 +45,29 @@ const schema = categoryHubSchema(category, meta.href);
           project, material, and how-to guides will appear here as they are published.
         </p>
       ) : (
-        <div class="mt-10 space-y-12">
+        <div class="hub-archive mt-8">
           {groups.map((group) => (
-            <section aria-labelledby={`sub-${group.key}`}>
-              <h2 id={`sub-${group.key}`} class="font-display text-2xl font-semibold text-ink">
-                {group.label}
-              </h2>
-              <div class="mt-5 grid gap-4 sm:grid-cols-2">
+            <section
+              class="hub-archive__group"
+              aria-labelledby={showGroupLabels ? `sub-${group.key}` : undefined}
+              aria-label={!showGroupLabels ? group.label : undefined}
+            >
+              {
+                showGroupLabels ? (
+                  group.articles.length === 1 ? (
+                    <p id={`sub-${group.key}`} class="hub-archive__eyebrow">
+                      {group.label}
+                    </p>
+                  ) : (
+                    <h2 id={`sub-${group.key}`} class="hub-archive__heading">
+                      {group.label}
+                    </h2>
+                  )
+                ) : null
+              }
+              <div class="hub-archive__list">
                 {group.articles.map((article) => (
-                  <ArticleCard article={article} />
+                  <ArticleCard article={article} layout="list" />
                 ))}
               </div>
             </section>

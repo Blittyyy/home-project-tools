@@ -456,6 +456,13 @@
   border: 1px solid var(--color-border);
 }
 
+.pub-article-card__body {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
 .pub-article-card__title {
   margin: 0;
   font-family: var(--font-sans);
@@ -479,6 +486,101 @@
   font-size: 0.9rem;
   line-height: 1.45;
   color: var(--color-ink-muted);
+}
+
+.pub-article-card__date {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--color-ink-subtle);
+}
+
+/* Compact editorial list used on category hubs */
+.pub-article-card--list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+  padding-block: 1.1rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.pub-article-card--list .pub-article-card__media-link {
+  width: 100%;
+}
+
+.pub-article-card--list .pub-article-card__thumb,
+.pub-article-card--list .ed-image--card {
+  aspect-ratio: 4 / 3;
+  max-height: 11rem;
+  width: 100%;
+}
+
+.pub-article-card--list .pub-article-card__title {
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: -0.015em;
+}
+
+.pub-article-card--list .pub-article-card__dek {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+@media (min-width: 720px) {
+  .pub-article-card--list {
+    grid-template-columns: 15rem minmax(0, 1fr);
+    gap: 1.15rem;
+    align-items: start;
+  }
+
+  .pub-article-card--list .pub-article-card__media-link {
+    width: 15rem;
+  }
+
+  .pub-article-card--list .pub-article-card__thumb,
+  .pub-article-card--list .ed-image--card {
+    width: 15rem;
+    max-height: none;
+    aspect-ratio: 4 / 3;
+  }
+}
+
+@media (min-width: 960px) {
+  .pub-article-card--list {
+    grid-template-columns: 15.5rem minmax(0, 1fr);
+  }
+
+  .pub-article-card--list .pub-article-card__media-link,
+  .pub-article-card--list .pub-article-card__thumb,
+  .pub-article-card--list .ed-image--card {
+    width: 15.5rem;
+  }
+}
+
+.hub-archive__group + .hub-archive__group {
+  margin-top: 0.35rem;
+}
+
+.hub-archive__eyebrow {
+  margin: 0.85rem 0 0;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-ink-subtle);
+}
+
+.hub-archive__heading {
+  margin: 1rem 0 0;
+  font-family: var(--font-sans);
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--color-ink);
+}
+
+.hub-archive__list .pub-article-card--list:last-child {
+  border-bottom: 1px solid var(--color-border);
 }
 
 .pub-empty {
