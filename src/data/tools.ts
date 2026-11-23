@@ -78,13 +78,13 @@ export const tools: ToolDefinition[] = [
     status: 'available',
   },
   {
-    slug: 'paint',
+    slug: 'paint-calculator',
     name: 'Paint Calculator',
     description:
-      'Estimate paint gallons from wall area, openings, coats, and coverage rate.',
+      'Estimate paint gallons for rooms, walls, or a known area, with coats, coverage, and optional openings.',
     group: 'paint-walls',
-    href: '#coming-soon',
-    status: 'coming-soon',
+    href: '/calculators/paint-calculator',
+    status: 'available',
   },
   {
     slug: 'tile',

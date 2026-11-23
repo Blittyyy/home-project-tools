@@ -1,0 +1,857 @@
+---
+/**
+ * Paint Calculator UI — follows Concrete / Gravel / Mulch reference patterns.
+ *
+ * UX:
+ * - Explicit Calculate for first result and after geometry/mode changes.
+ * - After a successful result, coats/coverage/openings/ceiling live-update when valid.
+ * - Progressive disclosure for openings and ceiling (Room mode only).
+ */
+---
+
+<div class="calc-tool" data-paint-calc>
+  <form class="calc-tool__form" data-paint-form novalidate>
+    <fieldset class="calc-tool__fieldset">
+      <legend class="calc-tool__legend">Project type</legend>
+      <div class="calc-tool__modes" role="radiogroup" aria-label="Project type">
+        <label class="calc-tool__mode">
+          <input type="radio" name="mode" value="room" checked />
+          <span>Room</span>
+        </label>
+        <label class="calc-tool__mode">
+          <input type="radio" name="mode" value="walls" />
+          <span>Walls</span>
+        </label>
+        <label class="calc-tool__mode">
+          <input type="radio" name="mode" value="area" />
+          <span>Known area</span>
+        </label>
+      </div>
+      <p class="calc-tool__hint" id="mode-hint" data-mode-hint>
+        Enter room length, width, and wall height to estimate wall paint for a rectangular room.
+      </p>
+    </fieldset>
+
+    <div class="calc-tool__panel" data-panel="room">
+      <div class="calc-tool__row calc-tool__row--room-dims">
+        <div class="calc-tool__field">
+          <label for="pc-length">Room length</label>
+          <div class="calc-tool__input-unit">
+            <input id="pc-length" name="length" type="number" inputmode="decimal" min="0" step="any" aria-describedby="pc-length-error" />
+            <select id="pc-length-unit" name="lengthUnit" aria-label="Room length unit">
+              <option value="ft" selected>ft</option>
+              <option value="in">in</option>
+              <option value="m">m</option>
+              <option value="cm">cm</option>
+            </select>
+          </div>
+          <p class="calc-tool__error" id="pc-length-error" data-error-for="length" hidden></p>
+        </div>
+        <div class="calc-tool__field">
+          <label for="pc-width">Room width</label>
+          <div class="calc-tool__input-unit">
+            <input id="pc-width" name="width" type="number" inputmode="decimal" min="0" step="any" aria-describedby="pc-width-error" />
+            <select id="pc-width-unit" name="widthUnit" aria-label="Room width unit">
+              <option value="ft" selected>ft</option>
+              <option value="in">in</option>
+              <option value="m">m</option>
+              <option value="cm">cm</option>
+            </select>
+          </div>
+          <p class="calc-tool__error" id="pc-width-error" data-error-for="width" hidden></p>
+        </div>
+        <div class="calc-tool__field">
+          <label for="pc-height">Wall height</label>
+          <div class="calc-tool__input-unit">
+            <input id="pc-height" name="height" type="number" inputmode="decimal" min="0" step="any" aria-describedby="pc-height-error" />
+            <select id="pc-height-unit" name="heightUnit" aria-label="Wall height unit">
+              <option value="ft" selected>ft</option>
+              <option value="in">in</option>
+              <option value="m">m</option>
+              <option value="cm">cm</option>
+            </select>
+          </div>
+          <p class="calc-tool__error" id="pc-height-error" data-error-for="height" hidden></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="calc-tool__panel" data-panel="walls" hidden>
+      <div data-walls-list class="calc-tool__walls"></div>
+      <p class="calc-tool__error" data-error-for="walls" hidden></p>
+      <div class="calc-tool__actions calc-tool__actions--inline">
+        <button type="button" class="btn-secondary" data-add-wall>Add wall</button>
+      </div>
+      <p class="calc-tool__hint">Add each wall’s width and height. You can enter up to 20 walls.</p>
+    </div>
+
+    <div class="calc-tool__panel" data-panel="area" hidden>
+      <div class="calc-tool__field">
+        <label for="pc-area">Paintable area</label>
+        <div class="calc-tool__input-unit calc-tool__input-unit--area">
+          <input id="pc-area" name="area" type="number" inputmode="decimal" min="0" step="any" aria-describedby="pc-area-error" />
+          <select id="pc-area-unit" name="areaUnit" aria-label="Area unit">
+            <option value="sq_ft" selected>sq ft</option>
+            <option value="m2">m²</option>
+          </select>
+        </div>
+        <p class="calc-tool__error" id="pc-area-error" data-error-for="area" hidden></p>
+      </div>
+    </div>
+
+    <div class="calc-tool__paint-settings" data-paint-settings>
+      <fieldset class="calc-tool__fieldset">
+        <legend class="calc-tool__legend">Number of coats</legend>
+        <div class="calc-tool__extra" data-coat-presets>
+          <label class="calc-tool__chip">
+            <input type="radio" name="coatPreset" value="1" />
+            <span>1</span>
+          </label>
+          <label class="calc-tool__chip">
+            <input type="radio" name="coatPreset" value="2" checked />
+            <span>2</span>
+          </label>
+          <label class="calc-tool__chip">
+            <input type="radio" name="coatPreset" value="3" />
+            <span>3</span>
+          </label>
+          <label class="calc-tool__chip">
+            <input type="radio" name="coatPreset" value="custom" />
+            <span>Custom</span>
+          </label>
+        </div>
+        <div class="calc-tool__field" data-custom-coats hidden>
+          <label for="pc-coats-custom">Custom coats</label>
+          <input id="pc-coats-custom" name="coatsCustom" type="number" inputmode="numeric" min="1" max="10" step="1" aria-describedby="pc-coats-error coats-hint" />
+          <p class="calc-tool__error" id="pc-coats-error" data-error-for="wallCoats" hidden></p>
+        </div>
+        <p class="calc-tool__hint" id="coats-hint">
+          Two coats are a planning default. Product, surface, color change, and manufacturer instructions can change
+          the number needed.
+        </p>
+      </fieldset>
+
+      <fieldset class="calc-tool__fieldset">
+        <legend class="calc-tool__legend">Coverage per gallon</legend>
+        <div class="calc-tool__field">
+          <label for="pc-coverage" class="sr-only">Coverage (sq ft/gal)</label>
+          <input
+            id="pc-coverage"
+            name="wallCoverage"
+            type="number"
+            inputmode="decimal"
+            min="50"
+            max="800"
+            step="any"
+            value="350"
+            aria-describedby="pc-coverage-hint pc-coverage-error"
+          />
+          <p class="calc-tool__hint" id="pc-coverage-hint">
+            350 sq ft/gal is a conservative planning value within common manufacturer coverage ranges. Check the label
+            or technical data for the paint you plan to use.
+          </p>
+          <p class="calc-tool__error" id="pc-coverage-error" data-error-for="wallCoverageSqFtPerGal" hidden></p>
+        </div>
+      </fieldset>
+    </div>
+
+    <div data-room-options>
+      <div class="calc-tool__toggle-row">
+        <label class="calc-tool__check">
+          <input type="checkbox" name="subtractOpenings" id="pc-openings" />
+          <span>Subtract doors and windows</span>
+        </label>
+      </div>
+
+      <div class="calc-tool__disclosure calc-tool__disclosure--compact" data-openings-panel hidden>
+        <fieldset class="calc-tool__fieldset">
+          <legend class="calc-tool__legend">Opening method</legend>
+          <div class="calc-tool__extra">
+            <label class="calc-tool__chip">
+              <input type="radio" name="openingMethod" value="counts" checked />
+              <span>Counts</span>
+            </label>
+            <label class="calc-tool__chip">
+              <input type="radio" name="openingMethod" value="custom" />
+              <span>Custom area</span>
+            </label>
+          </div>
+        </fieldset>
+
+        <div data-opening-counts>
+          <div class="calc-tool__row">
+            <div class="calc-tool__field">
+              <label for="pc-doors">Doors</label>
+              <input id="pc-doors" name="doorCount" type="number" inputmode="numeric" min="0" step="1" value="0" aria-describedby="pc-doors-error pc-openings-hint" />
+              <p class="calc-tool__error" id="pc-doors-error" data-error-for="doorCount" hidden></p>
+            </div>
+            <div class="calc-tool__field">
+              <label for="pc-windows">Windows</label>
+              <input id="pc-windows" name="windowCount" type="number" inputmode="numeric" min="0" step="1" value="0" aria-describedby="pc-windows-error pc-openings-hint" />
+              <p class="calc-tool__error" id="pc-windows-error" data-error-for="windowCount" hidden></p>
+            </div>
+          </div>
+          <p class="calc-tool__hint" id="pc-openings-hint">
+            Count method uses approximate allowances of 20 sq ft per door and 15 sq ft per window, based on
+            Benjamin Moore estimating guidance.
+          </p>
+        </div>
+
+        <div data-opening-custom hidden>
+          <div class="calc-tool__field">
+            <label for="pc-opening-area">Total opening area</label>
+            <div class="calc-tool__input-unit calc-tool__input-unit--area">
+              <input id="pc-opening-area" name="customOpeningArea" type="number" inputmode="decimal" min="0" step="any" aria-describedby="pc-opening-area-error" />
+              <select id="pc-opening-unit" name="customOpeningUnit" aria-label="Opening area unit">
+                <option value="sq_ft" selected>sq ft</option>
+                <option value="m2">m²</option>
+              </select>
+            </div>
+            <p class="calc-tool__error" id="pc-opening-area-error" data-error-for="customOpeningArea" hidden></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="calc-tool__toggle-row">
+        <label class="calc-tool__check">
+          <input type="checkbox" name="includeCeiling" id="pc-ceiling" />
+          <span>Estimate ceiling paint separately</span>
+        </label>
+      </div>
+
+      <div class="calc-tool__disclosure calc-tool__disclosure--compact" data-ceiling-panel hidden>
+        <div class="calc-tool__row">
+          <div class="calc-tool__field">
+            <label for="pc-ceiling-coats">Ceiling coats</label>
+            <input id="pc-ceiling-coats" name="ceilingCoats" type="number" inputmode="numeric" min="1" max="10" step="1" value="2" aria-describedby="pc-ceiling-coats-error" />
+            <p class="calc-tool__error" id="pc-ceiling-coats-error" data-error-for="ceilingCoats" hidden></p>
+          </div>
+          <div class="calc-tool__field">
+            <label for="pc-ceiling-coverage">Ceiling coverage (sq ft/gal)</label>
+            <input id="pc-ceiling-coverage" name="ceilingCoverage" type="number" inputmode="decimal" min="50" max="800" step="any" value="350" aria-describedby="pc-ceiling-coverage-error" />
+            <p class="calc-tool__error" id="pc-ceiling-coverage-error" data-error-for="ceilingCoverageSqFtPerGal" hidden></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="calc-tool__actions">
+      <button type="submit" class="btn-primary">Calculate</button>
+      <button type="button" class="btn-secondary" data-reset>Reset</button>
+    </div>
+  </form>
+
+  <div class="calc-tool__aside">
+    <div class="calc-tool__visual card-surface" data-visual>
+      <svg class="calc-tool__svg" viewBox="0 0 320 158" role="img" aria-labelledby="pc-svg-title" data-svg>
+        <title id="pc-svg-title">Enter dimensions to preview the project shape.</title>
+        <rect width="320" height="158" fill="#f5f5f4" rx="10"></rect>
+        <text x="160" y="84" text-anchor="middle" fill="#78716c" font-size="13" font-family="system-ui,sans-serif">
+          Dimension preview
+        </text>
+      </svg>
+    </div>
+
+    <div class="calc-tool__results card-surface" data-results aria-live="polite" aria-atomic="true">
+      <p class="calc-tool__empty" data-empty>
+        Enter your project dimensions and press Calculate to see gallons of paint to purchase.
+      </p>
+      <div class="calc-tool__result-body" data-result-body hidden></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  import {
+    calculatePaint,
+    formatArea,
+    formatCoverage,
+    formatGallons,
+    formatLiters,
+    DEFAULT_COATS,
+    DEFAULT_COVERAGE_SQ_FT_PER_GAL,
+    MAX_WALLS,
+    type OpeningMethod,
+    type PaintInput,
+    type PaintMode,
+    type PaintResult,
+  } from '../utils/paint.ts';
+  import { fromFeet, toFeet, type LengthUnit } from '../utils/length-units.ts';
+  import { fromSquareFeet, toSquareFeet, type AreaUnit } from '../utils/area-units.ts';
+
+  const rootEl = document.querySelector<HTMLElement>('[data-paint-calc]');
+  if (rootEl) {
+    const root = rootEl;
+    const form = root.querySelector<HTMLFormElement>('[data-paint-form]')!;
+    const empty = root.querySelector<HTMLElement>('[data-empty]')!;
+    const body = root.querySelector<HTMLElement>('[data-result-body]')!;
+    const svg = root.querySelector<SVGElement>('[data-svg]')!;
+    const wallsList = root.querySelector<HTMLElement>('[data-walls-list]')!;
+    const roomOptions = root.querySelector<HTMLElement>('[data-room-options]')!;
+    const openingsPanel = root.querySelector<HTMLElement>('[data-openings-panel]')!;
+    const ceilingPanel = root.querySelector<HTMLElement>('[data-ceiling-panel]')!;
+    const openingCounts = root.querySelector<HTMLElement>('[data-opening-counts]')!;
+    const openingCustom = root.querySelector<HTMLElement>('[data-opening-custom]')!;
+    const customCoatsWrap = root.querySelector<HTMLElement>('[data-custom-coats]')!;
+    let hasResult = false;
+    let wallRowCount = 0;
+
+    function mode(): PaintMode {
+      const checked = form.querySelector<HTMLInputElement>('input[name="mode"]:checked');
+      return (checked?.value as PaintMode) || 'room';
+    }
+
+    const MODE_HINTS: Record<PaintMode, string> = {
+      room: 'Enter room length, width, and wall height to estimate wall paint for a rectangular room.',
+      walls: 'Enter one or more individual wall widths and heights, then sum them for the paint estimate.',
+      area: 'Enter a paintable area you already measured when you do not need room geometry.',
+    };
+
+    function syncModeHint() {
+      const hint = root.querySelector<HTMLElement>('[data-mode-hint]');
+      if (hint) hint.textContent = MODE_HINTS[mode()];
+    }
+
+    function syncPanels() {
+      const current = mode();
+      root.querySelectorAll<HTMLElement>('[data-panel]').forEach((panel) => {
+        panel.hidden = panel.dataset.panel !== current;
+      });
+      roomOptions.hidden = current !== 'room';
+      syncModeHint();
+      syncOpenings();
+      syncCeiling();
+    }
+
+    function syncOpenings() {
+      const isRoom = mode() === 'room';
+      const enabled = form.querySelector<HTMLInputElement>('#pc-openings')?.checked === true;
+      openingsPanel.hidden = !isRoom || !enabled;
+      if (openingsPanel.hidden) return;
+      const method =
+        form.querySelector<HTMLInputElement>('input[name="openingMethod"]:checked')?.value || 'counts';
+      openingCounts.hidden = method !== 'counts';
+      openingCustom.hidden = method !== 'custom';
+    }
+
+    function syncCeiling() {
+      const enabled = form.querySelector<HTMLInputElement>('#pc-ceiling')?.checked === true;
+      ceilingPanel.hidden = mode() !== 'room' || !enabled;
+    }
+
+    function syncCoats() {
+      const preset = form.querySelector<HTMLInputElement>('input[name="coatPreset"]:checked')?.value;
+      customCoatsWrap.hidden = preset !== 'custom';
+    }
+
+    function addWallRow(prefill?: { width?: string; height?: string }) {
+      if (wallRowCount >= MAX_WALLS) return;
+      wallRowCount += 1;
+      const idx = wallRowCount;
+      const row = document.createElement('div');
+      row.className = 'calc-tool__wall-row';
+      row.dataset.wallRow = String(idx);
+      row.innerHTML = `
+        <p class="calc-tool__wall-label">Wall ${idx}</p>
+        <div class="calc-tool__row">
+          <div class="calc-tool__field">
+            <label for="pc-wall-${idx}-width">Wall ${idx} width</label>
+            <div class="calc-tool__input-unit">
+              <input id="pc-wall-${idx}-width" name="wall${idx}Width" type="number" inputmode="decimal" min="0" step="any" aria-describedby="pc-wall-${idx}-width-error" ${prefill?.width ? `value="${prefill.width}"` : ''} />
+              <select id="pc-wall-${idx}-width-unit" name="wall${idx}WidthUnit" aria-label="Wall ${idx} width unit">
+                <option value="ft" selected>ft</option>
+                <option value="in">in</option>
+                <option value="m">m</option>
+                <option value="cm">cm</option>
+              </select>
+            </div>
+            <p class="calc-tool__error" id="pc-wall-${idx}-width-error" data-error-for="wall${idx}Width" hidden></p>
+          </div>
+          <div class="calc-tool__field">
+            <label for="pc-wall-${idx}-height">Wall ${idx} height</label>
+            <div class="calc-tool__input-unit">
+              <input id="pc-wall-${idx}-height" name="wall${idx}Height" type="number" inputmode="decimal" min="0" step="any" aria-describedby="pc-wall-${idx}-height-error" ${prefill?.height ? `value="${prefill.height}"` : ''} />
+              <select id="pc-wall-${idx}-height-unit" name="wall${idx}HeightUnit" aria-label="Wall ${idx} height unit">
+                <option value="ft" selected>ft</option>
+                <option value="in">in</option>
+                <option value="m">m</option>
+                <option value="cm">cm</option>
+              </select>
+            </div>
+            <p class="calc-tool__error" id="pc-wall-${idx}-height-error" data-error-for="wall${idx}Height" hidden></p>
+          </div>
+        </div>
+        <button type="button" class="calc-tool__remove-wall btn-secondary" data-remove-wall="${idx}" ${wallRowCount === 1 ? 'hidden' : ''}>
+          Remove wall ${idx}
+        </button>
+      `;
+      wallsList.appendChild(row);
+      wireLengthUnitConversion(`wall${idx}Width`, `wall${idx}WidthUnit`);
+      wireLengthUnitConversion(`wall${idx}Height`, `wall${idx}HeightUnit`);
+      updateRemoveVisibility();
+    }
+
+    function renumberWalls() {
+      const rows = Array.from(wallsList.querySelectorAll<HTMLElement>('[data-wall-row]'));
+      wallRowCount = 0;
+      const snapshot = rows.map((row) => {
+        const width = row.querySelector<HTMLInputElement>('input[name$="Width"]')?.value ?? '';
+        const height = row.querySelector<HTMLInputElement>('input[name$="Height"]')?.value ?? '';
+        const widthUnit = row.querySelector<HTMLSelectElement>('select[name$="WidthUnit"]')?.value ?? 'ft';
+        const heightUnit = row.querySelector<HTMLSelectElement>('select[name$="HeightUnit"]')?.value ?? 'ft';
+        return { width, height, widthUnit, heightUnit };
+      });
+      wallsList.innerHTML = '';
+      for (const item of snapshot) {
+        addWallRow({ width: item.width, height: item.height });
+        const last = wallsList.querySelector<HTMLElement>('[data-wall-row]:last-child');
+        if (!last) continue;
+        const wu = last.querySelector<HTMLSelectElement>('select[name$="WidthUnit"]');
+        const hu = last.querySelector<HTMLSelectElement>('select[name$="HeightUnit"]');
+        if (wu) wu.value = item.widthUnit;
+        if (hu) hu.value = item.heightUnit;
+      }
+    }
+
+    function updateRemoveVisibility() {
+      const rows = wallsList.querySelectorAll<HTMLElement>('[data-wall-row]');
+      rows.forEach((row) => {
+        const btn = row.querySelector<HTMLButtonElement>('[data-remove-wall]');
+        if (btn) btn.hidden = rows.length <= 1;
+      });
+    }
+
+    function clearErrors() {
+      root.querySelectorAll<HTMLElement>('[data-error-for]').forEach((el) => {
+        el.hidden = true;
+        el.textContent = '';
+      });
+      root.querySelectorAll<HTMLElement>('[aria-invalid]').forEach((el) => {
+        el.removeAttribute('aria-invalid');
+      });
+    }
+
+    function showErrors(errors: { field: string; message: string }[]) {
+      clearErrors();
+      for (const error of errors) {
+        const nodes = root.querySelectorAll<HTMLElement>(`[data-error-for="${error.field}"]`);
+        nodes.forEach((node) => {
+          const panel = node.closest('[data-panel]');
+          if (panel instanceof HTMLElement && panel.hidden) return;
+          node.hidden = false;
+          node.textContent = error.message;
+        });
+      }
+
+      const fieldMap: Record<string, string> = {
+        length: 'pc-length',
+        width: 'pc-width',
+        height: 'pc-height',
+        area: 'pc-area',
+        wallCoats: 'pc-coats-custom',
+        wallCoverageSqFtPerGal: 'pc-coverage',
+        doorCount: 'pc-doors',
+        windowCount: 'pc-windows',
+        customOpeningArea: 'pc-opening-area',
+        ceilingCoats: 'pc-ceiling-coats',
+        ceilingCoverageSqFtPerGal: 'pc-ceiling-coverage',
+      };
+
+      const first = errors[0];
+      if (!first) return;
+      let id = fieldMap[first.field];
+      if (!id && first.field.startsWith('wall')) {
+        const match = first.field.match(/^wall(\d+)(Width|Height)/);
+        if (match) {
+          id = `pc-wall-${match[1]}-${match[2]!.toLowerCase()}`;
+        }
+      }
+      const target = id ? root.querySelector<HTMLElement>(`#${id}`) : null;
+      if (target && !target.closest('[hidden]')) {
+        target.setAttribute('aria-invalid', 'true');
+        target.focus();
+      }
+    }
+
+    function readNumber(name: string): number | undefined {
+      const el = form.elements.namedItem(name);
+      if (!(el instanceof HTMLInputElement)) return undefined;
+      if (el.value.trim() === '') return undefined;
+      return Number(el.value);
+    }
+
+    function readLengthUnit(name: string): LengthUnit {
+      const el = form.elements.namedItem(name);
+      if (el instanceof HTMLSelectElement) return el.value as LengthUnit;
+      return 'ft';
+    }
+
+    function readAreaUnit(name: string): AreaUnit {
+      const el = form.elements.namedItem(name);
+      if (el instanceof HTMLSelectElement) return el.value as AreaUnit;
+      return 'sq_ft';
+    }
+
+    function wallCoats(): number {
+      const preset = form.querySelector<HTMLInputElement>('input[name="coatPreset"]:checked')?.value;
+      if (preset === 'custom') return readNumber('coatsCustom') ?? Number.NaN;
+      return Number(preset ?? DEFAULT_COATS);
+    }
+
+    function buildInput(): PaintInput {
+      const current = mode();
+      const base: PaintInput = {
+        mode: current,
+        wallCoats: wallCoats(),
+        wallCoverageSqFtPerGal: readNumber('wallCoverage') ?? Number.NaN,
+      };
+
+      if (current === 'room') {
+        const subtract = form.querySelector<HTMLInputElement>('#pc-openings')?.checked === true;
+        const includeCeiling = form.querySelector<HTMLInputElement>('#pc-ceiling')?.checked === true;
+        const openingMethod = (form.querySelector<HTMLInputElement>(
+          'input[name="openingMethod"]:checked',
+        )?.value || 'counts') as OpeningMethod;
+
+        return {
+          ...base,
+          length: readNumber('length'),
+          lengthUnit: readLengthUnit('lengthUnit'),
+          width: readNumber('width'),
+          widthUnit: readLengthUnit('widthUnit'),
+          height: readNumber('height'),
+          heightUnit: readLengthUnit('heightUnit'),
+          subtractOpenings: subtract,
+          openingMethod,
+          doorCount: readNumber('doorCount'),
+          windowCount: readNumber('windowCount'),
+          customOpeningArea: readNumber('customOpeningArea'),
+          customOpeningUnit: readAreaUnit('customOpeningUnit'),
+          includeCeiling,
+          ceilingCoats: includeCeiling ? readNumber('ceilingCoats') : undefined,
+          ceilingCoverageSqFtPerGal: includeCeiling ? readNumber('ceilingCoverage') : undefined,
+        };
+      }
+
+      if (current === 'walls') {
+        const walls = Array.from(wallsList.querySelectorAll<HTMLElement>('[data-wall-row]')).map(
+          (_row, i) => {
+            const idx = i + 1;
+            return {
+              width: readNumber(`wall${idx}Width`),
+              widthUnit: readLengthUnit(`wall${idx}WidthUnit`),
+              height: readNumber(`wall${idx}Height`),
+              heightUnit: readLengthUnit(`wall${idx}HeightUnit`),
+            };
+          },
+        );
+        return { ...base, walls };
+      }
+
+      return {
+        ...base,
+        area: readNumber('area'),
+        areaUnit: readAreaUnit('areaUnit'),
+      };
+    }
+
+    function formatDim(ft: number | undefined): string {
+      if (ft === undefined) return '';
+      const rounded = Math.abs(ft - Math.round(ft)) < 1e-9 ? String(Math.round(ft)) : ft.toFixed(2);
+      return `${rounded} ft`;
+    }
+
+    function renderSvg(result: PaintResult | null) {
+      if (!result) {
+        svg.innerHTML = `
+          <title id="pc-svg-title">Enter dimensions to preview the project shape.</title>
+          <rect width="320" height="158" fill="#f5f5f4" rx="10"></rect>
+          <text x="160" y="84" text-anchor="middle" fill="#78716c" font-size="13" font-family="system-ui,sans-serif">Dimension preview</text>
+        `;
+        return;
+      }
+
+      const d = result.dimensionsFt;
+      if (result.mode === 'room' && d.lengthFt && d.widthFt && d.heightFt !== undefined) {
+        const ceilingNote = result.ceiling ? ' · Ceiling separate' : '';
+        svg.innerHTML = `
+          <title id="pc-svg-title">Room ${formatDim(d.lengthFt)} by ${formatDim(d.widthFt)}, wall height ${formatDim(d.heightFt)}${ceilingNote}.</title>
+          <rect width="320" height="158" fill="#f8fafc" rx="10"></rect>
+          <rect x="70" y="36" width="180" height="78" fill="#e8eef5" stroke="#1e3a5f" stroke-width="2"></rect>
+          <text x="160" y="28" text-anchor="middle" fill="#1c1917" font-size="12" font-family="system-ui,sans-serif">${formatDim(d.lengthFt)}</text>
+          <text x="60" y="80" text-anchor="end" fill="#1c1917" font-size="12" font-family="system-ui,sans-serif">${formatDim(d.widthFt)}</text>
+          <text x="160" y="140" text-anchor="middle" fill="#44403c" font-size="12" font-family="system-ui,sans-serif">Height ${formatDim(d.heightFt)}${ceilingNote}</text>
+        `;
+        return;
+      }
+
+      if (result.mode === 'walls') {
+        const count = result.wallCount ?? 1;
+        const area = formatArea(result.grossWallSqFt);
+        svg.innerHTML = `
+          <title id="pc-svg-title">${count} wall${count === 1 ? '' : 's'}, total ${area} sq ft.</title>
+          <rect width="320" height="158" fill="#f8fafc" rx="10"></rect>
+          <rect x="78" y="40" width="164" height="70" fill="#e8eef5" stroke="#1e3a5f" stroke-width="2"></rect>
+          <text x="160" y="80" text-anchor="middle" fill="#1c1917" font-size="14" font-weight="600" font-family="system-ui,sans-serif">${count} wall${count === 1 ? '' : 's'}</text>
+          <text x="160" y="140" text-anchor="middle" fill="#44403c" font-size="12" font-family="system-ui,sans-serif">${area} sq ft total</text>
+        `;
+        return;
+      }
+
+      if (result.mode === 'area') {
+        const area = formatArea(result.paintableWallSqFt);
+        svg.innerHTML = `
+          <title id="pc-svg-title">Known paintable area ${area} sq ft.</title>
+          <rect width="320" height="158" fill="#f8fafc" rx="10"></rect>
+          <rect x="60" y="40" width="200" height="72" fill="#e8eef5" stroke="#1e3a5f" stroke-width="2" stroke-dasharray="6 4"></rect>
+          <text x="160" y="82" text-anchor="middle" fill="#1c1917" font-size="14" font-weight="600" font-family="system-ui,sans-serif">${area} sq ft</text>
+        `;
+      }
+    }
+
+    function renderResult(result: PaintResult) {
+      empty.hidden = true;
+      body.hidden = false;
+
+      const warnings = result.warnings.map((w) => `<p class="calc-tool__warning">${w}</p>`).join('');
+      const openingsBlock = result.openingsEnabled
+        ? `
+        <section aria-labelledby="pc-openings-label">
+          <h3 class="calc-tool__metric-label" id="pc-openings-label">Openings deducted</h3>
+          <p class="calc-tool__metric-value">${formatArea(result.openingSqFt)} sq ft</p>
+        </section>`
+        : '';
+
+      const summaryExtra =
+        result.mode === 'walls'
+          ? `<p class="calc-tool__metric-meta">${result.wallCount ?? 1} wall${(result.wallCount ?? 1) === 1 ? '' : 's'}</p>`
+          : result.mode === 'area'
+            ? `<p class="calc-tool__metric-meta">Entered area</p>`
+            : '';
+
+      const ceilingBlock = result.ceiling
+        ? `
+        <section class="calc-tool__section" aria-labelledby="pc-ceiling-label">
+          <h3 class="calc-tool__section-label" id="pc-ceiling-label">Ceiling paint</h3>
+          <p class="calc-tool__section-value">${result.ceiling.purchaseGallons} gallon${result.ceiling.purchaseGallons === 1 ? '' : 's'} to purchase</p>
+          <p class="calc-tool__section-meta">
+            Calculated: ${formatGallons(result.ceiling.calculatedGallons)} gal · ${formatLiters(result.ceiling.calculatedLiters)} L
+          </p>
+          <p class="calc-tool__section-meta">
+            Area ${formatArea(result.ceiling.areaSqFt)} sq ft · ${result.ceiling.coats} coat${result.ceiling.coats === 1 ? '' : 's'} · ${formatCoverage(result.ceiling.coverageSqFtPerGal)} sq ft/gal
+          </p>
+        </section>`
+        : '';
+
+      body.innerHTML = `
+        <div class="calc-tool__purchase">
+          <p class="calc-tool__purchase-label">Estimated wall paint to purchase</p>
+          <p class="calc-tool__purchase-value">${result.walls.purchaseGallons} <span class="calc-tool__purchase-unit">gallon${result.walls.purchaseGallons === 1 ? '' : 's'}</span></p>
+          <p class="calc-tool__purchase-equiv">Calculated: ${formatGallons(result.walls.calculatedGallons)} gal · ${formatLiters(result.walls.calculatedLiters)} L</p>
+        </div>
+
+        <div class="calc-tool__metrics">
+          <section aria-labelledby="pc-area-label">
+            <h3 class="calc-tool__metric-label" id="pc-area-label">Paintable wall area</h3>
+            <p class="calc-tool__metric-value">${formatArea(result.paintableWallSqFt)} sq ft</p>
+            ${summaryExtra}
+          </section>
+          <section aria-labelledby="pc-coats-label">
+            <h3 class="calc-tool__metric-label" id="pc-coats-label">Coats</h3>
+            <p class="calc-tool__metric-value">${result.walls.coats}</p>
+          </section>
+          <section aria-labelledby="pc-coverage-label">
+            <h3 class="calc-tool__metric-label" id="pc-coverage-label">Coverage assumption</h3>
+            <p class="calc-tool__metric-value">${formatCoverage(result.walls.coverageSqFtPerGal)} sq ft/gal</p>
+            <p class="calc-tool__metric-meta">per coat</p>
+          </section>
+          ${openingsBlock}
+        </div>
+
+        <section class="calc-tool__section" aria-labelledby="pc-summary-label">
+          <h3 class="calc-tool__section-label" id="pc-summary-label">Project summary</h3>
+          <p class="calc-tool__section-meta">Gross wall area: ${formatArea(result.grossWallSqFt)} sq ft</p>
+          <p class="calc-tool__section-meta">Opening deduction: ${formatArea(result.openingSqFt)} sq ft</p>
+          <p class="calc-tool__section-meta">Net paintable area: ${formatArea(result.paintableWallSqFt)} sq ft</p>
+        </section>
+
+        ${ceilingBlock}
+
+        <section class="calc-tool__note" aria-labelledby="pc-coverage-note-label">
+          <h3 class="calc-tool__section-label" id="pc-coverage-note-label">Coverage assumption</h3>
+          <p>
+            ${formatCoverage(result.walls.coverageSqFtPerGal)} sq ft/gal per coat. Check your product label. Coverage
+            varies with product, surface texture, porosity, application method, and color change.
+          </p>
+        </section>
+
+        <p class="calc-tool__footnote">
+          Whole-gallon purchase quantity is rounded up. Actual package sizes vary, and some products are also sold in
+          quarts or 5-gallon containers.
+        </p>
+        ${warnings}
+      `;
+    }
+
+    function clearResult() {
+      hasResult = false;
+      empty.hidden = false;
+      body.hidden = true;
+      body.innerHTML = '';
+      renderSvg(null);
+    }
+
+    function runCalculate({ focusOnError }: { focusOnError: boolean }) {
+      const out = calculatePaint(buildInput());
+      if (!out.ok) {
+        if (focusOnError) showErrors(out.errors);
+        else {
+          clearErrors();
+          if (hasResult) clearResult();
+        }
+        return false;
+      }
+      clearErrors();
+      hasResult = true;
+      renderResult(out.result);
+      renderSvg(out.result);
+      return true;
+    }
+
+    function wireLengthUnitConversion(valueName: string, unitName: string) {
+      const valueEl = form.elements.namedItem(valueName);
+      const unitEl = form.elements.namedItem(unitName);
+      if (!(valueEl instanceof HTMLInputElement) || !(unitEl instanceof HTMLSelectElement)) return;
+      let previousUnit = unitEl.value as LengthUnit;
+      unitEl.addEventListener('change', () => {
+        const next = unitEl.value as LengthUnit;
+        if (valueEl.value.trim() !== '') {
+          const n = Number(valueEl.value);
+          if (Number.isFinite(n) && n > 0) {
+            const ft = toFeet(n, previousUnit);
+            valueEl.value = String(Number(fromFeet(ft, next).toPrecision(10)));
+          }
+        }
+        previousUnit = next;
+      });
+    }
+
+    function wireAreaUnitConversion(valueName: string, unitName: string) {
+      const valueEl = form.elements.namedItem(valueName);
+      const unitEl = form.elements.namedItem(unitName);
+      if (!(valueEl instanceof HTMLInputElement) || !(unitEl instanceof HTMLSelectElement)) return;
+      let previousUnit = unitEl.value as AreaUnit;
+      unitEl.addEventListener('change', () => {
+        const next = unitEl.value as AreaUnit;
+        if (valueEl.value.trim() !== '') {
+          const n = Number(valueEl.value);
+          if (Number.isFinite(n) && n >= 0) {
+            const sqFt = toSquareFeet(n, previousUnit);
+            valueEl.value = String(Number(fromSquareFeet(sqFt, next).toPrecision(10)));
+          }
+        }
+        previousUnit = next;
+      });
+    }
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      runCalculate({ focusOnError: true });
+    });
+
+    form.querySelectorAll<HTMLInputElement>('input[name="mode"]').forEach((input) => {
+      input.addEventListener('change', () => {
+        syncPanels();
+        clearErrors();
+      });
+    });
+
+    form.querySelector('#pc-openings')?.addEventListener('change', () => {
+      syncOpenings();
+      if (hasResult) runCalculate({ focusOnError: false });
+    });
+    form.querySelector('#pc-ceiling')?.addEventListener('change', () => {
+      syncCeiling();
+      if (hasResult) runCalculate({ focusOnError: false });
+    });
+    form.querySelectorAll<HTMLInputElement>('input[name="openingMethod"]').forEach((input) => {
+      input.addEventListener('change', () => {
+        syncOpenings();
+        if (hasResult) runCalculate({ focusOnError: false });
+      });
+    });
+    form.querySelectorAll<HTMLInputElement>('input[name="coatPreset"]').forEach((input) => {
+      input.addEventListener('change', () => {
+        syncCoats();
+        if (hasResult) runCalculate({ focusOnError: false });
+      });
+    });
+
+    [
+      '#pc-coats-custom',
+      '#pc-coverage',
+      '#pc-doors',
+      '#pc-windows',
+      '#pc-opening-area',
+      '#pc-ceiling-coats',
+      '#pc-ceiling-coverage',
+    ].forEach((sel) => {
+      form.querySelector(sel)?.addEventListener('input', () => {
+        if (hasResult) runCalculate({ focusOnError: false });
+      });
+    });
+
+    root.querySelector('[data-add-wall]')?.addEventListener('click', () => {
+      if (wallRowCount >= MAX_WALLS) return;
+      addWallRow();
+      clearErrors();
+    });
+
+    wallsList.addEventListener('click', (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) return;
+      const btn = target.closest<HTMLButtonElement>('[data-remove-wall]');
+      if (!btn) return;
+      const row = btn.closest<HTMLElement>('[data-wall-row]');
+      if (!row || wallsList.querySelectorAll('[data-wall-row]').length <= 1) return;
+      row.remove();
+      renumberWalls();
+      clearErrors();
+      if (hasResult) runCalculate({ focusOnError: false });
+    });
+
+    wireLengthUnitConversion('length', 'lengthUnit');
+    wireLengthUnitConversion('width', 'widthUnit');
+    wireLengthUnitConversion('height', 'heightUnit');
+    wireAreaUnitConversion('area', 'areaUnit');
+    wireAreaUnitConversion('customOpeningArea', 'customOpeningUnit');
+
+    root.querySelector('[data-reset]')?.addEventListener('click', () => {
+      form.reset();
+      const room = form.querySelector<HTMLInputElement>('input[name="mode"][value="room"]');
+      if (room) room.checked = true;
+      const coats2 = form.querySelector<HTMLInputElement>('input[name="coatPreset"][value="2"]');
+      if (coats2) coats2.checked = true;
+      const counts = form.querySelector<HTMLInputElement>('input[name="openingMethod"][value="counts"]');
+      if (counts) counts.checked = true;
+      const coverage = form.querySelector<HTMLInputElement>('#pc-coverage');
+      if (coverage) coverage.value = String(DEFAULT_COVERAGE_SQ_FT_PER_GAL);
+      const ceilingCoats = form.querySelector<HTMLInputElement>('#pc-ceiling-coats');
+      if (ceilingCoats) ceilingCoats.value = String(DEFAULT_COATS);
+      const ceilingCoverage = form.querySelector<HTMLInputElement>('#pc-ceiling-coverage');
+      if (ceilingCoverage) ceilingCoverage.value = String(DEFAULT_COVERAGE_SQ_FT_PER_GAL);
+      wallsList.innerHTML = '';
+      wallRowCount = 0;
+      addWallRow();
+      syncPanels();
+      syncCoats();
+      clearErrors();
+      clearResult();
+    });
+
+    addWallRow();
+    syncPanels();
+    syncCoats();
+    clearResult();
+  }
+</script>

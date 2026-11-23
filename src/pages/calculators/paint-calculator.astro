@@ -1,0 +1,197 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import PaintCalculator from '../../components/PaintCalculator.astro';
+import { webApplicationSchema, breadcrumbSchema } from '../../utils/schema';
+import { CALCULATORS_HUB } from '../../data/tools';
+
+const path = '/calculators/paint-calculator';
+const title = 'Paint Calculator: Gallons for Rooms & Walls';
+const description =
+  'Estimate how much paint you need for rooms, individual walls, or a known area. Adjust coats and coverage, subtract openings, and estimate ceiling paint separately.';
+
+const crumbs = [
+  { label: 'Home', href: '/' },
+  { label: CALCULATORS_HUB.title, href: '/calculators' },
+  { label: 'Paint Calculator' },
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  path={path}
+  schema={[
+    webApplicationSchema({
+      name: 'Paint Calculator',
+      description,
+      path,
+    }),
+    breadcrumbSchema(crumbs),
+  ]}
+>
+  <div class="container-site container-calc calc-page">
+    <Breadcrumbs items={crumbs} />
+
+    <header class="calc-page__intro">
+      <h1 class="section-heading">Paint Calculator</h1>
+      <p class="section-lede calc-page__lede">
+        Estimate wall paint in gallons for a room, individual walls, or a known area. Adjust coats and coverage to
+        match your product, optionally subtract openings, and estimate ceiling paint as a separate line.
+      </p>
+    </header>
+
+    <div class="calc-page__tool">
+      <PaintCalculator />
+    </div>
+
+    <p class="calc-page__disclaimer">
+      This calculator estimates paint quantity from the dimensions, coats, and coverage rate you enter. Actual
+      coverage varies by paint product, surface texture and porosity, application method, color change, and other
+      conditions. Check the product label or technical data before purchasing. This tool does not determine coating
+      compatibility, hazardous-surface preparation, ventilation, or professional coating specifications.
+    </p>
+
+    <article class="prose-article calc-page__copy">
+      <h2>How the paint calculation works</h2>
+      <p>
+        For a rectangular room, wall area is 2 × (length + width) × wall height. Optional openings are subtracted to
+        get paintable wall area. That area is multiplied by the number of coats, then divided by your coverage rate
+        (sq ft per gallon per coat) to get calculated gallons. Purchase quantity rounds that value up to whole US
+        gallons. Ceiling paint, when enabled, uses the room’s length × width and its own coats and coverage — it is
+        never merged into the wall gallon total.
+      </p>
+
+      <h2>How many square feet does a gallon of paint cover?</h2>
+      <p>
+        Coverage depends on the product and surface. Sherwin-Williams commonly cites about 350–400 sq ft per gallon for
+        typical interior paint. Some Behr products list broader ranges such as about 250–400 sq ft per gallon. Benjamin
+        Moore lines often list higher figures on technical data (for example around 400–450 sq ft/gal for some interior
+        paints). This calculator defaults to 350 sq ft/gal as a conservative planning value — edit it to match the
+        label or technical data for the paint you plan to use. Coverage is not universal.
+      </p>
+
+      <h2>How many coats of paint do you need?</h2>
+      <p>
+        The calculator defaults to two coats as a planning value. Benjamin Moore’s paint calculator assumes two coats,
+        and Benjamin Moore product guidance often recommends two top coats for optimal hide and color development.
+        One coat may be enough for some same-color repaints; dramatic color changes or porous surfaces may need more.
+        Follow your product instructions and surface conditions.
+      </p>
+
+      <h2>Should you subtract doors and windows?</h2>
+      <p>
+        Subtracting openings is optional and off by default. Exact measured opening area is best when you have it —
+        use Custom area. Count mode uses approximate Benjamin Moore estimating allowances of 20 sq ft per door and 15
+        sq ft per window. Those are planning allowances, not measured dimensions for every opening.
+      </p>
+
+      <h2>How much ceiling paint do you need?</h2>
+      <p>
+        In Room mode you can estimate ceiling paint separately. Ceiling area is length × width. Ceiling coats and
+        coverage are editable and independent from wall settings because ceiling paint is often a different product or
+        color.
+      </p>
+
+      <h2>How much extra paint should you buy?</h2>
+      <p>
+        This calculator does not add a percentage overage. Calculated gallons are rounded up to whole gallons for
+        purchase planning. Leftover paint is often kept for touch-ups when labeled and stored properly. Package options
+        (quarts, gallons, 5-gallon containers) vary by product and retailer — this tool does not optimize packages.
+      </p>
+
+      <h2>Example calculations</h2>
+      <h3>10 × 12 ft room, 8 ft walls, 2 coats, 350 sq ft/gal, no openings</h3>
+      <p>
+        Gross wall area = 352 sq ft. Coat-adjusted demand = 704 sq ft. Calculated ≈ 2.01 gal → purchase 3 gallons.
+      </p>
+      <h3>Same room with 1 door and 2 windows (count method)</h3>
+      <p>
+        Deduction = 20 + 15 + 15 = 50 sq ft. Paintable = 302 sq ft. With 2 coats at 350 sq ft/gal ≈ 1.73 gal → purchase
+        2 gallons.
+      </p>
+      <h3>Ceiling only for that room</h3>
+      <p>
+        Ceiling area = 120 sq ft. Two coats at 350 sq ft/gal ≈ 0.69 gal → purchase 1 gallon of ceiling paint, separate
+        from walls.
+      </p>
+
+      <h2>Frequently asked questions</h2>
+      <h3>How much paint do I need?</h3>
+      <p>
+        Multiply paintable area by coats, divide by coverage per gallon, then round up to whole gallons for purchase.
+      </p>
+      <h3>How many square feet does a gallon cover?</h3>
+      <p>
+        Check your product. Many interior latex products fall roughly in the 300–400+ sq ft/gal range on smooth
+        surfaces. This tool defaults to 350 and lets you edit.
+      </p>
+      <h3>How much paint for a 10×12 room?</h3>
+      <p>
+        With 8 ft walls, no openings, 2 coats, and 350 sq ft/gal, expect about 2.01 calculated gallons (buy 3). Openings
+        and different coverage change the result.
+      </p>
+      <h3>Do I need two coats?</h3>
+      <p>
+        Two coats are a common planning default and match many manufacturer recommendations for full color development,
+        but your project may differ. Choose coats in the calculator.
+      </p>
+      <h3>Should I subtract windows and doors?</h3>
+      <p>
+        Optional. Use measured opening area when possible, or approximate counts of 20 sq ft per door and 15 sq ft per
+        window.
+      </p>
+      <h3>How much ceiling paint do I need?</h3>
+      <p>
+        Ceiling area is length × width. Estimate it separately with its own coats and coverage in Room mode.
+      </p>
+      <h3>Does this include primer?</h3>
+      <p>
+        No. Primer is a separate product with its own coverage. Estimate primer separately if your project needs it.
+      </p>
+
+      <h2>Sources</h2>
+      <ul>
+        <li>
+          <a href="https://www.sherwin-williams.com/en-us/color/color-tools/paint-calculator" rel="noopener noreferrer">
+            Sherwin-Williams — Paint Calculator FAQ
+          </a>
+          — typical gallon coverage about 350–400 sq ft
+        </li>
+        <li>
+          <a href="https://www.benjaminmoore.com/en-us/paint-calculator" rel="noopener noreferrer">
+            Benjamin Moore — Paint Calculator
+          </a>
+          — assumes two coats; does not include ceiling
+        </li>
+        <li>
+          <a
+            href="https://media.benjaminmoore.com/WebServices/prod/assets/production/datasheets/TDS_0549/N549_TDS_US.pdf"
+            rel="noopener noreferrer"
+          >
+            Benjamin Moore — Regal Select technical data
+          </a>
+          — example interior coverage 400–450 sq ft/gal; recommends two coats for full color development
+        </li>
+        <li>
+          <a href="https://www.benjaminmoore.com/en-us/paint-calculator" rel="noopener noreferrer">
+            Benjamin Moore estimating guidance (door/window allowances)
+          </a>
+          — approximate 20 sq ft per door and 15 sq ft per window used in estimating practice with BM calculators
+        </li>
+        <li>
+          <a href="https://www.behr.com/how-to/interior/determine-how-much-interior-paint-to-buy" rel="noopener noreferrer">
+            Behr — How much interior paint to buy
+          </a>
+          — some products cite about 250–400 sq ft/gal per coat
+        </li>
+      </ul>
+    </article>
+  </div>
+</BaseLayout>
+
+<style>
+  .calc-page__copy :where(h2, h3) {
+    color: var(--color-ink);
+  }
+</style>
