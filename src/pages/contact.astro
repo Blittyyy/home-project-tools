@@ -1,21 +1,31 @@
 ---
 import PageLayout from '../layouts/PageLayout.astro';
-import { CONTACT_EMAIL, SITE_NAME } from '../config/site';
+import { CONTACT_EMAIL, CONTACT_EMAIL_READY, SITE_NAME } from '../config/site';
 ---
 
 <PageLayout
   title="Contact"
-  description={`Contact ${SITE_NAME}. Replace the email placeholder before launch.`}
+  description={`Contact ${SITE_NAME} about guides, calculators, or site feedback.`}
   path="/contact"
 >
-  <p>
-    For questions about this site, use the contact address below after the placeholder is replaced with a
-    monitored inbox.
-  </p>
-  <p>
-    Email: <strong>{CONTACT_EMAIL}</strong>
-  </p>
-  <p class="rounded-xl border border-warning-border bg-warning-bg p-4 text-sm text-warning">
-    Requires review: do not invent a physical address, phone number, or legal entity name on this page.
-  </p>
+  {
+    CONTACT_EMAIL_READY ? (
+      <>
+        <p>For questions about this site, email:</p>
+        <p>
+          <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+        </p>
+      </>
+    ) : (
+      <>
+        <p>
+          A public contact email for {SITE_NAME} has not been published yet. When a monitored inbox is
+          configured, it will appear on this page.
+        </p>
+        <p>
+          No fabricated address, phone number, or business location is listed here.
+        </p>
+      </>
+    )
+  }
 </PageLayout>

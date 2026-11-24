@@ -4,6 +4,7 @@ import Breadcrumbs from '../components/Breadcrumbs.astro';
 import EditorialImage from '../components/EditorialImage.astro';
 import TableOfContents from '../components/TableOfContents.astro';
 import ReviewCallout from '../components/ReviewCallout.astro';
+import PlanningNote from '../components/PlanningNote.astro';
 import AffiliateDisclosure from '../components/AffiliateDisclosure.astro';
 import ArticleSources from '../components/ArticleSources.astro';
 import ArticleFaq from '../components/ArticleFaq.astro';
@@ -18,6 +19,8 @@ import {
   getValidFaq,
   type ArticleEntry,
 } from '../utils/articles';
+import { EDITORIAL_FORMAT_LABELS, METHODOLOGY_PATH } from '../config/editorial';
+import { SHOW_PUBLIC_ARTICLE_DATES } from '../config/site';
 import { articleSchema, breadcrumbSchema } from '../utils/schema';
 import { absoluteUrl } from '../utils/seo';
 import { getAvailableTools } from '../data/tools';
@@ -33,7 +36,11 @@ const crumbs = articleBreadcrumbs(article);
 const category = categoryMeta[article.data.category];
 const related = await getRelatedArticles(article);
 const faq = getValidFaq(article);
-const review = getReviewCallout(article.data.reviewLevel);
+const planningNote = article.data.planningNote;
+const review = planningNote ? null : getReviewCallout(article.data.reviewLevel);
+const formatLabel = article.data.editorialFormat
+  ? EDITORIAL_FORMAT_LABELS[article.data.editorialFormat]
+  : null;
 const noindex = article.data.draft || article.data.noindex;
 const ogImage = article.data.featuredImage
   ? absoluteUrl(article.data.featuredImage)
@@ -42,6 +49,10 @@ const popularCalculators = getAvailableTools().slice(0, 5);
 const isConcreteArticle = article.data.tags.some((tag) => tag.toLowerCase() === 'concrete');
 const isPaintArticle = article.data.tags.some((tag) => tag.toLowerCase() === 'paint');
 const isMulchArticle = article.data.tags.some((tag) => tag.toLowerCase() === 'mulch');
+const isTileArticle = article.data.tags.some((tag) => tag.toLowerCase() === 'tile');
+const showDates = SHOW_PUBLIC_ARTICLE_DATES;
+const hasInlinePhoto = Boolean(article.data.photo?.trim());
+const showCalculatorCallout = !article.data.suppressCalculatorCallout;
 ---
 
 <BaseLayout
@@ -56,66 +67,94 @@ const isMulchArticle = article.data.tags.some((tag) => tag.toLowerCase() === 'mu
   <article class="container-site article-shell">
     <Breadcrumbs items={crumbs} />
 
-    <div class="article-layout">
-      <div class="article-main">
-        <header>
-          <p class="category-eyebrow">
-            <a href={category.href} class="text-brand no-underline hover:underline">{category.label}</a>
-            {
-              article.data.subcategory && (
-                <>
-                  <span aria-hidden="true"> · </span>
-                  <span class="text-ink-subtle">{article.data.subcategory.replace(/-/g, ' ')}</span>
-                </>
-              )
-            }
-          </p>
-          <h1 class="article-title">
-            {article.data.title}
-          </h1>
-          {
-            article.data.summary && (
-              <p class="article-dek">{article.data.summary}</p>
-            )
-          }
-          <div class="article-meta">
-            <span>By {article.data.author}</span>
+    <header class="article-header">
+      <p class="category-eyebrow">
+        <a href={category.href} class="text-brand no-underline hover:underline">{category.label}</a>
+        {
+          formatLabel && (
+            <>
+              <span aria-hidden="true"> · </span>
+              <span class="text-ink-subtle">{formatLabel}</span>
+            </>
+          )
+        }
+        {
+          !formatLabel && article.data.subcategory && (
+            <>
+              <span aria-hidden="true"> · </span>
+              <span class="text-ink-subtle">{article.data.subcategory.replace(/-/g, ' ')}</span>
+            </>
+          )
+        }
+      </p>
+      <h1 class="article-title">
+        {article.data.title}
+      </h1>
+      {
+        article.data.summary && (
+          <p class="article-dek">{article.data.summary}</p>
+        )
+      }
+      <div class="article-meta">
+        <span>
+          By{' '}
+          <a href={METHODOLOGY_PATH} class="article-meta__author">
+            {article.data.author}
+          </a>
+        </span>
+        {
+          showDates && (
             <span>
               Published{' '}
               <time datetime={article.data.publishedDate.toISOString()}>
                 {formatArticleDate(article.data.publishedDate)}
               </time>
             </span>
-            {
-              article.data.updatedDate && (
-                <span>
-                  Updated{' '}
-                  <time datetime={article.data.updatedDate.toISOString()}>
-                    {formatArticleDate(article.data.updatedDate)}
-                  </time>
-                </span>
-              )
-            }
-          </div>
-          {
-            article.data.tags.length > 0 && (
-              <ul class="mt-3 flex flex-wrap gap-2" aria-label="Tags">
-                {article.data.tags.map((tag) => (
-                  <li class="border border-border bg-sand px-2 py-0.5 text-xs font-medium text-ink-muted">{tag}</li>
-                ))}
-              </ul>
-            )
-          }
-        </header>
+          )
+        }
+        {
+          showDates && article.data.updatedDate && (
+            <span>
+              Updated{' '}
+              <time datetime={article.data.updatedDate.toISOString()}>
+                {formatArticleDate(article.data.updatedDate)}
+              </time>
+            </span>
+          )
+        }
+      </div>
+      {
+        article.data.tags.length > 0 && (
+          <ul class="article-tags" aria-label="Tags">
+            {article.data.tags.map((tag) => (
+              <li>{tag}</li>
+            ))}
+          </ul>
+        )
+      }
+    </header>
 
+    <div class="article-layout">
+      <div class="article-main">
         <EditorialImage
           src={article.data.featuredImage}
           alt={article.data.featuredImageAlt || article.data.title}
           aspect="hero"
           loading="eager"
           class="article-hero"
+          kind={article.data.featuredImageKind}
+          caption={article.data.featuredImageCaption}
         />
 
+        {
+          planningNote && (
+            <PlanningNote
+              title={planningNote.title}
+              body={planningNote.body}
+              bullets={planningNote.bullets}
+            />
+          )
+        }
         {review && <ReviewCallout title={review.title} body={review.body} />}
         {article.data.affiliateDisclosure && <AffiliateDisclosure />}
 
@@ -126,39 +165,64 @@ const isMulchArticle = article.data.tags.some((tag) => tag.toLowerCase() === 'mu
         </div>
 
         {
-          isMulchArticle ? (
-            <CalculatorCallout
-              eyebrow="Planning a mulch project?"
-              title="Mulch Calculator"
-              body="Enter your area and mulch depth to estimate cubic yards and bag quantities."
-              href="/calculators/mulch-calculator"
-              linkLabel="Calculate mulch →"
-            />
-          ) : isPaintArticle ? (
-            <CalculatorCallout
-              eyebrow="Planning a paint project?"
-              title="Paint Calculator"
-              body="Enter your room dimensions, coats, coverage rate, and optional doors/windows to estimate how many gallons you need."
-              href="/calculators/paint-calculator"
-              linkLabel="Calculate paint →"
-            />
-          ) : isConcreteArticle ? (
-            <CalculatorCallout
-              eyebrow="Planning a concrete project?"
-              title="Concrete Calculator"
-              body="Enter your dimensions to estimate cubic yards, bag quantities, and an optional extra-material allowance."
-              href="/calculators/concrete-calculator"
-              linkLabel="Calculate concrete →"
-            />
-          ) : (
-            <CalculatorCallout
-              eyebrow="Need a quantity estimate?"
-              title="Project Calculators"
-              body="Use a FixUpWise calculator for concrete, gravel, mulch, paint, or tile planning estimates before you shop."
-              href="/calculators"
-              linkLabel="Browse calculators →"
+          hasInlinePhoto && (
+            <EditorialImage
+              src={article.data.photo}
+              alt={article.data.photoAlt || ''}
+              aspect="hero"
+              kind="photo"
+              caption={[article.data.photoCaption, article.data.photoCredit]
+                .filter(Boolean)
+                .join(' — ')}
+              showDisclosure={false}
+              class="article-inline-photo"
             />
           )
+        }
+
+        {
+          showCalculatorCallout &&
+            (isTileArticle ? (
+              <CalculatorCallout
+                eyebrow="Planning a tile project?"
+                title="Tile Calculator"
+                body="Enter your project area, tile size, layout, and optional box information to estimate tiles and boxes."
+                href="/calculators/tile-calculator"
+                linkLabel="Calculate tile →"
+              />
+            ) : isMulchArticle ? (
+              <CalculatorCallout
+                eyebrow="Planning a mulch project?"
+                title="Mulch Calculator"
+                body="Enter your area and mulch depth to estimate cubic yards and bag quantities."
+                href="/calculators/mulch-calculator"
+                linkLabel="Calculate mulch →"
+              />
+            ) : isPaintArticle ? (
+              <CalculatorCallout
+                eyebrow="Planning a paint project?"
+                title="Paint Calculator"
+                body="Enter your room dimensions, coats, coverage rate, and optional doors/windows to estimate how many gallons you need."
+                href="/calculators/paint-calculator"
+                linkLabel="Calculate paint →"
+              />
+            ) : isConcreteArticle ? (
+              <CalculatorCallout
+                eyebrow="Planning a concrete project?"
+                title="Concrete Calculator"
+                body="Enter your dimensions to estimate cubic yards, bag quantities, and an optional extra-material allowance."
+                href="/calculators/concrete-calculator"
+                linkLabel="Calculate concrete →"
+              />
+            ) : (
+              <CalculatorCallout
+                eyebrow="Need a quantity estimate?"
+                title="Project Calculators"
+                body="Use a FixUpWise calculator for concrete, gravel, mulch, paint, or tile planning estimates before you shop."
+                href="/calculators"
+                linkLabel="Browse calculators →"
+              />
+            ))
         }
 
         <ArticleSources sources={article.data.sources} />

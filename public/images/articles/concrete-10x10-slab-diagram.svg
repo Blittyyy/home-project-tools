@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675" role="img" aria-labelledby="title desc">
+  <title id="title">10x10 slab quantity diagram</title>
+  <desc id="desc">Top view of a 10 by 10 foot rectangular slab with example cross-section depths of 4, 5, and 6 inches. Example depths only - not thickness recommendations.</desc>
+  <rect width="1200" height="675" fill="#FAF8F3"/>
+  <rect x="36" y="36" width="1128" height="603" fill="#FFFFFF" stroke="#D8D5CE" stroke-width="2"/>
+
+  <text x="72" y="88" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" letter-spacing="2" fill="#1F6A43">TOP VIEW</text>
+  <text x="72" y="116" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#686862">Example slab footprint</text>
+
+  <rect x="160" y="160" width="420" height="420" fill="#E7F1EA" stroke="#191919" stroke-width="3"/>
+  <line x1="160" y1="140" x2="580" y2="140" stroke="#191919" stroke-width="1.5"/>
+  <line x1="160" y1="132" x2="160" y2="148" stroke="#191919" stroke-width="1.5"/>
+  <line x1="580" y1="132" x2="580" y2="148" stroke="#191919" stroke-width="1.5"/>
+  <text x="370" y="132" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#1F6A43">10 ft</text>
+  <line x1="140" y1="160" x2="140" y2="580" stroke="#191919" stroke-width="1.5"/>
+  <line x1="132" y1="160" x2="148" y2="160" stroke="#191919" stroke-width="1.5"/>
+  <line x1="132" y1="580" x2="148" y2="580" stroke="#191919" stroke-width="1.5"/>
+  <text x="118" y="380" text-anchor="middle" transform="rotate(-90 118 380)" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#1F6A43">10 ft</text>
+  <text x="370" y="385" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700" fill="#191919">10 x 10 ft</text>
+
+  <text x="680" y="88" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" letter-spacing="2" fill="#1F6A43">EXAMPLE DEPTHS</text>
+  <text x="680" y="116" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#686862">Side / cross-section - quantity examples only</text>
+
+  <rect x="700" y="180" width="360" height="48" fill="#E7F1EA" stroke="#191919" stroke-width="2"/>
+  <line x1="1080" y1="180" x2="1110" y2="180" stroke="#A94B2B" stroke-width="2"/>
+  <line x1="1080" y1="228" x2="1110" y2="228" stroke="#A94B2B" stroke-width="2"/>
+  <line x1="1100" y1="180" x2="1100" y2="228" stroke="#A94B2B" stroke-width="2"/>
+  <text x="1120" y="210" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" fill="#1F6A43">4 in</text>
+  <text x="720" y="210" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#191919">~ 1.23 yd3 before extra</text>
+
+  <rect x="700" y="290" width="360" height="60" fill="#E7F1EA" stroke="#191919" stroke-width="2"/>
+  <line x1="1080" y1="290" x2="1110" y2="290" stroke="#A94B2B" stroke-width="2"/>
+  <line x1="1080" y1="350" x2="1110" y2="350" stroke="#A94B2B" stroke-width="2"/>
+  <line x1="1100" y1="290" x2="1100" y2="350" stroke="#A94B2B" stroke-width="2"/>
+  <text x="1120" y="328" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" fill="#1F6A43">5 in</text>
+  <text x="720" y="326" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#191919">~ 1.54 yd3 before extra</text>
+
+  <rect x="700" y="410" width="360" height="72" fill="#E7F1EA" stroke="#191919" stroke-width="2"/>
+  <line x1="1080" y1="410" x2="1110" y2="410" stroke="#A94B2B" stroke-width="2"/>
+  <line x1="1080" y1="482" x2="1110" y2="482" stroke="#A94B2B" stroke-width="2"/>
+  <line x1="1100" y1="410" x2="1100" y2="482" stroke="#A94B2B" stroke-width="2"/>
+  <text x="1120" y="454" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" fill="#1F6A43">6 in</text>
+  <text x="720" y="452" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#191919">~ 1.85 yd3 before extra</text>
+
+  <rect x="680" y="540" width="430" height="56" fill="#FAF8F3" stroke="#D8D5CE" stroke-width="1"/>
+  <text x="700" y="574" font-family="Arial, Helvetica, sans-serif" font-size="15" fill="#686862">Depths are quantity examples only - not slab recommendations.</text>
+</svg>

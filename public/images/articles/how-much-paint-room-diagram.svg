@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675" role="img" aria-labelledby="title desc">
+  <title id="title">Room wall paint area diagram</title>
+  <desc id="desc">Rectangular room with length, width, and wall height labeled. Gross wall area equals 2 times (length plus width) times height. Paint quantity comes from wall area, not floor area.</desc>
+  <rect width="1200" height="675" fill="#FAF8F3"/>
+  <rect x="36" y="36" width="1128" height="603" fill="#FFFFFF" stroke="#D8D5CE" stroke-width="2"/>
+
+  <text x="72" y="88" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" letter-spacing="2" fill="#1F6A43">WALL AREA, NOT FLOOR AREA</text>
+  <text x="72" y="118" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#686862">Paint quantity starts from the wall faces</text>
+
+  <!-- Floor footprint -->
+  <polygon points="180,480 420,480 500,400 260,400" fill="#F3F1EC" stroke="#191919" stroke-width="2"/>
+  <!-- Back wall -->
+  <polygon points="260,400 500,400 500,220 260,220" fill="#E7F1EA" stroke="#191919" stroke-width="2.5"/>
+  <!-- Right wall -->
+  <polygon points="500,400 580,320 580,140 500,220" fill="#D8E8DE" stroke="#191919" stroke-width="2.5"/>
+  <!-- Left wall hint -->
+  <polygon points="180,480 260,400 260,220 180,300" fill="#F6EBE6" stroke="#191919" stroke-width="2.5"/>
+  <!-- Front wall top edge -->
+  <line x1="180" y1="300" x2="420" y2="300" stroke="#191919" stroke-width="2"/>
+  <line x1="420" y1="300" x2="500" y2="220" stroke="#191919" stroke-width="2"/>
+
+  <!-- Dimension: Length -->
+  <line x1="180" y1="510" x2="420" y2="510" stroke="#191919" stroke-width="1.5"/>
+  <line x1="180" y1="502" x2="180" y2="518" stroke="#191919" stroke-width="1.5"/>
+  <line x1="420" y1="502" x2="420" y2="518" stroke="#191919" stroke-width="1.5"/>
+  <text x="300" y="548" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#1F6A43">LENGTH</text>
+
+  <!-- Dimension: Width -->
+  <line x1="440" y1="480" x2="520" y2="400" stroke="#191919" stroke-width="1.5"/>
+  <text x="530" y="455" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#1F6A43">WIDTH</text>
+
+  <!-- Dimension: Height -->
+  <line x1="600" y1="140" x2="600" y2="320" stroke="#A94B2B" stroke-width="2"/>
+  <line x1="592" y1="140" x2="608" y2="140" stroke="#A94B2B" stroke-width="2"/>
+  <line x1="592" y1="320" x2="608" y2="320" stroke="#A94B2B" stroke-width="2"/>
+  <text x="620" y="240" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#A94B2B">WALL HEIGHT</text>
+
+  <text x="340" y="340" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#191919">4 WALL PLANES</text>
+
+  <!-- Formula panel -->
+  <text x="700" y="88" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" letter-spacing="2" fill="#1F6A43">GROSS WALL AREA</text>
+
+  <rect x="700" y="120" width="420" height="72" fill="#FAF8F3" stroke="#191919" stroke-width="2"/>
+  <text x="910" y="164" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700" fill="#191919">2 x (L + W) x H</text>
+
+  <line x1="910" y1="210" x2="910" y2="250" stroke="#A94B2B" stroke-width="3"/>
+  <polygon points="910,262 902,248 918,248" fill="#A94B2B"/>
+
+  <rect x="700" y="270" width="420" height="64" fill="#E7F1EA" stroke="#191919" stroke-width="2"/>
+  <text x="910" y="310" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#1F6A43">PAINTABLE WALL AREA</text>
+
+  <line x1="910" y1="350" x2="910" y2="390" stroke="#A94B2B" stroke-width="3"/>
+  <polygon points="910,402 902,388 918,388" fill="#A94B2B"/>
+
+  <rect x="700" y="410" width="420" height="88" fill="#191919" stroke="#191919" stroke-width="2"/>
+  <text x="910" y="448" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#FFFFFF">then x coats / coverage</text>
+  <text x="910" y="478" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#FFFFFF">= GALLONS</text>
+
+  <rect x="700" y="530" width="420" height="56" fill="#FAF8F3" stroke="#D8D5CE" stroke-width="1"/>
+  <text x="910" y="564" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#686862">A 10 x 12 floor is not 120 sq ft of wall paint</text>
+</svg>

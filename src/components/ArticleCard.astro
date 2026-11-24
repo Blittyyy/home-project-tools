@@ -1,6 +1,7 @@
 ---
 import type { ArticleEntry } from '../utils/articles';
 import { articlePath, categoryMeta, formatArticleDate } from '../utils/articles';
+import { SHOW_PUBLIC_ARTICLE_DATES } from '../config/site';
 import EditorialImage from './EditorialImage.astro';
 
 interface Props {
@@ -20,7 +21,9 @@ const isList = layout === 'list';
     <EditorialImage
       src={article.data.featuredImage}
       alt=""
-      aspect={isList ? 'card' : 'card'}
+      aspect="card"
+      kind={article.data.featuredImageKind}
+      showDisclosure={false}
       class={isList ? 'pub-article-card__thumb' : undefined}
     />
   </a>
@@ -30,10 +33,14 @@ const isList = layout === 'list';
       <a href={href}>{article.data.title}</a>
     </h3>
     <p class="pub-article-card__dek">{article.data.description}</p>
-    <p class="pub-article-card__date">
-      <time datetime={article.data.publishedDate.toISOString()}>
-        {formatArticleDate(article.data.publishedDate)}
-      </time>
-    </p>
+    {
+      SHOW_PUBLIC_ARTICLE_DATES && (
+        <p class="pub-article-card__date">
+          <time datetime={article.data.publishedDate.toISOString()}>
+            {formatArticleDate(article.data.publishedDate)}
+          </time>
+        </p>
+      )
+    }
   </div>
 </article>

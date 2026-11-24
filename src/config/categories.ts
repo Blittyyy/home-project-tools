@@ -29,6 +29,7 @@ export const CATEGORIES: Record<ArticleCategory, CategoryDefinition> = {
       painting: 'Painting',
       concrete: 'Concrete',
       landscaping: 'Landscaping',
+      'flooring-tile': 'Flooring & Tile',
     },
   },
   materials: {
@@ -44,6 +45,7 @@ export const CATEGORIES: Record<ArticleCategory, CategoryDefinition> = {
       paint: 'Paint',
       concrete: 'Concrete',
       mulch: 'Mulch',
+      tile: 'Tile',
     },
   },
   guides: {
@@ -58,6 +60,7 @@ export const CATEGORIES: Record<ArticleCategory, CategoryDefinition> = {
       reference: 'Reference',
       painting: 'Painting',
       landscaping: 'Landscaping',
+      'flooring-tile': 'Flooring & Tile',
     },
   },
 };

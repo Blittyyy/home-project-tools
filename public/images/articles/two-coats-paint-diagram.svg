@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675" role="img" aria-labelledby="title desc">
+  <title id="title">One coat versus two coats decision diagram</title>
+  <desc id="desc">Decision guide: one coat may be enough when product instructions and conditions allow it; two coats may be appropriate for product systems, major color change, or hiding requirements. Use product instructions as the final reference.</desc>
+  <rect width="1200" height="675" fill="#FAF8F3"/>
+  <rect x="36" y="36" width="1128" height="603" fill="#FFFFFF" stroke="#D8D5CE" stroke-width="2"/>
+
+  <text x="600" y="88" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" letter-spacing="2" fill="#1F6A43">COAT COUNT DECISION</text>
+  <text x="600" y="118" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#686862">Neither side is universally correct</text>
+
+  <!-- Left branch: 1 coat -->
+  <rect x="72" y="160" width="480" height="360" fill="#FAF8F3" stroke="#191919" stroke-width="2"/>
+  <rect x="72" y="160" width="480" height="64" fill="#E7F1EA" stroke="#191919" stroke-width="2"/>
+  <text x="312" y="202" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700" fill="#1F6A43">1 COAT MAY BE ENOUGH</text>
+
+  <text x="100" y="270" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#191919">when:</text>
+  <circle cx="120" cy="320" r="6" fill="#1F6A43"/>
+  <text x="145" y="328" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#191919">product instructions allow it</text>
+  <circle cx="120" cy="380" r="6" fill="#1F6A43"/>
+  <text x="145" y="388" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#191919">similar color / suitable surface</text>
+  <circle cx="120" cy="440" r="6" fill="#1F6A43"/>
+  <text x="145" y="448" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#191919">conditions support one coat</text>
+
+  <!-- Right branch: 2 coats -->
+  <rect x="648" y="160" width="480" height="360" fill="#FAF8F3" stroke="#191919" stroke-width="2"/>
+  <rect x="648" y="160" width="480" height="64" fill="#F6EBE6" stroke="#191919" stroke-width="2"/>
+  <text x="888" y="202" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700" fill="#A94B2B">2 COATS MAY FIT</text>
+
+  <text x="676" y="270" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#191919">when:</text>
+  <circle cx="696" cy="320" r="6" fill="#A94B2B"/>
+  <text x="721" y="328" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#191919">product system specifies it</text>
+  <circle cx="696" cy="380" r="6" fill="#A94B2B"/>
+  <text x="721" y="388" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#191919">major color change / hiding need</text>
+  <circle cx="696" cy="440" r="6" fill="#A94B2B"/>
+  <text x="721" y="448" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#191919">surface or product requires it</text>
+
+  <!-- Footer -->
+  <rect x="72" y="560" width="1056" height="56" fill="#191919"/>
+  <text x="600" y="595" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" fill="#FFFFFF">Use the product instructions as the final reference</text>
+</svg>

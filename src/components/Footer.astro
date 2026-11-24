@@ -6,16 +6,16 @@ import { SITE_NAME } from '../config/site';
 
 <footer class="site-footer">
   <div class="container-site site-footer__grid">
-    <div>
+    <div class="site-footer__brand">
       <Wordmark variant="footer" />
       <p class="site-footer__blurb">{footerBlurb}</p>
     </div>
 
     <div>
-      <h2 class="site-footer__heading">Explore</h2>
+      <h2 class="site-footer__heading">Start Here</h2>
       <ul class="site-footer__list">
         {
-          footerNav.explore.map((item) => (
+          footerNav.startHere.map((item) => (
             <li>
               <a href={item.href}>{item.label}</a>
             </li>
@@ -25,10 +25,10 @@ import { SITE_NAME } from '../config/site';
     </div>
 
     <div>
-      <h2 class="site-footer__heading">Company</h2>
+      <h2 class="site-footer__heading">Popular Tools</h2>
       <ul class="site-footer__list">
         {
-          footerNav.company.map((item) => (
+          footerNav.popularTools.map((item) => (
             <li>
               <a href={item.href}>{item.label}</a>
             </li>
@@ -38,10 +38,10 @@ import { SITE_NAME } from '../config/site';
     </div>
 
     <div>
-      <h2 class="site-footer__heading">Legal</h2>
+      <h2 class="site-footer__heading">About</h2>
       <ul class="site-footer__list">
         {
-          footerNav.legal.map((item) => (
+          footerNav.about.map((item) => (
             <li>
               <a href={item.href}>{item.label}</a>
             </li>

@@ -1,26 +1,35 @@
 ---
 import PageLayout from '../layouts/PageLayout.astro';
-import { CONTACT_EMAIL, SITE_NAME } from '../config/site';
+import { CONTACT_EMAIL, CONTACT_EMAIL_READY, SITE_NAME } from '../config/site';
 ---
 
 <PageLayout
   title="Terms"
-  description={`Terms of use for ${SITE_NAME}. Review and complete before launch.`}
+  description={`Terms of use for ${SITE_NAME}.`}
   path="/terms"
 >
   <p>
-    These terms are a <strong>placeholder awaiting human review</strong>. They are not a substitute for
-    counsel-reviewed terms.
+    By using {SITE_NAME}, you agree that site content and calculators are for personal project planning
+    only. They do not create a professional services relationship and are not a substitute for licensed
+    advice, engineering, or code approval.
   </p>
   <p>
-    Site content and calculators provide planning estimates for personal project preparation. They do not
-    create a professional services relationship and are not a substitute for licensed advice.
+    Content is provided as-is for informational use. Local codes, manufacturer instructions, site
+    conditions, and product packaging control what your project actually requires.
   </p>
   <p>
-    Contact placeholder: <strong>{CONTACT_EMAIL}</strong>
+    These terms are a short interim statement for launch readiness. Governing law, entity name, and
+    dispute terms are not invented here; counsel-reviewed terms can replace this page when available.
   </p>
-  <p class="rounded-xl border border-warning-border bg-warning-bg p-4 text-sm text-warning">
-    Requires review: do not invent governing law, legal entity, liability caps, or dispute forums without
-    counsel.
-  </p>
+  {
+    CONTACT_EMAIL_READY ? (
+      <p>
+        Questions: <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+      </p>
+    ) : (
+      <p>
+        Contact: see <a href="/contact">Contact</a> once a public email is published.
+      </p>
+    )
+  }
 </PageLayout>

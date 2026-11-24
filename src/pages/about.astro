@@ -1,37 +1,67 @@
 ---
 import PageLayout from '../layouts/PageLayout.astro';
-import { CONTACT_EMAIL, SITE_AUTHOR, SITE_NAME, SITE_TAGLINE } from '../config/site';
+import { SITE_AUTHOR, SITE_NAME } from '../config/site';
+import { METHODOLOGY_PATH } from '../config/editorial';
 ---
 
 <PageLayout
   title="About"
-  description={`About ${SITE_NAME} — practical home project information, DIY planning guidance, and transparent calculators.`}
+  description={`About ${SITE_NAME} — practical home project guides, material reference articles, and transparent planning calculators for DIYers.`}
   path="/about"
 >
-  <p slot="lede" class="section-lede">{SITE_TAGLINE}</p>
+  <p slot="lede" class="section-lede">
+    What {SITE_NAME} publishes, who it is for, and how the guides and calculators fit together.
+  </p>
 
+  <h2>What is FixUpWise?</h2>
   <p>
-    <strong>{SITE_NAME}</strong> is a home-improvement publication for homeowners and DIYers. We publish practical
-    project information, material guidance, and transparent planning calculators so you can estimate quantities before
-    you buy.
+    <strong>{SITE_NAME}</strong> is a home-improvement publication focused on project planning math and
+    practical material guidance. It helps homeowners and DIYers estimate quantities, understand common
+    coverage and yield figures, and prepare shopping lists before they buy.
+  </p>
+
+  <h2>Who is it for?</h2>
+  <p>
+    Homeowners and DIYers who need clear planning numbers — slab volume, paint gallons, mulch depth,
+    tile counts, and similar quantity questions — without treating a webpage as engineering advice or a
+    contractor bid.
+  </p>
+
+  <h2>What does FixUpWise publish?</h2>
+  <p>
+    Editorial guides and reference articles across projects, materials, and how-to topics, plus
+    interactive material calculators. Content is attributed to <strong>{SITE_AUTHOR}</strong>. Articles
+    use editorial formats such as worked examples, decision guides, and product references so the job of
+    each page is clear.
+  </p>
+
+  <h2>What are the calculators for?</h2>
+  <p>
+    The calculators estimate quantities for concrete, gravel, mulch, paint, and tile. They apply labeled
+    formulas and defaults you can change — coverage rates, waste factors, bag sizes, and similar inputs —
+    so you can compare scenarios before you shop.
+  </p>
+
+  <h2>How are calculations different from project recommendations?</h2>
+  <p>
+    A calculation answers “how much material does this size and depth imply?” A recommendation answers
+    “how thick should your slab be?” or “how deep should you mulch?” {SITE_NAME} keeps those apart:
+    quantity math is deterministic for the inputs you enter; thickness, depth, and product choices remain
+    planning context with labeled assumptions — not code approval or professional design.
+  </p>
+
+  <h2>How is content researched?</h2>
+  <p>
+    Topics come from common homeowner planning questions. Calculator formulas and yield/coverage figures
+    are checked against manufacturer documentation and authoritative public sources such as university
+    extension guidance where those sources apply. Assumptions are labeled on the page. {SITE_NAME} does
+    not invent field tests, expert credentials, or contractor review.
   </p>
   <p>
-    The calculators are utility tools inside that editorial mission — not the identity of the whole site. Use them to
-    estimate concrete, gravel, mulch, paint, and tile quantities with clear assumptions you can adjust.
+    Full process, sourcing rules, illustration labeling, and update practice:
+    <a href={METHODOLOGY_PATH}>How We Create Content</a>.
   </p>
   <p>
-    Results are planning estimates. They are not structural engineering, building-code approval, electrical or plumbing
-    design, architectural plans, or professional contractor bids.
-  </p>
-  <p>
-    Editorial byline currently uses <strong>{SITE_AUTHOR}</strong>. Update that string in
-    <code>src/config/site.ts</code> and on individual articles when a final author model is set.
-  </p>
-  <p>
-    Contact placeholder: <strong>{CONTACT_EMAIL}</strong> — marked for review; do not invent a real inbox or legal
-    entity here.
-  </p>
-  <p class="mt-6 border border-warning-border bg-warning-bg p-4 text-sm text-warning">
-    Values marked for review are intentionally incomplete until a human supplies brand contact and legal details.
+    Related: <a href="/contact">Contact</a> · <a href="/disclaimer">Disclaimer</a>
   </p>
 </PageLayout>

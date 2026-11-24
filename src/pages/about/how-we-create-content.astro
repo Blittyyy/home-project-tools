@@ -1,0 +1,110 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import { SITE_NAME } from '../../config/site';
+
+const path = '/about/how-we-create-content';
+const title = 'How FixUpWise Creates Its Guides and Calculators';
+const description =
+  'How FixUpWise selects topics, builds calculator formulas, cites sources, labels assumptions, discloses AI illustrations, and updates published pages.';
+---
+
+<PageLayout
+  title={title}
+  description={description}
+  path={path}
+  breadcrumbs={[
+    { label: 'Home', href: '/' },
+    { label: 'About', href: '/about' },
+    { label: 'How We Create Content' },
+  ]}
+>
+  <p slot="lede" class="section-lede">
+    An honest look at how {SITE_NAME} builds practical homeowner guides and quantity calculators —
+    and what we do not claim.
+  </p>
+
+  <h2>How topics are selected</h2>
+  <p>
+    Topics start from common planning questions homeowners ask before buying materials: how much volume,
+    how many bags or gallons, how coverage rates work, and which assumptions change the result. Priority
+    goes to questions where transparent math and labeled defaults help more than marketing copy.
+  </p>
+
+  <h2>How calculator formulas are built</h2>
+  <p>
+    Each calculator applies a documented formula to the inputs you enter (area, depth, coats, tile size,
+    and similar). Defaults such as coverage rates, bag yields, and waste factors are labeled and editable
+    where the tool allows. The math is deterministic for those inputs — the same numbers produce the same
+    result.
+  </p>
+
+  <h2>Sources and product data</h2>
+  <ul>
+    <li>
+      Manufacturer documentation and technical data sheets when a product yield, bag volume, or coverage
+      rate is used.
+    </li>
+    <li>
+      University extension and other authoritative public guidance where it adds planning context (for
+      example mulch depth ranges).
+    </li>
+    <li>
+      One manufacturer’s specification is never treated as universal for every similar product — check the
+      label on what you buy.
+    </li>
+  </ul>
+
+  <h2>Calculations vs. recommendations</h2>
+  <p>
+    Deterministic math answers quantity questions for a given size and assumption set. Recommendations —
+    how thick a slab should be, how deep to mulch, whether two coats are enough — are planning context,
+    not engineering or code approval. Articles label which statements are examples, defaults, or ranges.
+  </p>
+
+  <h2>Assumptions and sources on the page</h2>
+  <ul>
+    <li>Assumptions such as bag yields, coverage rates, waste factors, and optional extras are labeled.</li>
+    <li>Cited sources appear in article source lists when used.</li>
+    <li>
+      Articles and calculators are updated when source guidance or calculator logic changes in a way that
+      affects published numbers or framing.
+    </li>
+  </ul>
+
+  <h2>Illustrations</h2>
+  <p>
+    Some diagrams and illustrations on {SITE_NAME} are AI-generated for explanatory use and are labeled
+    accordingly (typically: “Illustration: AI-generated for explanatory use.”). Ordinary photography is
+    not given that caption. {SITE_NAME} does not present AI-generated people or project photos as real
+    completed work.
+  </p>
+
+  <h2>What we do not do</h2>
+  <ul>
+    <li>Fabricate project results or field tests we have not performed.</li>
+    <li>Invent expert quotes, biographies, or contractor credentials.</li>
+    <li>Claim licensed contractor review, engineering approval, or laboratory testing unless that review actually happened.</li>
+    <li>Replace local code requirements or manufacturer instructions with generic advice.</li>
+  </ul>
+
+  <h2>Corrections and updates</h2>
+  <p>
+    Factual, mathematical, or sourcing errors may be corrected when found, and affected pages updated.
+    {SITE_NAME} does not operate a formal newsroom corrections desk. Meaningful changes to calculator
+    logic or cited figures are reflected on the relevant pages; when public article dates are shown,
+    updated dates will follow the site’s publication-date policy.
+  </p>
+
+  <h2>Planning estimates, not professional design</h2>
+  <p>
+    Calculators and worked examples help you estimate quantities before you buy. They are not
+    structural engineering, building-code approval, architectural plans, or contractor bids. Confirm
+    measurements on site, read the label on the product you purchase, and get qualified help when a
+    project involves structural, electrical, plumbing, or other safety-critical decisions.
+  </p>
+
+  <p>
+    Related: <a href="/about">About {SITE_NAME}</a> · <a href="/disclaimer">Disclaimer</a> ·
+    <a href="/contact">Contact</a>
+  </p>
+</PageLayout>

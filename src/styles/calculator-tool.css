@@ -13,8 +13,29 @@
 }
 
 .calc-page__intro .section-heading {
-  font-size: clamp(1.65rem, 2.2vw, 2rem);
-  line-height: 1.15;
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 2.4vw, 2.15rem);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.012em;
+}
+
+.calc-page__intro .section-heading::after {
+  content: '';
+  display: block;
+  width: 4.5rem;
+  height: 8px;
+  margin-top: 0.5rem;
+  background:
+    linear-gradient(var(--color-ink), var(--color-ink)) 0 100% / 100% 1px no-repeat,
+    repeating-linear-gradient(
+      to right,
+      var(--color-ink) 0,
+      var(--color-ink) 1px,
+      transparent 1px,
+      transparent 0.5rem
+    );
+  opacity: 0.4;
 }
 
 .calc-page__lede {
@@ -86,9 +107,10 @@
 .calc-tool__legend {
   padding: 0;
   margin-bottom: 0.45rem;
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--color-ink);
 }
@@ -105,8 +127,8 @@
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  border: 1px solid var(--color-border);
-  border-radius: 0.65rem;
+  border: 1px solid var(--color-ink);
+  border-radius: 0.25rem;
   background: var(--color-surface-raised);
   padding: 0.45rem 0.7rem;
   font-size: 0.9rem;
@@ -359,13 +381,20 @@
 .calc-tool__field select {
   width: 100%;
   min-height: 2.5rem;
-  border: 1px solid var(--color-border);
-  border-radius: 0.65rem;
+  border: 1px solid var(--color-ink);
+  border-radius: 0.25rem;
   background: var(--color-surface-raised);
   padding: 0.55rem 0.65rem;
   font-size: 1rem;
   line-height: 1.25;
   color: var(--color-ink);
+}
+
+.calc-tool__field input[type='number']:focus,
+.calc-tool__field select:focus {
+  border-color: var(--color-brand);
+  outline: 2px solid color-mix(in srgb, var(--color-brand) 35%, transparent);
+  outline-offset: 1px;
 }
 
 .calc-tool__field input[aria-invalid='true'],
@@ -417,6 +446,11 @@
   height: auto;
 }
 
+.calc-tool .card-surface {
+  border-color: var(--color-ink);
+  border-radius: 2px;
+}
+
 .calc-tool__results.card-surface {
   padding: 0.8rem 0.9rem;
 }
@@ -459,10 +493,11 @@
 
 .calc-tool__purchase-value {
   margin: 0.2rem 0 0;
-  font-family: var(--font-sans);
+  font-family: var(--font-display);
   font-size: clamp(1.65rem, 4vw, 2rem);
-  font-weight: 700;
+  font-weight: 800;
   line-height: 1.05;
+  letter-spacing: -0.015em;
   color: var(--color-ink);
   word-break: break-word;
 }
@@ -571,9 +606,9 @@
 .calc-tool__note {
   margin-top: 0.55rem;
   padding: 0.45rem 0.6rem;
-  border-radius: 0.6rem;
+  border-radius: 0.2rem;
   border: 1px solid var(--color-border);
-  background: var(--color-sand);
+  background: var(--color-paper);
 }
 
 .calc-tool__note .calc-tool__section-label {
@@ -679,8 +714,9 @@
 
 .calc-tool__warning {
   margin-top: 0.75rem;
-  border-radius: 0.65rem;
+  border-radius: 0.2rem;
   border: 1px solid var(--color-warning-border);
+  border-left: 3px solid var(--color-rust);
   background: var(--color-warning-bg);
   padding: 0.55rem 0.7rem;
   font-size: 0.8125rem;

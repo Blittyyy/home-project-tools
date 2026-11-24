@@ -1,21 +1,24 @@
 ---
 title: How to Calculate Cubic Yards of Concrete
 description: "Convert thickness to feet, multiply length × width × thickness for cubic feet, then divide by 27 to get cubic yards of concrete. Includes a worked example and common mistakes."
-summary: "Convert dimensions to feet, multiply length × width × thickness for cubic feet, then divide by 27 for cubic yards. One cubic yard equals 27 cubic feet."
+summary: "Convert thickness to feet, multiply length × width × thickness for cubic feet, then divide by 27. One cubic yard equals 27 cubic feet."
 slug: how-to-calculate-cubic-yards-concrete
 category: guides
 subcategory: measuring
+editorialFormat: quick-reference
 publishedDate: 2026-11-23
-author: FixUpWise Editorial
+author: FixUpWise Editorial Team
 tags:
   - concrete
   - conversions
   - measuring
-featuredImage: /images/articles/calculate-cubic-yards-concrete.png
-featuredImageAlt: Prepared concrete project area with measuring tape and project notes.
+featuredImage: /images/articles/calculate-cubic-yards-diagram.svg
+featuredImageAlt: "Diagram showing length × width × thickness to cubic feet, then divide by 27 for cubic yards."
+featuredImageKind: illustration
 draft: false
 featured: false
-reviewLevel: general
+reviewLevel: none
+suppressCalculatorCallout: true
 relatedArticles:
   - how-much-concrete-for-10x10-slab
   - 80-lb-concrete-bags-per-cubic-yard
@@ -26,31 +29,52 @@ sources:
 faq: []
 ---
 
-Concrete is usually ordered in **cubic yards** in the United States. The core calculation is simple geometry, then a unit conversion.
+To calculate cubic yards of concrete, multiply length × width × thickness in feet to get cubic feet, then divide by 27.
 
-## The formula
+**Cubic yards =**  
+**(length ft × width ft × thickness ft) ÷ 27**
 
-For a rectangular slab or footing pad:
+The most common trap: thickness entered in inches must be converted to feet first.
 
-1. Convert thickness to **feet** (inches ÷ 12).
-2. Multiply **length (ft) × width (ft) × thickness (ft)** to get **cubic feet**.
-3. Divide cubic feet by **27** to get **cubic yards**.
+4 in ÷ 12  
+= **0.3333 ft**
 
-So:
+For most DIY estimates, converting thickness correctly matters more than memorizing the cubic-yard formula.
 
-**cubic yards = (L × W × thickness in feet) ÷ 27**
+<aside class="planning-note" role="note">
+  <p class="planning-note__title">Watch the units</p>
+  <p class="planning-note__body">Keep length, width, and thickness in the same unit system before you multiply. If length and width are in feet, thickness must be in feet too — not inches.</p>
+</aside>
+
+## Step-by-step conversion
+
+1. Measure **length** and **width** in feet.
+2. Convert thickness: **inches ÷ 12 = feet**.
+3. Multiply: **length × width × thickness (ft)** → **cubic feet**.
+4. Divide: **cubic feet ÷ 27** → **cubic yards**.
+
+That path matches the FixUpWise [Concrete Calculator](/calculators/concrete-calculator).
 
 ## Worked example
 
-Suppose you plan a **12 × 16 ft** area that is **4 in** thick (quantity example only — not a thickness recommendation):
+A **12 × 16 ft** rectangle at **4 in** thick:
 
-1. Thickness in feet: 4 ÷ 12 = **0.333… ft**
-2. Cubic feet: 12 × 16 × (4 ÷ 12) = **64 ft³**
-3. Cubic yards: 64 ÷ 27 = **2.37 yd³**
+1. Thickness: 4 ÷ 12 = **0.3333 ft**
+2. Cubic feet: 12 × 16 × 0.3333 ≈ **64 ft³**
+3. Cubic yards: 64 ÷ 27 ≈ **2.37 yd³**
 
-That is the **calculated volume**. If you later add a planning allowance or convert to bags, you are moving from geometry into a purchase estimate. See [how much extra concrete to order](/guides/how-much-extra-concrete-to-order) and [80-lb bags per cubic yard](/materials/80-lb-concrete-bags-per-cubic-yard).
+That is geometric volume only. Purchase quantity may add an [extra-material allowance](/guides/how-much-extra-concrete-to-order) or convert to [bags](/materials/80-lb-concrete-bags-per-cubic-yard).
 
-## Inch thickness conversions
+For a full slab walkthrough with a fixed footprint, see [how much concrete for a 10×10 slab](/projects/how-much-concrete-for-10x10-slab).
+
+## Common mistakes
+
+- Using **inches** directly in a feet-based formula (overstates volume by 12×)
+- Dividing **square feet by 27** before multiplying by depth
+- Rounding intermediate steps too early
+- Confusing **cubic feet** with **cubic yards**, or cubic yards with **square yards**
+
+## Quick-reference thickness table
 
 <table>
   <thead>
@@ -69,22 +93,15 @@ That is the **calculated volume**. If you later add a planning allowance or conv
 
 Keep the exact fraction (for example 4/12) in the multiplication when you want to match calculator precision.
 
-## Metric note
-
-If you measure in meters, length × width × thickness gives **cubic meters**. One cubic meter is about **1.308 cubic yards**. The FixUpWise [Concrete Calculator](/calculators/concrete-calculator) can show both cubic yards and cubic meters after you enter dimensions.
-
-## Common mistakes
-
-- Leaving thickness in **inches** while length and width are in feet (that overstates volume by a factor of 12).
-- Mixing **in** and **ft** across length and width without converting.
-- Treating the geometric result as an automatic order quantity with no review of subgrade, formwork, or waste.
-- Confusing **cubic yards** with **square yards** (area, not volume).
-
-For a ready-made 10×10 example table, see [how much concrete for a 10×10 slab](/projects/how-much-concrete-for-10x10-slab).
-
 <aside class="calc-callout" aria-label="Concrete Calculator">
-  <p class="calc-callout__eyebrow">Planning a concrete project?</p>
+  <p class="calc-callout__eyebrow">Skip the conversion</p>
   <p class="calc-callout__title">Concrete Calculator</p>
-  <p class="calc-callout__body">Enter your dimensions to estimate cubic yards, bag quantities, and an optional extra-material allowance.</p>
+  <p class="calc-callout__body">Enter your dimensions and thickness and let the calculator convert the volume to cubic yards.</p>
   <a class="calc-callout__link" href="/calculators/concrete-calculator">Calculate concrete →</a>
 </aside>
+
+## Related reading
+
+- [How much concrete for a 10×10 slab?](/projects/how-much-concrete-for-10x10-slab)
+- [How many 80-lb bags of concrete are in a cubic yard?](/materials/80-lb-concrete-bags-per-cubic-yard)
+- [How much extra concrete should you order?](/guides/how-much-extra-concrete-to-order)

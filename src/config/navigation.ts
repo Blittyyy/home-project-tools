@@ -1,5 +1,6 @@
 import { ARTICLE_CATEGORIES, CATEGORIES } from './categories';
 import { FOOTER_BLURB } from './site';
+import { getAvailableTools } from '../data/tools';
 
 export type NavItem = { label: string; href: string };
 
@@ -19,17 +20,21 @@ export const primaryNav: NavItem[] = [
   { label: 'About', href: '/about' },
 ];
 
+const popularTools: NavItem[] = getAvailableTools().map((tool) => ({
+  label: tool.name,
+  href: tool.href,
+}));
+
 export const footerNav = {
-  explore: [
+  startHere: [
     ...categoryNav,
     { label: 'Calculators', href: '/calculators' },
-    { label: 'Search', href: '/search' },
   ] satisfies NavItem[],
-  company: [
-    { label: 'About', href: '/about' },
+  popularTools: popularTools satisfies NavItem[],
+  about: [
+    { label: 'About FixUpWise', href: '/about' },
+    { label: 'How We Create Content', href: '/about/how-we-create-content' },
     { label: 'Contact', href: '/contact' },
-  ] satisfies NavItem[],
-  legal: [
     { label: 'Privacy', href: '/privacy' },
     { label: 'Terms', href: '/terms' },
     { label: 'Disclaimer', href: '/disclaimer' },

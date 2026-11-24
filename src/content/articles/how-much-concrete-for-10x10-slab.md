@@ -1,21 +1,29 @@
 ---
 title: How Much Concrete Do You Need for a 10×10 Slab?
 description: "Estimate concrete for a 10×10 ft slab at 4, 5, and 6 in example thicknesses, including cubic yards, optional 10% extra, and 80-lb bag counts."
-summary: "A 10×10 ft slab at 4 in is about 33.33 ft³ (1.23 yd³) before extra material. At 5 in about 1.54 yd³; at 6 in about 1.85 yd³. Quantity examples only — not thickness recommendations."
+summary: "A 10×10 slab at 4 inches thick needs about 1.23 cubic yards of concrete before any extra material. At 5 inches, about 1.54 cubic yards; at 6 inches, about 1.85."
 slug: how-much-concrete-for-10x10-slab
 category: projects
 subcategory: concrete
+editorialFormat: worked-example
 publishedDate: 2026-11-23
-author: FixUpWise Editorial
+author: FixUpWise Editorial Team
 tags:
   - concrete
   - slab
   - quantity
-featuredImage: /images/articles/concrete-10x10-slab.png
-featuredImageAlt: Measuring a prepared backyard concrete slab area with a tape measure.
+featuredImage: /images/articles/concrete-10x10-slab-diagram.svg
+featuredImageAlt: "Technical diagram of a 10 by 10 foot slab footprint with example cross-section depths of 4, 5, and 6 inches."
+featuredImageKind: illustration
+# Ideal future real photo (do not publish until a verified photo exists):
+# photo: /images/articles/TODO-10x10-form-base-tape-measure.jpg
+# photoAlt: Measuring form depth with a tape measure after base preparation.
+# photoCaption: Recheck depth after the base is prepared — nominal form height is not always the pour depth.
+# photoCredit:
 draft: false
 featured: true
-reviewLevel: general
+reviewLevel: none
+suppressCalculatorCallout: true
 relatedArticles:
   - how-to-calculate-cubic-yards-concrete
   - how-much-extra-concrete-to-order
@@ -32,72 +40,104 @@ sources:
 faq: []
 ---
 
-For a **10 × 10 ft** rectangular slab, concrete volume is length × width × thickness (with thickness in feet). The numbers below match the FixUpWise [Concrete Calculator](/calculators/concrete-calculator) math.
+For a small slab, that geometric volume is only the starting number. The more useful number is how much concrete you realistically need available when the pour starts.
 
-**Important:** The thicknesses shown are **quantity examples only**. This article does not recommend how thick your slab should be. Thickness, reinforcement, and mix selection depend on the project, local requirements, and professional guidance when needed.
+Recheck the actual depth after the base is prepared. A form set for 4 inches does not guarantee the entire base is exactly 4 inches deep across the footprint.
 
-## Quantity examples for a 10×10 slab
+A common mistake is treating the slab like a perfectly uniform box even when the base has low spots or variation. That’s one place where a neat cubic-yard estimate and the amount needed on site can start to diverge.
+
+The thicknesses below are quantity examples for the same **10×10 ft** footprint. They are not a recommendation for how thick your slab should be.
+
+## The 10×10 slab math
+
+Area is straightforward:
+
+**10 ft × 10 ft = 100 sq ft**
+
+Convert thickness to feet, then multiply:
+
+**cubic feet = 100 × (thickness in inches ÷ 12)**
+
+**cubic yards = cubic feet ÷ 27**
+
+That is the same length × width × thickness path used by the FixUpWise [Concrete Calculator](/calculators/concrete-calculator). For the general formula, see [how to calculate cubic yards of concrete](/guides/how-to-calculate-cubic-yards-concrete).
+
+### Worked example at 4 inches
+
+10 ft × 10 ft  
+= **100 sq ft**
+
+4 in ÷ 12  
+= **0.3333 ft**
+
+100 × 0.3333  
+≈ **33.33 cu ft**
+
+33.33 ÷ 27  
+≈ **1.23 yd³**
+
+## 4-, 5-, and 6-inch comparison
+
+These figures are pure geometric volume for a 10×10 ft rectangle. No extra-material allowance is included.
 
 <table>
   <thead>
     <tr>
-      <th scope="col">Thickness (example)</th>
+      <th scope="col">Slab thickness</th>
       <th scope="col">Cubic feet</th>
       <th scope="col">Cubic yards</th>
-      <th scope="col">With 10% extra (yd³)</th>
-      <th scope="col">80-lb bags (0% extra)</th>
-      <th scope="col">80-lb bags (10% extra)</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>4 in</td>
-      <td>33.33 ft³</td>
-      <td>1.23 yd³</td>
-      <td>1.36 yd³</td>
-      <td>56</td>
-      <td>62</td>
+      <td>~33.33</td>
+      <td>~1.23</td>
     </tr>
     <tr>
       <td>5 in</td>
-      <td>41.67 ft³</td>
-      <td>1.54 yd³</td>
-      <td>1.70 yd³</td>
-      <td>70</td>
-      <td>77</td>
+      <td>~41.67</td>
+      <td>~1.54</td>
     </tr>
     <tr>
       <td>6 in</td>
-      <td>50.00 ft³</td>
-      <td>1.85 yd³</td>
-      <td>2.04 yd³</td>
-      <td>84</td>
-      <td>92</td>
+      <td>50.00</td>
+      <td>~1.85</td>
     </tr>
   </tbody>
 </table>
 
-Bag counts use the approximate **0.60 ft³** yield for an **80-lb QUIKRETE Concrete Mix #1101** bag, then round **up** to whole bags — the same approach as the calculator.
+## Why the actual amount can be higher
 
-## Worked example at 4 inches
+The table assumes a perfect box. A pour often does not.
 
-1. Convert thickness: 4 in ÷ 12 = **0.333… ft**
-2. Volume in cubic feet: 10 × 10 × (4 ÷ 12) = **33.33 ft³**
-3. Cubic yards: 33.33 ÷ 27 = **1.23 yd³**
-4. Optional 10% planning allowance: 1.23 × 1.10 = **1.36 yd³**
-5. 80-lb bags at 0% extra: ceil(33.33 ÷ 0.60) = **56 bags**
-6. 80-lb bags at 10% extra: ceil(36.67 ÷ 0.60) = **62 bags**
+The finished amount can run higher when:
 
-## Calculated volume vs purchase quantity
+- the base is not perfectly level
+- the forms are not perfectly uniform
+- small areas were over-excavated
+- some concrete is lost to spillage or handling
+- measurements get rounded up in the field
 
-The **calculated volume** is the geometric result from your dimensions. A **purchase quantity** may include an editable extra-material allowance and whole-bag rounding. Uneven subgrade, spillage, and measurement variance are why many estimators add a contingency — it is a planning choice, not a fixed rule.
+Not every slab hits all of those. Thickness variation after base prep is still the place a simple estimate moves the most. For contingency as a planning choice rather than a fixed rule, see [how much extra concrete you should order](/guides/how-much-extra-concrete-to-order).
 
-For irregular shapes, different units, or post holes, use the [Concrete Calculator](/calculators/concrete-calculator) instead of scaling this table by hand.
+## Bags vs ready-mix
+
+Once you have cubic yards, the next question is how you buy it.
+
+For the **80-lb QUIKRETE Concrete Mix #1101** yield used by the FixUpWise calculator (**≈ 0.60 cu ft per bag**), the 4-inch geometric volume works out to about **56 bags** before any extra material, rounding up to whole bags. Other 80-lb mixes can yield differently. Use the number printed on the product you buy.
+
+Larger pours are often ordered as ready-mix by the cubic yard. The calculator can show both volume and bag counts for the dimensions you enter. For the bag math in more detail, see [how many 80-lb bags are in a cubic yard](/materials/80-lb-concrete-bags-per-cubic-yard).
+
+<aside class="planning-note" role="note">
+  <p class="planning-note__title">Before you order</p>
+  <p class="planning-note__body">Measure the finished form and check the depth again after the base is compacted. Thickness variation is where a simple slab estimate can move the most. If you are using bagged mix, use the yield printed on the exact product you are buying. If you are ordering ready-mix, plan enough margin that you are not trying to stretch the last of the load across an unfinished edge.</p>
+</aside>
 
 <aside class="calc-callout" aria-label="Concrete Calculator">
-  <p class="calc-callout__eyebrow">Planning a concrete project?</p>
+  <p class="calc-callout__eyebrow">Check your own dimensions</p>
   <p class="calc-callout__title">Concrete Calculator</p>
-  <p class="calc-callout__body">Enter your dimensions to estimate cubic yards, bag quantities, and an optional extra-material allowance.</p>
+  <p class="calc-callout__body">Change the length, width, thickness, and optional extra-material allowance to estimate your own slab.</p>
   <a class="calc-callout__link" href="/calculators/concrete-calculator">Calculate concrete →</a>
 </aside>
 

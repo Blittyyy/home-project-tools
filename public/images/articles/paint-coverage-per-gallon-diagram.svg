@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675" role="img" aria-labelledby="title desc">
+  <title id="title">Paint coverage per gallon reference diagram</title>
+  <desc id="desc">One gallon of paint has product-specific coverage. Example manufacturer ranges shown separately. FixUpWise planning default is 350 square feet per gallon and is editable. Check the product label or TDS.</desc>
+  <rect width="1200" height="675" fill="#FAF8F3"/>
+  <rect x="36" y="36" width="1128" height="603" fill="#FFFFFF" stroke="#D8D5CE" stroke-width="2"/>
+
+  <text x="72" y="88" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" letter-spacing="2" fill="#1F6A43">PRODUCT REFERENCE</text>
+  <text x="72" y="118" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#686862">Coverage is product-specific - not one universal number</text>
+
+  <!-- Gallon can -->
+  <rect x="100" y="180" width="160" height="200" rx="4" fill="#E7F1EA" stroke="#191919" stroke-width="3"/>
+  <rect x="120" y="160" width="120" height="28" rx="2" fill="#191919"/>
+  <text x="180" y="300" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700" fill="#191919">1 GAL</text>
+  <text x="180" y="420" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#686862">paint</text>
+
+  <line x1="280" y1="280" x2="340" y2="280" stroke="#A94B2B" stroke-width="3"/>
+  <polygon points="352,280 338,272 338,288" fill="#A94B2B"/>
+
+  <!-- Example ranges -->
+  <text x="380" y="170" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" letter-spacing="1" fill="#1F6A43">EXAMPLE RANGES</text>
+
+  <rect x="380" y="190" width="420" height="56" fill="#FAF8F3" stroke="#191919" stroke-width="2"/>
+  <text x="400" y="225" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#191919">Sherwin-Williams FAQ: ~350-400 sq ft</text>
+
+  <rect x="380" y="260" width="420" height="56" fill="#FAF8F3" stroke="#191919" stroke-width="2"/>
+  <text x="400" y="295" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#191919">Behr Ultra / Premium Plus: ~250-400</text>
+
+  <rect x="380" y="330" width="420" height="56" fill="#FAF8F3" stroke="#191919" stroke-width="2"/>
+  <text x="400" y="365" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#191919">BM Regal Select TDS: 400-450</text>
+
+  <rect x="380" y="400" width="420" height="56" fill="#FAF8F3" stroke="#191919" stroke-width="2"/>
+  <text x="400" y="435" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#191919">PPG Speedhide example: ~400</text>
+
+  <!-- Check label callout -->
+  <rect x="840" y="160" width="280" height="140" fill="#191919"/>
+  <text x="980" y="210" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" fill="#FFFFFF">CHECK THE</text>
+  <text x="980" y="245" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#FFFFFF">PRODUCT LABEL</text>
+  <text x="980" y="275" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#E7F1EA">or TDS</text>
+
+  <!-- FixUpWise default -->
+  <rect x="840" y="330" width="280" height="126" fill="#E7F1EA" stroke="#1F6A43" stroke-width="3"/>
+  <text x="980" y="370" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" letter-spacing="1" fill="#1F6A43">FIXUPWISE DEFAULT</text>
+  <text x="980" y="410" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700" fill="#191919">350 sq ft/gal</text>
+  <text x="980" y="440" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#686862">(editable)</text>
+
+  <rect x="100" y="500" width="1020" height="72" fill="#FAF8F3" stroke="#D8D5CE" stroke-width="1"/>
+  <text x="610" y="545" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#191919">Do not collapse these ranges into one fake universal coverage number</text>
+</svg>

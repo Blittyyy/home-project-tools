@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675" role="img" aria-labelledby="title desc">
+  <title id="title">80-lb concrete bags per cubic yard diagram</title>
+  <desc id="desc">One cubic yard equals 27 cubic feet. Using QUIKRETE Concrete Mix number 1101 approximate yield of 0.60 cubic feet per 80-pound bag, 27 divided by 0.60 equals about 45 bags.</desc>
+  <rect width="1200" height="675" fill="#FAF8F3"/>
+  <rect x="36" y="36" width="1128" height="603" fill="#FFFFFF" stroke="#D8D5CE" stroke-width="2"/>
+
+  <text x="72" y="92" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" letter-spacing="2" fill="#1F6A43">YIELD ASSUMPTION</text>
+  <text x="72" y="120" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#686862">Tied to QUIKRETE Concrete Mix #1101 approximate yield - not every 80-lb mix</text>
+
+  <polygon points="140,460 300,460 380,380 220,380" fill="#E7F1EA" stroke="#191919" stroke-width="2.5"/>
+  <polygon points="300,460 380,380 380,240 300,320" fill="#D8E8DE" stroke="#191919" stroke-width="2.5"/>
+  <polygon points="140,460 220,380 220,240 140,320" fill="#F6EBE6" stroke="#191919" stroke-width="2.5"/>
+  <polygon points="140,320 300,320 380,240 220,240" fill="#FFFFFF" stroke="#191919" stroke-width="2.5"/>
+  <text x="240" y="500" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#191919">1 CUBIC YARD</text>
+  <text x="240" y="528" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#1F6A43">= 27 ft3</text>
+
+  <line x1="420" y1="360" x2="500" y2="360" stroke="#A94B2B" stroke-width="3"/>
+  <polygon points="512,360 496,352 496,368" fill="#A94B2B"/>
+
+  <rect x="530" y="180" width="320" height="280" fill="#FAF8F3" stroke="#191919" stroke-width="2"/>
+  <text x="690" y="230" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" letter-spacing="1" fill="#1F6A43">80-LB #1101 YIELD</text>
+  <text x="690" y="270" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700" fill="#191919">~ 0.60 ft3</text>
+  <text x="690" y="300" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#686862">per bag</text>
+  <line x1="580" y1="330" x2="800" y2="330" stroke="#D8D5CE" stroke-width="2"/>
+  <text x="690" y="370" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#191919">27 / 0.60</text>
+  <text x="690" y="420" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="36" font-weight="700" fill="#1F6A43">= 45 bags</text>
+
+  <line x1="870" y1="360" x2="940" y2="360" stroke="#A94B2B" stroke-width="3"/>
+  <polygon points="952,360 936,352 936,368" fill="#A94B2B"/>
+
+  <text x="1020" y="200" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" letter-spacing="1" fill="#1F6A43">~ 45 BAGS</text>
+  <g fill="#FFFFFF" stroke="#191919" stroke-width="1.5">
+    <rect x="960" y="220" width="28" height="36" rx="2"/><rect x="994" y="220" width="28" height="36" rx="2"/><rect x="1028" y="220" width="28" height="36" rx="2"/><rect x="1062" y="220" width="28" height="36" rx="2"/><rect x="1096" y="220" width="28" height="36" rx="2"/>
+    <rect x="960" y="262" width="28" height="36" rx="2"/><rect x="994" y="262" width="28" height="36" rx="2"/><rect x="1028" y="262" width="28" height="36" rx="2"/><rect x="1062" y="262" width="28" height="36" rx="2"/><rect x="1096" y="262" width="28" height="36" rx="2"/>
+    <rect x="960" y="304" width="28" height="36" rx="2"/><rect x="994" y="304" width="28" height="36" rx="2"/><rect x="1028" y="304" width="28" height="36" rx="2"/><rect x="1062" y="304" width="28" height="36" rx="2"/><rect x="1096" y="304" width="28" height="36" rx="2"/>
+    <rect x="960" y="346" width="28" height="36" rx="2"/><rect x="994" y="346" width="28" height="36" rx="2"/><rect x="1028" y="346" width="28" height="36" rx="2"/><rect x="1062" y="346" width="28" height="36" rx="2"/><rect x="1096" y="346" width="28" height="36" rx="2"/>
+    <rect x="960" y="388" width="28" height="36" rx="2"/><rect x="994" y="388" width="28" height="36" rx="2"/><rect x="1028" y="388" width="28" height="36" rx="2"/><rect x="1062" y="388" width="28" height="36" rx="2"/><rect x="1096" y="388" width="28" height="36" rx="2"/>
+    <rect x="960" y="430" width="28" height="36" rx="2"/><rect x="994" y="430" width="28" height="36" rx="2"/><rect x="1028" y="430" width="28" height="36" rx="2"/><rect x="1062" y="430" width="28" height="36" rx="2"/><rect x="1096" y="430" width="28" height="36" rx="2"/>
+    <rect x="960" y="472" width="28" height="36" rx="2"/><rect x="994" y="472" width="28" height="36" rx="2"/><rect x="1028" y="472" width="28" height="36" rx="2"/><rect x="1062" y="472" width="28" height="36" rx="2"/><rect x="1096" y="472" width="28" height="36" rx="2"/>
+    <rect x="960" y="514" width="28" height="36" rx="2"/><rect x="994" y="514" width="28" height="36" rx="2"/><rect x="1028" y="514" width="28" height="36" rx="2"/><rect x="1062" y="514" width="28" height="36" rx="2"/><rect x="1096" y="514" width="28" height="36" rx="2"/>
+    <rect x="960" y="556" width="28" height="36" rx="2"/><rect x="994" y="556" width="28" height="36" rx="2"/><rect x="1028" y="556" width="28" height="36" rx="2"/><rect x="1062" y="556" width="28" height="36" rx="2"/><rect x="1096" y="556" width="28" height="36" rx="2"/>
+  </g>
+  <g fill="#A94B2B">
+    <rect x="968" y="226" width="12" height="3"/><rect x="1002" y="226" width="12" height="3"/><rect x="1036" y="226" width="12" height="3"/><rect x="1070" y="226" width="12" height="3"/><rect x="1104" y="226" width="12" height="3"/>
+  </g>
+
+  <text x="72" y="600" font-family="Arial, Helvetica, sans-serif" font-size="15" fill="#686862">Before contingency or whole-bag purchase rounding. Confirm the yield printed on the product you buy.</text>
+</svg>

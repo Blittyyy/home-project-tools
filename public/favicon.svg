@@ -1,5 +1,29 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
-  <rect width="64" height="64" fill="#1a1a1a"/>
-  <text x="32" y="42" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="28" font-weight="700" fill="#ffffff">F</text>
-  <text x="46" y="42" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="28" font-weight="700" fill="#1b5e3b">W</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="FixUpWise">
+  <!-- FixUpWise house mark · transparent background -->
+  <!-- Charcoal #191919 · Green #1F6A43 · Rust #A94B2B -->
+
+  <!-- House outline (thick stroke, rounded joins) -->
+  <path
+    fill="none"
+    stroke="#191919"
+    stroke-width="5.5"
+    stroke-linejoin="round"
+    stroke-linecap="round"
+    d="M10 28 L32 8 L54 28 V54 H10 Z"
+  />
+
+  <!-- Rust chimney -->
+  <rect x="42" y="10" width="8" height="14" rx="1.5" fill="#A94B2B"/>
+
+  <!-- Green four-pane window -->
+  <rect x="24" y="26" width="7" height="7" rx="0.8" fill="#1F6A43"/>
+  <rect x="33" y="26" width="7" height="7" rx="0.8" fill="#1F6A43"/>
+  <rect x="24" y="35" width="7" height="7" rx="0.8" fill="#1F6A43"/>
+  <rect x="33" y="35" width="7" height="7" rx="0.8" fill="#1F6A43"/>
+
+  <!-- Rust door (flush with bottom wall) -->
+  <path
+    fill="#A94B2B"
+    d="M27 54 V44.5 Q27 42 29.5 42 H34.5 Q37 42 37 44.5 V54 Z"
+  />
 </svg>

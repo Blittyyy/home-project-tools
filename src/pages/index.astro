@@ -3,7 +3,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import ToolCard from '../components/ToolCard.astro';
 import EditorialImage from '../components/EditorialImage.astro';
 import ArticleCard from '../components/ArticleCard.astro';
-import { SITE_DESCRIPTION, SITE_NAME } from '../config/site';
+import { SHOW_PUBLIC_ARTICLE_DATES, SITE_DESCRIPTION, SITE_NAME } from '../config/site';
+import { METHODOLOGY_PATH } from '../config/editorial';
 import { organizationSchema, websiteSchema } from '../utils/schema';
 import { getAvailableTools } from '../data/tools';
 import {
@@ -21,13 +22,14 @@ const featured = featuredPool[0] ?? allArticles[0];
 
 function articleTopic(article: (typeof allArticles)[number]): string {
   const tags = article.data.tags.map((tag) => tag.toLowerCase());
+  if (tags.includes('tile')) return 'tile';
   if (tags.includes('mulch')) return 'mulch';
   if (tags.includes('paint')) return 'paint';
   if (tags.includes('concrete')) return 'concrete';
   return article.data.subcategory?.trim() || article.data.category;
 }
 
-/** Prefer topic mix (concrete + paint + mulch) instead of date-only latest strip. */
+/** Prefer topic mix (concrete + paint + mulch + tile) instead of date-only latest strip. */
 function pickMixedArticles(
   articles: typeof allArticles,
   excludeId: string | undefined,
@@ -37,7 +39,7 @@ function pickMixedArticles(
   const picked: typeof allArticles = [];
   const used = new Set<string>();
 
-  for (const topic of ['concrete', 'paint', 'mulch'] as const) {
+  for (const topic of ['concrete', 'paint', 'mulch', 'tile'] as const) {
     const hit = pool.find((article) => articleTopic(article) === topic && !used.has(article.id));
     if (hit) {
       picked.push(hit);
@@ -94,22 +96,34 @@ const latestArticles = pickMixedArticles(allArticles, featured?.id, 4);
                   {featured.data.summary ?? featured.data.description}
                 </p>
                 <p class="pub-featured__meta">
-                  {featured.data.author}
-                  <span aria-hidden="true"> · </span>
-                  <time datetime={featured.data.publishedDate.toISOString()}>
-                    {formatArticleDate(featured.data.publishedDate)}
-                  </time>
+                  <a href={METHODOLOGY_PATH}>{featured.data.author}</a>
+                  {
+                    SHOW_PUBLIC_ARTICLE_DATES && (
+                      <>
+                        <span aria-hidden="true"> · </span>
+                        <time datetime={featured.data.publishedDate.toISOString()}>
+                          {formatArticleDate(featured.data.publishedDate)}
+                        </time>
+                      </>
+                    )
+                  }
                   <span aria-hidden="true"> · </span>
                   <a href={articlePath(featured)}>Read the guide →</a>
                 </p>
               </header>
-              <a href={articlePath(featured)} class="pub-featured__media-link">
+              <a
+                href={articlePath(featured)}
+                class="pub-featured__media-link"
+                aria-label={`Read: ${featured.data.title}`}
+              >
                 <EditorialImage
                   src={featured.data.featuredImage}
-                  alt={featured.data.featuredImageAlt || featured.data.title}
+                  alt=""
                   aspect="feature"
                   loading="eager"
                   class="pub-featured__media"
+                  kind={featured.data.featuredImageKind}
+                  showDisclosure={false}
                 />
               </a>
             </div>
@@ -121,6 +135,8 @@ const latestArticles = pickMixedArticles(allArticles, featured?.id, 4);
                   <EditorialImage
                     src={item.data.featuredImage}
                     alt={item.data.featuredImageAlt || item.data.title}
+                    kind={item.data.featuredImageKind}
+                    showDisclosure={false}
                     aspect="thumb"
                     class="pub-side-item__thumb"
                   />
@@ -153,7 +169,7 @@ const latestArticles = pickMixedArticles(allArticles, featured?.id, 4);
         <section class="pub-section" aria-labelledby="latest-heading">
           <div class="pub-section__header">
             <h2 id="latest-heading" class="pub-section__title">Latest articles</h2>
-            <p class="pub-section__desc">Practical guides across concrete, paint, landscaping, and related estimating topics.</p>
+            <p class="pub-section__desc">Practical guides across concrete, paint, landscaping, tile, and related estimating topics.</p>
           </div>
           <div class="pub-article-grid">
             {latestArticles.map((article) => (

@@ -1,21 +1,29 @@
 ---
 title: How Much Extra Concrete Should You Order?
 description: "Extra concrete is a planning allowance, not a fixed rule. See 4–10% ready-mix contingency context, bagged estimating tips around 10%, and how the Concrete Calculator applies editable extra material."
-summary: "Extra material is an editable contingency on calculated volume. Ready-mix guidance often discusses about 4–10% more than plan dimensions; bagged tips commonly mention about 10%. Use 0% if you only want raw geometry."
+summary: "There is no single extra-concrete percentage that fits every project. Calculate geometric volume first, then decide whether the conditions justify additional margin."
 slug: how-much-extra-concrete-to-order
 category: guides
 subcategory: measuring
+editorialFormat: decision-guide
 publishedDate: 2026-11-23
-author: FixUpWise Editorial
+author: FixUpWise Editorial Team
 tags:
   - concrete
   - waste
   - planning
-featuredImage: /images/articles/extra-concrete-to-order.png
-featuredImageAlt: Planning a backyard concrete project with bags, measuring tools, and a prepared slab.
+featuredImage: /images/articles/extra-concrete-planning-diagram.svg
+featuredImageAlt: "Diagram comparing theoretical slab volume with real conditions such as uneven base and planning allowance."
+featuredImageKind: illustration
+# Ideal future real photo (do not publish until a verified photo exists):
+# photo: /images/articles/TODO-uneven-base-form-depth.jpg
+# photoAlt: Uneven prepared base with a tape measure checking form depth.
+# photoCaption: Low spots and depth variation are common reasons geometric volume alone can run short.
+# photoCredit:
 draft: false
 featured: false
-reviewLevel: general
+reviewLevel: none
+suppressCalculatorCallout: true
 relatedArticles:
   - how-much-concrete-for-10x10-slab
   - how-to-calculate-cubic-yards-concrete
@@ -32,58 +40,91 @@ sources:
 faq: []
 ---
 
-After you calculate volume from dimensions, the next planning question is whether to order **more than the geometric result**.
+There is no single extra-concrete percentage that fits every project. The useful approach is to calculate the geometric volume first, then decide whether the conditions of the project justify additional margin.
 
-## Calculated volume vs purchase quantity
+For a simple rectangular slab, an editable allowance is more useful than automatically adding the same percentage to every job. That is how the FixUpWise [Concrete Calculator](/calculators/concrete-calculator) is built: start with dimensions, then choose **0%**, **5%**, **10%**, or a custom value.
 
-- **Calculated volume** is length × width × thickness (converted to cubic yards). See [how to calculate cubic yards](/guides/how-to-calculate-cubic-yards-concrete).
-- **Purchase quantity** may include an extra-material allowance and, for bagged concrete, whole-bag rounding.
+## What an extra-material allowance is
 
-Extra material is a **planning allowance**, not structural advice and not a universal requirement.
+**Calculated volume** is length × width × thickness, converted to cubic yards. See [how to calculate cubic yards](/guides/how-to-calculate-cubic-yards-concrete).
 
-## Why estimators add contingency
+**Purchase quantity** may include an extra-material allowance on top of that volume, and for bagged mix, whole-bag rounding.
 
-Common reasons to order more than the plan-dimension volume include:
+The allowance is a planning choice about how much concrete you want available — not structural advice, thickness guidance, or a code requirement.
 
-- over-excavation or uneven subgrade
-- spillage and waste during placement
-- measurement uncertainty
-- irregular shapes that are hard to model exactly
+## When more margin can make sense
 
-Those factors vary by site. A flat, carefully formed pad may need less contingency than a rough excavation.
+Conditions that often increase variance from the perfect-box number:
 
-## What published estimating guidance says
+- uneven or irregular excavation
+- over-excavated pockets
+- complex shapes or many edges
+- placement methods that lose more material to handling
 
-Industry ready-mix guidance from the **National Ready Mixed Concrete Association** discusses ordering about **4–10%** more than a plan-dimension estimate to cover contingencies such as waste and over-excavation.
+Published estimating context: the **National Ready Mixed Concrete Association** discusses ordering about **4–10%** more than a plan-dimension estimate for contingencies such as waste and over-excavation. **Sakrete** calculator guidance mentions about **10%** when estimating bagged jobs. Those are reference ranges, not mandates.
 
-**Sakrete** calculator guidance recommends adding about **10%** when estimating bagged jobs.
+## When the calculated quantity may stay closer
 
-Those figures are **estimating context**, not a mandate for every project. Your supplier, site conditions, and pour method may call for a different choice — including **0%** if you only want the raw geometric volume.
+A carefully prepared, even base under a simple rectangle can keep the pour nearer to geometric volume. In that case, a smaller allowance — or **0%** if you only want the raw calculation — can be a deliberate choice rather than an oversight.
 
-## How the FixUpWise calculator treats extra material
+The point is to match the allowance to the job, not to treat any published percentage as automatic.
 
-The [Concrete Calculator](/calculators/concrete-calculator) defaults to **10%** as an editable assumption. You can select **0%**, **5%**, **10%**, or a custom value up to **25%**. The extra percentage is applied to calculated volume before bag counts are rounded up.
+## Ready-mix vs bags
 
-Example using the same math as a [10×10 slab at 4 in](/projects/how-much-concrete-for-10x10-slab):
+**Ready-mix:** running short mid-pour is disruptive. Contingency is often discussed as part of the order conversation with the supplier.
 
-- Calculated: **1.23 yd³** (33.33 ft³)
+**Bagged mix:** purchase quantity is constrained to whole bags. Rounding up already adds some buffer; an extra-material percent increases the count further. For yield math, see [80-lb bags per cubic yard](/materials/80-lb-concrete-bags-per-cubic-yard).
+
+Example using a [10×10 slab at 4 in](/projects/how-much-concrete-for-10x10-slab):
+
+- Calculated: **1.23 yd³**
 - With 10% extra: **1.36 yd³**
-- 80-lb #1101 bags: **56** at 0% extra vs **62** at 10% extra
+- 80-lb #1101 bags: **56** at 0% vs **62** at 10%
 
-## What this does not decide
+## Practical decision checklist
 
-Extra material percentage does **not** tell you:
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Project condition</th>
+      <th scope="col">Why it matters</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Very even prepared base</td>
+      <td>Volume may stay closer to the geometric calculation</td>
+    </tr>
+    <tr>
+      <td>Uneven / irregular excavation</td>
+      <td>Low spots can consume additional volume</td>
+    </tr>
+    <tr>
+      <td>Complex shape / many edges</td>
+      <td>Forms and measurement uncertainty can increase variance</td>
+    </tr>
+    <tr>
+      <td>Bagged mix</td>
+      <td>Purchase quantity is constrained to whole bags</td>
+    </tr>
+    <tr>
+      <td>Ready-mix</td>
+      <td>Running short during a pour can be more disruptive</td>
+    </tr>
+  </tbody>
+</table>
 
-- required slab thickness
-- reinforcement
-- mix strength
-- whether the pour meets code
-
-Those decisions sit outside quantity estimating.
+Compare options in the calculator rather than locking every job to the same default.
 
 <aside class="calc-callout" aria-label="Concrete Calculator">
-  <p class="calc-callout__eyebrow">Planning a concrete project?</p>
+  <p class="calc-callout__eyebrow">Compare the base volume with an allowance</p>
   <p class="calc-callout__title">Concrete Calculator</p>
-  <p class="calc-callout__body">Enter your dimensions to estimate cubic yards, bag quantities, and an optional extra-material allowance.</p>
+  <p class="calc-callout__body">Calculate the exact geometric volume first, then compare 0%, 5%, 10%, or a custom extra-material allowance.</p>
   <a class="calc-callout__link" href="/calculators/concrete-calculator">Calculate concrete →</a>
 </aside>
+
+## Related reading
+
+- [How much concrete for a 10×10 slab?](/projects/how-much-concrete-for-10x10-slab)
+- [How to calculate cubic yards of concrete](/guides/how-to-calculate-cubic-yards-concrete)
+- [How many 80-lb bags of concrete are in a cubic yard?](/materials/80-lb-concrete-bags-per-cubic-yard)

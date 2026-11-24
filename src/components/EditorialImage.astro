@@ -1,9 +1,10 @@
 ---
 /**
  * Reusable editorial image shell with fixed aspect ratios.
- * Swap src to a real local asset when photography is ready.
+ * Supports figure captions (used for illustration disclosure).
  */
 import OptimizedImage from './OptimizedImage.astro';
+import { ILLUSTRATION_DISCLOSURE, type ImageKind } from '../config/editorial';
 
 type Aspect = 'feature' | 'hero' | 'card' | 'thumb';
 
@@ -13,6 +14,10 @@ interface Props {
   aspect?: Aspect;
   loading?: 'lazy' | 'eager';
   class?: string;
+  caption?: string | null;
+  kind?: ImageKind | null;
+  /** When false, skip default illustration disclosure. */
+  showDisclosure?: boolean;
 }
 
 const PLACEHOLDERS: Record<Aspect, { src: string; width: number; height: number; label: string }> = {
@@ -48,6 +53,9 @@ const {
   aspect = 'card',
   loading = 'lazy',
   class: className = '',
+  caption,
+  kind = null,
+  showDisclosure = true,
 } = Astro.props;
 
 const preset = PLACEHOLDERS[aspect];
@@ -55,9 +63,22 @@ const resolvedSrc = src && src.trim() ? src : preset.src;
 /** Allow intentional empty alt for decorative thumbs next to a linked headline. */
 const resolvedAlt = alt === undefined || alt === null ? preset.label : alt;
 const isPlaceholder = resolvedSrc === preset.src;
+const isIllustration = kind === 'illustration';
+
+const resolvedCaption =
+  caption?.trim() ||
+  (isIllustration && showDisclosure && !isPlaceholder ? ILLUSTRATION_DISCLOSURE : null);
 ---
 
-<figure class:list={['ed-image', `ed-image--${aspect}`, className]}>
+<figure
+  class:list={[
+    'ed-image',
+    `ed-image--${aspect}`,
+    isIllustration && 'ed-image--illustration',
+    resolvedCaption && 'ed-image--captioned',
+    className,
+  ]}
+>
   <OptimizedImage
     src={resolvedSrc}
     alt={resolvedAlt}
@@ -74,4 +95,9 @@ const isPlaceholder = resolvedSrc === preset.src;
     }
   />
   {isPlaceholder && <span class="sr-only">{preset.label} placeholder</span>}
+  {
+    resolvedCaption && aspect !== 'thumb' && (
+      <figcaption class="ed-image__caption">{resolvedCaption}</figcaption>
+    )
+  }
 </figure>

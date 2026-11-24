@@ -3,32 +3,39 @@
 @import './publication.css';
 
 /*
-  FixUpWise design tokens — editorial publication with restrained green accent.
+  FixUpWise — Workshop Editorial design tokens
 */
 @theme {
-  /* Editorial online publication: strong sans for headlines; serif reserved for brand. */
-  --font-sans: 'Source Sans 3', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
+  /* Body / UI */
+  --font-sans: 'IBM Plex Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
     'Helvetica Neue', Arial, sans-serif;
-  --font-display: 'Source Sans 3', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
-    'Helvetica Neue', Arial, sans-serif;
+  /* Condensed editorial headlines */
+  --font-display: 'Roboto Condensed', 'Arial Narrow', 'Helvetica Neue Condensed', ui-sans-serif,
+    system-ui, sans-serif;
+  /* Wordmark only */
   --font-brand: 'Source Serif 4', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia,
     'Times New Roman', serif;
 
-  --color-ink: #1a1a1a;
-  --color-ink-muted: #3f3f3f;
-  --color-ink-subtle: #6b6b6b;
+  /* Core palette */
+  --color-ink: #191919;
+  --color-ink-muted: #3f3f3a;
+  --color-ink-subtle: #686862;
   --color-surface: #ffffff;
   --color-surface-raised: #ffffff;
-  --color-sand: #f3f3f1;
-  --color-brand: #1b5e3b;
-  --color-brand-dark: #13452b;
-  --color-brand-soft: #e8f2ec;
-  --color-accent: #1b5e3b;
-  --color-nav: #1a1a1a;
-  --color-border: #d4d4d0;
-  --color-warning: #92400e;
-  --color-warning-bg: #fffbeb;
-  --color-warning-border: #f59e0b;
+  --color-paper: #faf8f3;
+  --color-sand: #faf8f3;
+  --color-brand: #1f6a43;
+  --color-brand-dark: #175234;
+  --color-brand-soft: #e7f1ea;
+  --color-rust: #a94b2b;
+  --color-rust-dark: #8a3c22;
+  --color-rust-soft: #f6ebe6;
+  --color-accent: #a94b2b;
+  --color-nav: #191919;
+  --color-border: #d8d5ce;
+  --color-warning: #8a3c22;
+  --color-warning-bg: #faf4ef;
+  --color-warning-border: #c47a5a;
 }
 
 @layer base {
@@ -64,7 +71,12 @@
   }
 
   .section-heading {
-    @apply font-sans text-[1.75rem] font-bold leading-tight tracking-tight text-ink sm:text-[2rem];
+    font-family: var(--font-display);
+    font-size: clamp(1.7rem, 2.5vw, 2.1rem);
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -0.012em;
+    color: var(--color-ink);
   }
 
   .section-lede {
@@ -76,15 +88,31 @@
   }
 
   .prose-article {
-    @apply max-w-[46rem] text-[1.05rem] leading-[1.7] text-ink-muted;
+    max-width: 44rem;
+    font-size: 1.0625rem;
+    line-height: 1.68;
+    color: var(--color-ink-muted);
   }
 
   .prose-article :where(h2) {
-    @apply mt-9 scroll-mt-24 font-sans text-[1.45rem] font-bold text-ink;
+    margin-top: 2.35rem;
+    scroll-margin-top: 6rem;
+    font-family: var(--font-display);
+    font-size: 1.45rem;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
   }
 
   .prose-article :where(h3) {
-    @apply mt-7 scroll-mt-24 font-sans text-lg font-bold text-ink;
+    margin-top: 1.75rem;
+    scroll-margin-top: 6rem;
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--color-ink);
   }
 
   .prose-article :where(p) {
@@ -104,7 +132,12 @@
   }
 
   .prose-article :where(a) {
-    @apply font-medium text-brand;
+    font-weight: 500;
+    color: var(--color-brand);
+  }
+
+  .prose-article :where(a:hover) {
+    color: var(--color-brand-dark);
   }
 
   .prose-article :where(strong) {
@@ -121,7 +154,21 @@
   }
 
   .prose-article :where(th) {
-    @apply bg-sand font-semibold text-ink;
+    background: var(--color-paper);
+    font-weight: 600;
+    color: var(--color-ink);
+  }
+
+  .prose-article :where(blockquote) {
+    margin: 1.5rem 0;
+    padding: 0.85rem 1rem;
+    border-left: 3px solid var(--color-rust);
+    background: var(--color-paper);
+    color: var(--color-ink-muted);
+  }
+
+  .prose-article :where(blockquote p) {
+    margin-top: 0;
   }
 
   .prose-article :where(.calc-callout) {
@@ -140,18 +187,55 @@
     @apply inline-flex items-center justify-center rounded-sm px-4 py-2.5 text-sm font-semibold transition border border-border bg-surface-raised text-ink no-underline hover:bg-sand hover:no-underline;
   }
 
-  /* Flat utility surface — used by calculators; keep radius small */
   .card-surface {
     @apply rounded-sm border border-border bg-surface-raised p-4;
   }
 
   .category-eyebrow {
-    @apply text-[0.7rem] font-bold uppercase tracking-[0.08em] text-brand;
+    font-family: var(--font-display);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-brand);
   }
 
   .rule {
     border: 0;
     border-top: 1px solid var(--color-border);
+  }
+
+  /* Short accent rule — workshop identity */
+  .rule-accent {
+    display: block;
+    width: 2.75rem;
+    height: 3px;
+    margin: 0.55rem 0 0;
+    border: 0;
+    background: var(--color-brand);
+  }
+
+  .rule-accent--green {
+    background: var(--color-brand);
+  }
+
+  /* Subtle measurement ticks under headings */
+  .rule-ticks {
+    display: block;
+    width: 5.5rem;
+    height: 8px;
+    margin: 0.45rem 0 0;
+    border: 0;
+    background:
+      linear-gradient(var(--color-ink), var(--color-ink)) 0 100% / 100% 1px no-repeat,
+      repeating-linear-gradient(
+        to right,
+        var(--color-ink) 0,
+        var(--color-ink) 1px,
+        transparent 1px,
+        transparent 0.55rem
+      );
+    opacity: 0.45;
   }
 }
 

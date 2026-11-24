@@ -1,0 +1,34 @@
+---
+interface Props {
+  title: string;
+  /** Paragraphs or bullet lines. Prefer bullets for checklist-style notes. */
+  body?: string;
+  bullets?: string[];
+}
+
+const { title, body, bullets = [] } = Astro.props;
+const paragraphs = body
+  ? body
+      .split(/\n\n+/)
+      .map((p) => p.trim())
+      .filter(Boolean)
+  : [];
+---
+
+<aside class="planning-note" role="note">
+  <p class="planning-note__title">{title}</p>
+  {
+    paragraphs.map((paragraph) => (
+      <p class="planning-note__body">{paragraph}</p>
+    ))
+  }
+  {
+    bullets.length > 0 && (
+      <ul class="planning-note__list">
+        {bullets.map((item) => (
+          <li>{item}</li>
+        ))}
+      </ul>
+    )
+  }
+</aside>

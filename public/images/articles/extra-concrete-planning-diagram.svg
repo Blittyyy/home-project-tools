@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675" role="img" aria-labelledby="title desc">
+  <title id="title">Extra concrete planning diagram</title>
+  <desc id="desc">Theoretical rectangular volume versus real project conditions such as uneven base, irregular form, low spots, and small spillage. Calculated volume plus an editable planning allowance.</desc>
+  <rect width="1200" height="675" fill="#FAF8F3"/>
+  <rect x="36" y="36" width="1128" height="603" fill="#FFFFFF" stroke="#D8D5CE" stroke-width="2"/>
+
+  <text x="72" y="92" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" letter-spacing="2" fill="#1F6A43">THEORETICAL VOLUME</text>
+  <text x="620" y="92" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" letter-spacing="2" fill="#A94B2B">REAL PROJECT CONDITIONS</text>
+
+  <rect x="100" y="150" width="380" height="200" fill="#E7F1EA" stroke="#191919" stroke-width="2.5"/>
+  <line x1="100" y1="130" x2="480" y2="130" stroke="#191919" stroke-width="1.5"/>
+  <line x1="100" y1="122" x2="100" y2="138" stroke="#191919" stroke-width="1.5"/>
+  <line x1="480" y1="122" x2="480" y2="138" stroke="#191919" stroke-width="1.5"/>
+  <text x="290" y="122" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" fill="#1F6A43">PLAN DIMENSIONS</text>
+  <text x="290" y="260" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#191919">Uniform box volume</text>
+  <text x="290" y="290" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#686862">Length x width x thickness</text>
+
+  <rect x="620" y="140" width="480" height="220" fill="#FAF8F3" stroke="#D8D5CE" stroke-width="2"/>
+  <path d="M650 220 L700 240 L760 215 L820 245 L880 220 L940 235 L1040 225" fill="none" stroke="#191919" stroke-width="2.5"/>
+  <text x="650" y="200" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1F6A43">Uneven base</text>
+  <path d="M650 290 L1040 290 L1020 330 L670 335 Z" fill="#F6EBE6" stroke="#191919" stroke-width="2"/>
+  <text x="680" y="320" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#A94B2B">Slightly irregular form</text>
+  <circle cx="900" cy="250" r="8" fill="#A94B2B"/>
+  <text x="920" y="255" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#191919">Low spot</text>
+  <ellipse cx="1020" cy="340" rx="28" ry="12" fill="#D8E8DE" stroke="#191919" stroke-width="1.5"/>
+  <text x="900" y="345" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#686862">Small spillage / loss</text>
+
+  <rect x="100" y="420" width="1000" height="160" fill="#FAF8F3" stroke="#191919" stroke-width="2"/>
+  <text x="600" y="470" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" letter-spacing="2" fill="#1F6A43">PLANNING QUANTITY</text>
+
+  <rect x="160" y="500" width="280" height="48" fill="#FFFFFF" stroke="#191919" stroke-width="2"/>
+  <text x="300" y="532" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#191919">Calculated volume</text>
+
+  <text x="480" y="532" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700" fill="#A94B2B">+</text>
+
+  <rect x="520" y="500" width="320" height="48" fill="#E7F1EA" stroke="#191919" stroke-width="2"/>
+  <text x="680" y="532" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#1F6A43">Editable planning allowance</text>
+
+  <text x="880" y="532" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700" fill="#191919">=</text>
+  <text x="1020" y="532" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" fill="#191919">Purchase plan</text>
+
+  <text x="600" y="590" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="15" fill="#686862">No mandatory percentage - choose 0% for raw geometry or an allowance that fits the job.</text>
+</svg>

@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675" role="img" aria-labelledby="title desc">
+  <title id="title">Doors and windows paint deduction diagram</title>
+  <desc id="desc">Wall elevation with one door and two windows. Quick-count method uses FixUpWise planning allowances of about 20 square feet per door and 15 per window. Measured method uses width times height. Measuring is preferred for unusual openings.</desc>
+  <rect width="1200" height="675" fill="#FAF8F3"/>
+  <rect x="36" y="36" width="1128" height="603" fill="#FFFFFF" stroke="#D8D5CE" stroke-width="2"/>
+
+  <text x="72" y="88" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" letter-spacing="2" fill="#1F6A43">WALL OPENING DEDUCTIONS</text>
+  <text x="72" y="118" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#686862">Subtract openings not painted with the wall paint</text>
+
+  <!-- Wall elevation -->
+  <rect x="72" y="160" width="520" height="280" fill="#E7F1EA" stroke="#191919" stroke-width="3"/>
+
+  <!-- Door -->
+  <rect x="110" y="250" width="90" height="190" fill="#FFFFFF" stroke="#191919" stroke-width="2"/>
+  <circle cx="185" cy="350" r="5" fill="#191919"/>
+  <text x="155" y="240" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" fill="#1F6A43">DOOR</text>
+
+  <!-- Window 1 -->
+  <rect x="260" y="220" width="110" height="90" fill="#FFFFFF" stroke="#191919" stroke-width="2"/>
+  <line x1="315" y1="220" x2="315" y2="310" stroke="#D8D5CE" stroke-width="1.5"/>
+  <line x1="260" y1="265" x2="370" y2="265" stroke="#D8D5CE" stroke-width="1.5"/>
+  <text x="315" y="205" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" fill="#1F6A43">WINDOW</text>
+
+  <!-- Window 2 -->
+  <rect x="420" y="220" width="110" height="90" fill="#FFFFFF" stroke="#191919" stroke-width="2"/>
+  <line x1="475" y1="220" x2="475" y2="310" stroke="#D8D5CE" stroke-width="1.5"/>
+  <line x1="420" y1="265" x2="530" y2="265" stroke="#D8D5CE" stroke-width="1.5"/>
+  <text x="475" y="205" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" fill="#1F6A43">WINDOW</text>
+
+  <text x="332" y="410" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#686862">1 door + 2 windows</text>
+
+  <!-- Quick count panel -->
+  <rect x="640" y="160" width="480" height="200" fill="#FAF8F3" stroke="#191919" stroke-width="2"/>
+  <rect x="640" y="160" width="480" height="48" fill="#E7F1EA" stroke="#191919" stroke-width="2"/>
+  <text x="880" y="192" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" fill="#1F6A43">QUICK COUNT</text>
+  <text x="660" y="240" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#191919">1 door = ~20 sq ft</text>
+  <text x="660" y="275" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#191919">2 windows = ~30 sq ft</text>
+  <text x="660" y="320" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#A94B2B">Total = ~50 sq ft</text>
+
+  <!-- Measured panel -->
+  <rect x="640" y="390" width="480" height="140" fill="#FAF8F3" stroke="#191919" stroke-width="2"/>
+  <rect x="640" y="390" width="480" height="48" fill="#F6EBE6" stroke="#191919" stroke-width="2"/>
+  <text x="880" y="422" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" fill="#A94B2B">MEASURED</text>
+  <text x="880" y="480" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#191919">width x height each opening</text>
+  <text x="880" y="512" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#686862">Preferred for unusual sizes</text>
+
+  <!-- Attribution footer -->
+  <rect x="72" y="480" width="520" height="100" fill="#191919"/>
+  <text x="332" y="520" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#E7F1EA">FixUpWise quick-count</text>
+  <text x="332" y="548" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#FFFFFF">planning allowances</text>
+  <text x="332" y="572" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="15" fill="#D8D5CE">not manufacturer standards</text>
+</svg>

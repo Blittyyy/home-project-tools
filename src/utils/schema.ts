@@ -1,5 +1,6 @@
-import { ORGANIZATION, SITE_NAME, SITE_URL } from '../config/site';
+import { ORGANIZATION, SHOW_PUBLIC_ARTICLE_DATES, SITE_NAME, SITE_URL } from '../config/site';
 import { categoryMeta, type ArticleCategory } from '../config/categories';
+import { METHODOLOGY_PATH } from '../config/editorial';
 import { absoluteUrl } from './seo';
 import { type ArticleEntry, articlePath, toIsoDate } from './articles';
 
@@ -44,17 +45,26 @@ export function articleSchema(article: ArticleEntry) {
     ? absoluteUrl(article.data.featuredImage)
     : undefined;
 
+  // Keep frontmatter dates as internal staging metadata. Do not emit public
+  // datePublished/dateModified until real launch publication dates are assigned
+  // and SHOW_PUBLIC_ARTICLE_DATES is flipped to true.
+  const publicDates = SHOW_PUBLIC_ARTICLE_DATES
+    ? {
+        datePublished: toIsoDate(article.data.publishedDate),
+        dateModified: toIsoDate(article.data.updatedDate ?? article.data.publishedDate),
+      }
+    : {};
+
   return {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
     headline: article.data.title,
     description: article.data.description,
-    datePublished: toIsoDate(article.data.publishedDate),
-    dateModified: toIsoDate(article.data.updatedDate ?? article.data.publishedDate),
+    ...publicDates,
     author: {
       '@type': 'Organization',
       name: article.data.author,
-      url: SITE_URL,
+      url: absoluteUrl(METHODOLOGY_PATH),
     },
     publisher: {
       '@type': 'Organization',

@@ -17,7 +17,7 @@ export type PaintCalcResult =
 /** Exact: 1 US liquid gallon = 3.785411784 L */
 export const LITERS_PER_US_GALLON = 3.785411784;
 
-/** Benjamin Moore estimating allowances (approximate). */
+/** FixUpWise quick-count planning allowances (approximate). */
 export const DOOR_OPENING_SQ_FT = 20;
 export const WINDOW_OPENING_SQ_FT = 15;
 
