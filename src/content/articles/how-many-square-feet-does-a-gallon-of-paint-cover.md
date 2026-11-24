@@ -6,7 +6,7 @@ slug: how-many-square-feet-does-a-gallon-of-paint-cover
 category: materials
 subcategory: paint
 editorialFormat: product-reference
-publishedDate: 2026-11-24
+publishedDate: 2026-11-23
 author: FixUpWise Editorial Team
 tags:
   - paint

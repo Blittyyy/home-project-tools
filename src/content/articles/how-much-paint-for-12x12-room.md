@@ -6,7 +6,7 @@ slug: how-much-paint-for-12x12-room
 category: projects
 subcategory: painting
 editorialFormat: worked-example
-publishedDate: 2026-11-24
+publishedDate: 2026-11-23
 author: FixUpWise Editorial Team
 tags:
   - paint

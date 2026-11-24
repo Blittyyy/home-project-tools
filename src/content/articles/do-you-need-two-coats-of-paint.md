@@ -6,7 +6,7 @@ slug: do-you-need-two-coats-of-paint
 category: guides
 subcategory: painting
 editorialFormat: decision-guide
-publishedDate: 2026-11-24
+publishedDate: 2026-11-23
 author: FixUpWise Editorial Team
 tags:
   - paint

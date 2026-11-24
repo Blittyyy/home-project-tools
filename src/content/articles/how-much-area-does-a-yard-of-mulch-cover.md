@@ -6,7 +6,7 @@ slug: how-much-area-does-a-yard-of-mulch-cover
 category: materials
 subcategory: mulch
 editorialFormat: quick-reference
-publishedDate: 2026-11-25
+publishedDate: 2026-11-23
 author: FixUpWise Editorial Team
 tags:
   - mulch

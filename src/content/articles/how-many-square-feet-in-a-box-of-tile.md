@@ -6,7 +6,7 @@ slug: how-many-square-feet-in-a-box-of-tile
 category: materials
 subcategory: tile
 editorialFormat: packaging-guide
-publishedDate: 2026-11-26
+publishedDate: 2026-11-23
 author: FixUpWise Editorial Team
 tags:
   - tile

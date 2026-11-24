@@ -6,7 +6,7 @@ slug: how-much-tile-do-i-need
 category: projects
 subcategory: flooring-tile
 editorialFormat: project-planner
-publishedDate: 2026-11-26
+publishedDate: 2026-11-23
 author: FixUpWise Editorial Team
 tags:
   - tile

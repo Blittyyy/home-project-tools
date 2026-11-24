@@ -6,7 +6,7 @@ slug: how-deep-should-mulch-be
 category: guides
 subcategory: landscaping
 editorialFormat: decision-guide
-publishedDate: 2026-11-25
+publishedDate: 2026-11-23
 author: FixUpWise Editorial Team
 tags:
   - mulch

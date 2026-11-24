@@ -6,7 +6,7 @@ slug: how-much-mulch-do-i-need
 category: projects
 subcategory: landscaping
 editorialFormat: project-planner
-publishedDate: 2026-11-25
+publishedDate: 2026-11-23
 author: FixUpWise Editorial Team
 tags:
   - mulch

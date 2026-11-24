@@ -28,7 +28,7 @@ export const SITE_AUTHOR = 'FixUpWise Editorial Team';
  * (site is not yet publicly launched).
  * Flip to true when real publication dates are assigned at launch.
  */
-export const SHOW_PUBLIC_ARTICLE_DATES = false;
+export const SHOW_PUBLIC_ARTICLE_DATES = true;
 
 /**
  * Contact email — replace with a monitored inbox before launch.

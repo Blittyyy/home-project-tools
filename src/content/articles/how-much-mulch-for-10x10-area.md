@@ -6,7 +6,7 @@ slug: how-much-mulch-for-10x10-area
 category: projects
 subcategory: landscaping
 editorialFormat: worked-example
-publishedDate: 2026-11-25
+publishedDate: 2026-11-23
 author: FixUpWise Editorial Team
 tags:
   - mulch

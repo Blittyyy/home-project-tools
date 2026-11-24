@@ -6,7 +6,7 @@ slug: how-much-paint-do-i-need-for-a-room
 category: projects
 subcategory: painting
 editorialFormat: project-planner
-publishedDate: 2026-11-24
+publishedDate: 2026-11-23
 author: FixUpWise Editorial Team
 tags:
   - paint

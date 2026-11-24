@@ -6,7 +6,7 @@ slug: how-much-tile-for-10x10-room
 category: projects
 subcategory: flooring-tile
 editorialFormat: worked-example
-publishedDate: 2026-11-26
+publishedDate: 2026-11-23
 author: FixUpWise Editorial Team
 tags:
   - tile

@@ -6,7 +6,7 @@ slug: how-much-paint-to-subtract-for-doors-and-windows
 category: guides
 subcategory: painting
 editorialFormat: measuring-guide
-publishedDate: 2026-11-24
+publishedDate: 2026-11-23
 author: FixUpWise Editorial Team
 tags:
   - paint

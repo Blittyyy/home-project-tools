@@ -6,7 +6,7 @@ slug: how-many-bags-of-mulch-in-a-cubic-yard
 category: materials
 subcategory: mulch
 editorialFormat: material-guide
-publishedDate: 2026-11-25
+publishedDate: 2026-11-23
 author: FixUpWise Editorial Team
 tags:
   - mulch
