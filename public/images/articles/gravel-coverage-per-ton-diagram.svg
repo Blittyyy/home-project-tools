@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675" role="img" aria-labelledby="title desc">
+  <title id="title">Gravel coverage per ton by depth</title>
+  <desc id="desc">Bar comparison of approximate square feet covered by one US short ton of gravel at 1, 2, 3, 4, and 6 inch depths using a 100 lb per cubic foot bulk density planning assumption.</desc>
+  <rect width="1200" height="675" fill="#FAF8F3"/>
+  <rect x="36" y="36" width="1128" height="603" fill="#FFFFFF" stroke="#D8D5CE" stroke-width="2"/>
+
+  <text x="72" y="88" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" letter-spacing="2" fill="#1F6A43">COVERAGE PER US SHORT TON</text>
+  <text x="72" y="116" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#686862">Planning assumption: 100 lb/ft³ loose crushed stone (Caterpillar-based)</text>
+
+  <!-- Axis -->
+  <line x1="120" y1="560" x2="1080" y2="560" stroke="#191919" stroke-width="2"/>
+  <line x1="120" y1="170" x2="120" y2="560" stroke="#191919" stroke-width="2"/>
+
+  <!-- Bars: max 240 sqft at scale height 340 -->
+  <rect x="180" y="220" width="120" height="340" fill="#E7F1EA" stroke="#191919" stroke-width="2"/>
+  <text x="240" y="205" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" fill="#1F6A43">240</text>
+  <text x="240" y="590" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#191919">1 in</text>
+
+  <rect x="360" y="390" width="120" height="170" fill="#E7F1EA" stroke="#191919" stroke-width="2"/>
+  <text x="420" y="375" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" fill="#1F6A43">120</text>
+  <text x="420" y="590" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#191919">2 in</text>
+
+  <rect x="540" y="447" width="120" height="113" fill="#E7F1EA" stroke="#191919" stroke-width="2"/>
+  <text x="600" y="432" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" fill="#1F6A43">80</text>
+  <text x="600" y="590" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#191919">3 in</text>
+
+  <rect x="720" y="475" width="120" height="85" fill="#E7F1EA" stroke="#191919" stroke-width="2"/>
+  <text x="780" y="460" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" fill="#1F6A43">60</text>
+  <text x="780" y="590" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#191919">4 in</text>
+
+  <rect x="900" y="503" width="120" height="57" fill="#E7F1EA" stroke="#191919" stroke-width="2"/>
+  <text x="960" y="488" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" fill="#1F6A43">40</text>
+  <text x="960" y="590" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#191919">6 in</text>
+
+  <text x="72" y="620" font-family="Arial, Helvetica, sans-serif" font-size="15" fill="#686862">Values are approximate sq ft per US short ton (2,000 lb). Depths are coverage examples  not installation recommendations.</text>
+</svg>

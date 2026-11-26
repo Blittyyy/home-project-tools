@@ -26,10 +26,11 @@ function articleTopic(article: (typeof allArticles)[number]): string {
   if (tags.includes('mulch')) return 'mulch';
   if (tags.includes('paint')) return 'paint';
   if (tags.includes('concrete')) return 'concrete';
+  if (tags.includes('gravel')) return 'gravel';
   return article.data.subcategory?.trim() || article.data.category;
 }
 
-/** Prefer topic mix (concrete + paint + mulch + tile) instead of date-only latest strip. */
+/** Prefer topic mix across published clusters instead of date-only latest strip. */
 function pickMixedArticles(
   articles: typeof allArticles,
   excludeId: string | undefined,
@@ -39,7 +40,7 @@ function pickMixedArticles(
   const picked: typeof allArticles = [];
   const used = new Set<string>();
 
-  for (const topic of ['concrete', 'paint', 'mulch', 'tile'] as const) {
+  for (const topic of ['concrete', 'paint', 'mulch', 'gravel', 'tile'] as const) {
     const hit = pool.find((article) => articleTopic(article) === topic && !used.has(article.id));
     if (hit) {
       picked.push(hit);
@@ -69,7 +70,8 @@ function pickMixedArticles(
   return picked.slice(0, limit);
 }
 
-const sideStories = pickMixedArticles(allArticles, featured?.id, 4);
+/** Side list tolerates 5 topics; article grid stays at 4 to match the 4-column desktop layout. */
+const sideStories = pickMixedArticles(allArticles, featured?.id, 5);
 const latestArticles = pickMixedArticles(allArticles, featured?.id, 4);
 ---
 

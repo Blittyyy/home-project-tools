@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675" role="img" aria-labelledby="title desc">
+  <title id="title">10 by 10 foot gravel area quantity diagram</title>
+  <desc id="desc">Top view of a 10 by 10 foot rectangle with example gravel depths of 2, 3, 4, and 6 inches and corresponding cubic-yard volumes before extra material.</desc>
+  <rect width="1200" height="675" fill="#FAF8F3"/>
+  <rect x="36" y="36" width="1128" height="603" fill="#FFFFFF" stroke="#D8D5CE" stroke-width="2"/>
+
+  <text x="72" y="88" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" letter-spacing="2" fill="#1F6A43">TOP VIEW</text>
+  <text x="72" y="116" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#686862">100 sq ft footprint</text>
+
+  <rect x="150" y="160" width="400" height="400" fill="#E7F1EA" stroke="#191919" stroke-width="3"/>
+  <line x1="150" y1="140" x2="550" y2="140" stroke="#191919" stroke-width="1.5"/>
+  <line x1="150" y1="132" x2="150" y2="148" stroke="#191919" stroke-width="1.5"/>
+  <line x1="550" y1="132" x2="550" y2="148" stroke="#191919" stroke-width="1.5"/>
+  <text x="350" y="132" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#1F6A43">10 ft</text>
+  <line x1="130" y1="160" x2="130" y2="560" stroke="#191919" stroke-width="1.5"/>
+  <line x1="122" y1="160" x2="138" y2="160" stroke="#191919" stroke-width="1.5"/>
+  <line x1="122" y1="560" x2="138" y2="560" stroke="#191919" stroke-width="1.5"/>
+  <text x="108" y="370" text-anchor="middle" transform="rotate(-90 108 370)" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#1F6A43">10 ft</text>
+  <text x="350" y="375" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700" fill="#191919">10 × 10 ft</text>
+
+  <text x="640" y="88" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" letter-spacing="2" fill="#1F6A43">EXAMPLE DEPTHS</text>
+  <text x="640" y="116" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#686862">Volume before extra material</text>
+
+  <rect x="660" y="160" width="420" height="42" fill="#E7F1EA" stroke="#191919" stroke-width="2"/>
+  <text x="680" y="187" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#191919">2 in ’ ~0.62 yd³</text>
+  <text x="1020" y="187" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#A94B2B">16.67 ft³</text>
+
+  <rect x="660" y="230" width="420" height="52" fill="#E7F1EA" stroke="#191919" stroke-width="2"/>
+  <text x="680" y="262" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#191919">3 in ’ ~0.93 yd³</text>
+  <text x="1020" y="262" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#A94B2B">25.00 ft³</text>
+
+  <rect x="660" y="310" width="420" height="62" fill="#E7F1EA" stroke="#191919" stroke-width="2"/>
+  <text x="680" y="348" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#191919">4 in ’ ~1.23 yd³</text>
+  <text x="1020" y="348" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#A94B2B">33.33 ft³</text>
+
+  <rect x="660" y="400" width="420" height="80" fill="#E7F1EA" stroke="#191919" stroke-width="2"/>
+  <text x="680" y="447" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#191919">6 in ’ ~1.85 yd³</text>
+  <text x="1020" y="447" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#A94B2B">50.00 ft³</text>
+
+  <rect x="640" y="520" width="460" height="70" fill="#FAF8F3" stroke="#D8D5CE" stroke-width="1"/>
+  <text x="660" y="550" font-family="Arial, Helvetica, sans-serif" font-size="15" fill="#686862">Depths are quantity examples only. Weight still</text>
+  <text x="660" y="572" font-family="Arial, Helvetica, sans-serif" font-size="15" fill="#686862">depends on the gravel density you use.</text>
+</svg>
